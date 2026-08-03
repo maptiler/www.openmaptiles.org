@@ -1,0 +1,95 @@
+{%- comment -%}
+Homepage hero: headline, calls to action, and the map mock-up.
+
+The Languages dialog is emitted here but starts closed, and is opened by
+assets/js/hero.js when the page is a /languages/:code/ route. In an earlier
+version the dialog was mounted conditionally from the same condition
+(`activeLanguage` or a pathname containing /languages).
+{%- endcomment -%}
+<section id="hero" class="hero">
+  <img
+    src="{{ '/img/header-map-2560px.png' | relative_url }}"
+    alt=""
+    aria-hidden="true"
+    class="hero__backdrop"
+  />
+
+  <div class="hero__intro">
+    <div class="hero__copy">
+      <h1 class="hero__title">Open-source stack for building maps with vector tiles</h1>
+      <p class="hero__lead">
+        Includes the OpenMapTiles schema, ready-to-use map styles, and
+        tools for generating vector tiles from OpenStreetMap.
+      </p>
+    </div>
+
+    <div class="hero__actions">
+      <a
+        href="{{ '/docs/' | relative_url }}"
+        data-track-event="hero_cta_click"
+        data-track-label="Documentation"
+        class="btn-primary-omt hero__btn"
+      >{% include icons/file-text.svg %}Documentation</a>
+      <a
+        href="https://github.com/openmaptiles"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-tracked="true"
+        data-track-event="hero_cta_click"
+        data-track-label="Code on Github"
+        class="btn-secondary-omt hero__btn"
+      >{% include icons/hero-code.svg %}Code on Github</a>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="hero__mockup"
+    aria-label="Open MapTiler Basic map style preview"
+    data-hero-style-preview
+  >
+    <picture class="hero__picture">
+      <source
+        srcset="{{ '/img/home-banner-map-1x.webp' | relative_url }} 1x, {{ '/img/home-banner-map-2x.webp' | relative_url }} 2x"
+        type="image/webp"
+      />
+      <img
+        src="{{ '/img/home-banner-map.png' | relative_url }}"
+        alt="OpenMapTiles Map Preview"
+        class="hero__mockup-img"
+      />
+    </picture>
+    <div class="hero__badge-wrap">
+      <span class="hero__badge">
+        {% include icons/map-trifold-bold.svg %}
+        Explore map styles
+      </span>
+    </div>
+  </button>
+</section>
+
+{%- comment -%}
+Full-screen multilingual map dialog. Hidden by default; hero.js opens it on
+/languages/:code/ routes and on popstate.
+{%- endcomment -%}
+<div
+  class="hero-dialog"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Multilingual map preview"
+  data-languages-dialog
+  {% unless page.active_language %}hidden{% endunless %}
+>
+  <div class="hero-dialog__backdrop" data-languages-close></div>
+  <div class="hero-dialog__frame">
+    <button
+      type="button"
+      class="hero-dialog__close"
+      aria-label="Close preview"
+      data-languages-close
+    >{% include icons/x.svg %}</button>
+    <div class="hero-dialog__body">
+      {% include home/languages.html %}
+    </div>
+  </div>
+</div>

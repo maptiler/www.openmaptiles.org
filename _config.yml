@@ -1,0 +1,106 @@
+title: OpenMapTiles
+description: Vector tiles from OpenStreetMap and OpenData to create world maps for web and mobile.
+author: MapTiler team
+url: https://openmaptiles.org
+baseurl: ""
+
+# Same keys the legacy site used, so {{ site.maps.domain }} / {{ site.maps.key }}
+# in the docs markdown resolve natively instead of via build-time regex.
+maps:
+  domain: https://api.maptiler.com
+  key: LIb45gssRLBrsVQPT0MN
+
+gtm_id: GTM-PQHNBT6B
+twitter: "@openmaptiles"
+
+permalink: pretty
+
+collections:
+  docs:
+    output: true
+    permalink: /docs/:path/
+
+defaults:
+  # Iframe/embed helpers, not content. jekyll-sitemap picks up any .html static
+  # file, and the hand-written Astro sitemap did not list these.
+  - scope:
+      path: "maps"
+    values:
+      sitemap: false
+  - scope:
+      path: "inspect-tool.html"
+    values:
+      sitemap: false
+  - scope:
+      path: "inspect-tool"
+    values:
+      sitemap: false
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: docs
+  - scope:
+      path: ""
+    values:
+      layout: page
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+
+sass:
+  style: compressed
+  sass_dir: _sass
+  # Jekyll 4 emits a source map by default, and jekyll-sass-converter embeds
+  # `sourcesContent`, so /assets/css/main.css.map published all 28 _sass/ partials
+  # verbatim — comments included — and doubled the CSS payload to ~290 KB. The legacy
+  # site shipped no map. Off.
+  sourcemap: never
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+# Jekyll skips dotfiles and anything starting with an underscore, so the
+# Cloudflare redirects file has to be named explicitly.
+include:
+  - _redirects
+
+# Setting `exclude` replaces Jekyll's defaults rather than adding to them, so the
+# usual entries (node_modules, vendor/bundle, Gemfile) have to be restated here.
+# Since the cutover the source directory IS the repo root, so every internal
+# document at the root would otherwise be rendered and published — the migration
+# plan and the porting handoff included.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - .ruby-version
+  - node_modules
+  - vendor
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  # Build tooling. script/verify-build and its manifest are CI inputs, not routes.
+  - script
+  - _site-staging
+  # A stray leftover: nothing in this repo uses npm, and .gitignore says so. Excluded
+  # rather than only deleted, so an accidental `npm init` cannot publish it.
+  - package.json
+  - package-lock.json
+  # Internal documentation — not site content. Adding one here is only half the job:
+  # script/verify-build asserts each stays out of _site, so extend its list too.
+  - DEPLOYMENT.md
+  - CUTOVER.md
+  # Licence notices for the vendored libraries. Repo documentation, not a route — but
+  # note it has no front matter, so without this it is copied through as a static file
+  # rather than rendered, which the .html/directory checks alone would not catch.
+  - THIRD-PARTY-NOTICES.md
+  # Local scratch and editor state
+  - scratch
+  - .claude
+  - .idea

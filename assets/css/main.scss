@@ -1,0 +1,38 @@
+---
+# Front matter fence is required for Jekyll to process this through sass.
+---
+
+@use "variables";
+@use "reset";        // @layer base
+@use "typography";   // @layer utilities
+@use "base";
+@use "buttons";
+@use "prose-overrides";
+@use "docs";
+// Unlayered utility shim for the Tailwind classes still embedded in docs markdown.
+// Must load after "docs" and after "prose-overrides".
+@use "docs-embedded";
+
+// Components
+@use "header";
+@use "footer";
+@use "companies";
+@use "schema";
+@use "maptiler";
+@use "data";
+@use "about-home";
+@use "about-page";
+@use "osm2vt";
+@use "error";
+@use "code";
+@use "sidebar";
+@use "schema-page";
+@use "hero";
+@use "languages";
+@use "mapstyles";
+@use "viewers";
+@use "search";
+
+// LAST on purpose: element rules from src/index.css that beat everything above,
+// reproducing how unlayered index.css outranked Tailwind's layered utilities.
+@use "element-overrides";

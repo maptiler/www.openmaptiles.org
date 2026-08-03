@@ -1,0 +1,35 @@
+{%- comment -%}
+Overrides jekyll-redirect-from's built-in template. Identical markup, except the
+navigation target is made site-root-relative.
+
+The gem runs every `redirect_from` path through Jekyll's `absolute_url`, so the
+stubs it emits point at `https://openmaptiles.org/…` regardless of where they are
+served from. That is right in production and wrong everywhere else: in local
+development and on a Cloudflare preview, following any legacy URL leaves the build
+under test and lands on the live site — which is how the restored redirects
+looked broken when the content was reviewed by following them.
+
+`canonical` deliberately stays absolute: that one is a statement to crawlers about
+the production URL, not a navigation instruction.
+
+Stripping `site.url` alone is also correct under a non-root `baseurl`: the gem builds
+the target with `absolute_url`, which is site.url + baseurl + path, so removing only
+site.url leaves the baseurl in place. Do NOT add `relative_url` here — that prepends
+baseurl a second time. Verified against the labs staging build, which serves under
+/www.openmaptiles.org.
+
+Off-site targets already carry a scheme, so the gem leaves them absolute and
+`remove_first` does not match — they pass through untouched.
+{%- endcomment -%}
+{%- assign target = page.redirect.to | remove_first: site.url -%}
+<!DOCTYPE html>
+<html lang="en-US">
+  <meta charset="utf-8">
+  <title>Redirecting&hellip;</title>
+  <link rel="canonical" href="{{ page.redirect.to }}">
+  <script>location="{{ target }}"</script>
+  <meta http-equiv="refresh" content="0; url={{ target }}">
+  <meta name="robots" content="noindex">
+  <h1>Redirecting&hellip;</h1>
+  <a href="{{ target }}">Click here if you are not redirected.</a>
+</html>
