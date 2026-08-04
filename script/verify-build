@@ -33,6 +33,12 @@ ok()   { printf '  ok    %s\n' "$1"; }
 bad()  { printf '  FAIL  %s\n' "$1"; fail=1; }
 section() { printf '\n%s\n' "$1"; }
 
+# One scratch dir and one trap for the whole script. `trap ... EXIT` does not stack —
+# a second registration silently replaces the first and leaks whatever the first
+# was meant to clean up.
+scratch=$(mktemp -d)
+trap 'rm -rf "$scratch"' EXIT
+
 test -d "$SITE" || { echo "no such directory: $SITE — run 'bundle exec jekyll build' first"; exit 2; }
 
 # --- route count -------------------------------------------------------------
@@ -71,6 +77,83 @@ done
 for d in media inspect-tool assets; do
   [ -d "$SITE/$d" ] && ok "$d/" || bad "$d/ missing"
 done
+
+# --- local references --------------------------------------------------------
+# Every in-site src= and href= must resolve to something in the artifact. A broken
+# one is a 404 the build has no opinion about: Jekyll neither knows nor cares that
+# an <img> points at a file nobody shipped.
+#
+# This is not hypothetical. The Jekyll rewrite deleted img/home/planet.png while
+# _includes/home/companies.html still listed `planet` in the name list it builds
+# logo filenames from, so the homepage logo wall rendered a broken-image icon on
+# every one of the 67 pages using that section. It survived review for the reason
+# that file's own header gives: the filenames are assembled at render time, so
+# grepping the source for "planet.png" finds nothing.
+#
+# Ruby rather than shell because the two things this has to get right — stripping
+# code samples, and resolving relative refs per page — are genuinely awkward in
+# bash, and the repo already hard-depends on Ruby.
+section "Local references"
+# The count goes to stderr so it cannot be confused with a finding on stdout.
+refs_count_file="$scratch/refs-count"
+refs_out=$(ruby -e '
+require "uri"
+site, baseurl = ARGV[0], ARGV[1].to_s
+checked, broken = 0, []
+
+Dir.glob(File.join(site, "**", "*.html")).sort.each do |page|
+  html = File.read(page, encoding: "UTF-8", invalid: :replace, undef: :replace)
+  # Code samples are not references. Docs embed markup like `<script src="...">`,
+  # HTML-escaped, inside <pre> and inline <code>; resolving those would report
+  # every tutorial as broken.
+  html = html.gsub(%r{<pre\b.*?</pre>}mi, "").gsub(%r{<code\b.*?</code>}mi, "")
+
+  html.scan(/(?:src|href)="([^"]+)"/).each do |(ref)|
+    # Anything with a scheme, protocol-relative, or a bare fragment is not ours.
+    next if ref =~ %r{\A(?:[a-z][a-z0-9+.-]*:|//|#)}i
+    path = ref.split("#").first.to_s.split("?").first.to_s
+    next if path.empty?
+
+    target =
+      if path.start_with?("/")
+        # Root-absolute. Under a baseurl the rendered path carries the prefix and
+        # the file on disk does not, so strip it before resolving.
+        rel = path
+        if !baseurl.empty? && (rel == baseurl || rel.start_with?("#{baseurl}/"))
+          rel = rel[baseurl.length..] || ""
+        end
+        File.join(site, rel)
+      else
+        # Relative to the page. inspect-tool.html is a standalone document with no
+        # layout and legitimately uses these.
+        File.expand_path(path, File.dirname(page))
+      end
+
+    checked += 1
+    # A directory counts: pretty permalinks point at /docs/, served by its index.
+    ok = File.exist?(target) || File.exist?(File.join(target, "index.html"))
+    broken << [ref, page.sub(/\A#{Regexp.escape(site)}/, "")] unless ok
+  end
+end
+
+# One missing file is one problem, not 67. Group by the reference, name a page.
+grouped = broken.uniq.group_by(&:first)
+grouped.sort.each do |ref, rows|
+  pages = rows.map(&:last).sort
+  extra = pages.length > 1 ? " (#{pages.length} pages)" : ""
+  puts "#{ref}\t#{pages.first}#{extra}"
+end
+warn checked.to_s
+' "$SITE" "$BASEURL" 2>"$refs_count_file") || true
+refs_checked=$(tr -d "[:space:]" < "$refs_count_file" 2>/dev/null || echo "?")
+if [ -z "$refs_out" ]; then
+  ok "$refs_checked local references, all resolve"
+else
+  while IFS=$'\t' read -r ref where; do
+    [ -n "$ref" ] || continue
+    bad "$ref does not exist in the artifact — referenced by $where"
+  done <<< "$refs_out"
+fi
 
 # --- stylesheets -------------------------------------------------------------
 # CSS ships as core.css plus one bundle per section, named by each page's
@@ -131,8 +214,8 @@ class_allowed() {
 missing_sheets=0
 orphans=0
 styled_pages=0
-defined_cache=$(mktemp -d)
-trap 'rm -rf "$defined_cache"' EXIT
+defined_cache="$scratch/css"
+mkdir -p "$defined_cache"
 while IFS= read -r page; do
   grep -q 'assets/css/core\.css' "$page" || continue
   styled_pages=$((styled_pages + 1))
