@@ -20,28 +20,22 @@ which is expected, not a bug.
 | Branch | Contents | Deploys to |
 |---|---|---|
 | `master` | mirror of `openmaptiles/www.openmaptiles.org` — the current live site | nothing |
-| `port-jekyll-rewrite` | the Jekyll rewrite exactly as proposed upstream — **no fork or cutover machinery** | nothing |
-| `cutover` | this branch: `port-jekyll-rewrite` plus that machinery | nothing — **local only, never pushed** |
+| `port-jekyll-rewrite` | this branch: the Jekyll rewrite, plus the fork's staging and cutover machinery | labs staging, on every push |
 
 This is a fork. Production is `openmaptiles/www.openmaptiles.org`, and no port PR has
 been opened against it yet. `master` is kept identical to upstream so that stays a
 single tree replacement rather than a diverged merge.
 
-**This branch is local only and is never pushed.** It exists so `port-jekyll-rewrite`
-can stay clean, and so the cutover runbook and the pre-cutover baseline are kept
-somewhere. Two consequences:
+`labs-staging.yml` triggers on this branch, so **every push deploys to labs**. Two
+consequences:
 
-- `labs-staging.yml` triggers on this branch, so while it is unpushed **nothing deploys
-  to labs**. The last labs build is from `fed6cd0e`, which is content-identical to the
-  pushed tree because the strip changed no site output. Push this branch if labs needs
-  to move again.
-- `script/legacy-baseline-2026-08-03.txt` exists in one place only, this working copy.
-  It records what production answered before the cutover and cannot be regenerated
-  afterwards, so back it up somewhere that is not this laptop.
-
-**Work on `port-jekyll-rewrite` and rebase this branch onto it — never the reverse.**
-This branch is a single additive commit, so the rebase is trivial as long as it stays
-that way.
+- The staging and cutover machinery — this workflow, `_config.staging.yml`,
+  `CUTOVER.md`, `script/verify-live` and the legacy baseline — lives on this branch and
+  is MapTiler-internal. Strip it from whatever is proposed upstream; the branch itself
+  is not a clean port tree.
+- `script/legacy-baseline-2026-08-03.txt` records what production answered before the
+  cutover and cannot be regenerated afterwards, so keep a copy somewhere that is not
+  this laptop.
 
 ## Before changing anything
 

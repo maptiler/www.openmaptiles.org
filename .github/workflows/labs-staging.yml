@@ -4,18 +4,17 @@ name: Deploy to labs staging
 # maptiler/www.openmaptiles.org fork, so the full deployment path can be exercised
 # before anything is proposed to the openmaptiles org.
 #
-# It deploys the `cutover` branch, not `master` and not `port-jekyll-rewrite`.
+# It deploys `port-jekyll-rewrite`, not `master`.
 #
-# The three branches on this fork:
+# The two branches on this fork:
 #   master               mirror of openmaptiles/master — the legacy site, never diverges
-#   port-jekyll-rewrite  the clean tree proposed to the openmaptiles org, with none of
-#                        the fork's staging or cutover machinery in it
-#   cutover              port-jekyll-rewrite plus that machinery: this workflow,
-#                        _config.staging.yml, CUTOVER.md, verify-live and the legacy
-#                        baseline. Rebase it on port-jekyll-rewrite as that moves.
+#   port-jekyll-rewrite  the working branch, and the tree proposed to the openmaptiles
+#                        org. It carries the fork's staging and cutover machinery —
+#                        this workflow, _config.staging.yml, CUTOVER.md, verify-live
+#                        and the legacy baseline — so labs deploys on every push to it.
 #
-# So labs serves the proposed tree plus the staging overlay, and the upstream PR carries
-# nothing MapTiler-internal.
+# That machinery is MapTiler-internal, so strip it from whatever is proposed upstream
+# rather than assuming the branch is already clean.
 #
 # Three things make this different from deploy.yml, and all are load-bearing:
 #
@@ -42,7 +41,7 @@ name: Deploy to labs staging
 
 on:
   push:
-    branches: ["cutover"]
+    branches: ["port-jekyll-rewrite"]
   workflow_dispatch:
 
 permissions:
