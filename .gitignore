@@ -1,6 +1,5 @@
 # Jekyll build output and caches
 _site
-_site-staging
 .jekyll-cache
 .jekyll-metadata
 .sass-cache

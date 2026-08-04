@@ -11,11 +11,6 @@ The whole build is:
 bundle exec jekyll build     # → _site/
 ```
 
-> **`CUTOVER.md` is the operational plan and takes precedence over this file where
-> they disagree.**
-
----
-
 ## Requirements
 
 | | |
@@ -59,7 +54,7 @@ nothing, so every workflow runs `script/verify-build` before the artifact is
 published. It asserts the route floor, one check per custom plugin, the static and
 generated assets, the `CNAME`, that no internal document leaked, and every legacy URL
 in `script/redirects.tsv`. If it fails the deploy job never runs and the previous site
-stays up. See `CUTOVER.md` §2.
+stays up.
 
 `.github/workflows/jekyll-build.yml` runs the same script on pull requests without
 deploying, and additionally builds and verifies the staging config.
@@ -74,8 +69,8 @@ later move to Cloudflare Pages behaves identically; `verify-build` cross-checks 
 so they cannot drift.
 
 Separately, note that the `openmaptiles.org` Cloudflare zone **already** answers nine
-off-site paths with edge Redirect Rules, ahead of the origin. Those targets are
-reproduced in the stubs. See `CUTOVER.md` §0.
+off-site paths with edge Redirect Rules, ahead of the origin. Those targets were read
+off the live edge and are reproduced in the stubs, so all three layers agree.
 
 ---
 
@@ -126,9 +121,9 @@ copy-paste a preview's sitemap anywhere.
 ### Excludes
 
 The Jekyll source directory **is** the repo root, so anything not listed in
-`_config.yml`'s `exclude:` gets published. Three internal markdown files sit at the
-root and all are excluded: `DEPLOYMENT.md`, `CUTOVER.md` and
-`THIRD-PARTY-NOTICES.md`. So are `README.md` and `script/`.
+`_config.yml`'s `exclude:` gets published. The internal markdown files at the root are
+all excluded: `DEPLOYMENT.md` and `THIRD-PARTY-NOTICES.md`. So are `README.md` and
+`script/`.
 
 Two traps worth knowing:
 

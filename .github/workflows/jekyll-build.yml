@@ -5,8 +5,6 @@ name: Jekyll build check
 #
 # Runs the same `script/verify-build` the deploy job runs, so a PR fails for the same
 # reasons production would refuse to publish — including a missing legacy redirect.
-# It additionally builds the staging config, because a baseurl mistake there is
-# invisible in the production build.
 
 on:
   pull_request:
@@ -37,19 +35,6 @@ jobs:
 
       - name: Verify build output
         run: script/verify-build
-
-      # The staging overlay sets a non-root baseurl. Nothing in the production build
-      # exercises that path, so a broken overlay would only surface on labs.
-      - name: Build and verify staging config
-        run: |
-          bundle exec jekyll build --trace \
-            --config _config.yml,_config.staging.yml \
-            --destination _site-staging
-          rm -f _site-staging/CNAME _site-staging/sitemap.xml
-          SITE=_site-staging REQUIRE_CNAME=0 EXPECT_SITEMAP=0 \
-            BASEURL=/www.openmaptiles.org script/verify-build
-        env:
-          JEKYLL_ENV: production
 
       - name: Upload site
         uses: actions/upload-artifact@v7

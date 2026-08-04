@@ -94,7 +94,6 @@ exclude:
   - README.md
   # Build tooling. script/verify-build and its manifest are CI inputs, not routes.
   - script
-  - _site-staging
   # A stray leftover: nothing in this repo uses npm, and .gitignore says so. Excluded
   # rather than only deleted, so an accidental `npm init` cannot publish it.
   - package.json
@@ -102,7 +101,6 @@ exclude:
   # Internal documentation — not site content. Adding one here is only half the job:
   # script/verify-build asserts each stays out of _site, so extend its list too.
   - DEPLOYMENT.md
-  - CUTOVER.md
   # Licence notices for the vendored libraries. Repo documentation, not a route — but
   # note it has no front matter, so without this it is copied through as a static file
   # rather than rendered, which the .html/directory checks alone would not catch.

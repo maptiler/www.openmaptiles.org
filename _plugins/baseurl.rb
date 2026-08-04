@@ -6,9 +6,9 @@
 # short of Liquid in every image tag. With `baseurl: ""` that is identical, which is
 # why production never noticed: /media/y.png IS the right URL there.
 #
-# On the labs staging deployment baseurl is /www.openmaptiles.org, and every one of
-# those paths resolved against labs.maptiler.com/ instead — 103 refs, including all 42
-# schema ETL and mapping diagrams, the internal doc links, and the two `/maps/` iframes.
+# Under a non-root baseurl every one of those paths resolves against the host root
+# instead — 103 refs, including all 42 schema ETL and mapping diagrams, the internal doc
+# links, and the two `/maps/` iframes.
 #
 # Fixing the markdown instead would mean Liquid in 24 files and would break again the
 # next time somebody writes a normal markdown image. This runs after render, so it

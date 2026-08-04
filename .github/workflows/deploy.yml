@@ -9,7 +9,7 @@ name: Deploy to GitHub Pages
 # /languages/:code/ and 7 /styles/:slug/ pages from _data/. Under the sandbox those
 # 66 pages simply would not exist — and the build would still exit 0.
 #
-# Nothing is published unless `script/verify-build` passes. See CUTOVER.md.
+# Nothing is published unless `script/verify-build` passes.
 #
 # The Pages *Source* setting decides whether this workflow is what deploys at all.
 # It is a repository setting and nothing in git can enforce it: Settings -> Pages ->
@@ -32,8 +32,8 @@ concurrency:
 jobs:
   build:
     # Production only. Forks — notably maptiler/www.openmaptiles.org, which stages to
-    # labs.maptiler.com — must not publish a build carrying the production CNAME and
-    # canonical URLs. That is what labs-staging.yml is for.
+    # A non-production host must not publish a build carrying the production CNAME and
+    # canonical URLs.
     if: github.repository == 'openmaptiles/www.openmaptiles.org'
     runs-on: ubuntu-latest
     steps:

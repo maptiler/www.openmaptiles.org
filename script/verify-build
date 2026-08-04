@@ -23,11 +23,10 @@
 #   script/verify-build
 #
 # Options via environment:
-#   REQUIRE_CNAME=0   invert the CNAME assertion: require it to be ABSENT (a staging
-#                     build must not claim the production domain — see CUTOVER.md)
-#   EXPECT_SITEMAP=0  invert the sitemap assertion: require sitemap.xml to be ABSENT
-#                     (the staging workflows delete it after the build so it cannot
-#                     enumerate the duplicate site — see _config.staging.yml)
+#   REQUIRE_CNAME=0   invert the CNAME assertion: require it to be ABSENT, for a build
+#                     published somewhere that must not claim the production domain
+#   EXPECT_SITEMAP=0  invert the sitemap assertion: require sitemap.xml to be ABSENT, so
+#                     a duplicate of the site cannot enumerate its URLs for crawlers
 #   BASEURL=/prefix   the site's baseurl when it is not the root. Internal redirect
 #                     targets are expected to carry it.
 #   SITE=path         verify a directory other than _site
@@ -204,7 +203,7 @@ section "Internal documents withheld"
 # Checks three shapes, because a root .md leaks differently depending on its front
 # matter: rendered to $p/index.html with `permalink: pretty`, to $p.html without it, or
 # copied through verbatim as $p.md when it has no front matter at all.
-for p in DEPLOYMENT CUTOVER THIRD-PARTY-NOTICES README; do
+for p in DEPLOYMENT THIRD-PARTY-NOTICES README; do
   { [ -e "$SITE/$p.html" ] || [ -d "$SITE/$p" ] || [ -e "$SITE/$p.md" ]; } \
     && bad "$p leaked into the site — add it to exclude: in _config.yml" \
     || ok "$p withheld"
@@ -233,11 +232,10 @@ if [ -n "$BASEURL" ]; then
 fi
 
 # --- legacy URL coverage -----------------------------------------------------
-# DELETE THIS SECTION AFTER THE CUTOVER — the largest check here and the most
-# temporary. Until the port is live it is why the cutover is safe: every row is a URL
-# that answers on the legacy site and has no route in this build. Afterwards
-# script/verify-live supersedes it, probing the deployed site against the same manifest
-# and seeing the Cloudflare zone rules that this, reading only the artifact, cannot.
+# Every row of the manifest is a legacy URL that is live and indexed today and has no
+# route in this build, so it must be redirected rather than dropped. This is the only
+# automatic guard on that: rename a doc and drop its `redirect_from` and nothing else
+# notices, because the URL keeps answering right up until the release that removes it.
 section "Legacy URL redirects ($MANIFEST)"
 test -f "$MANIFEST" || { bad "$MANIFEST missing"; exit 1; }
 

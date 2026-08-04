@@ -12,7 +12,7 @@ allowed" and had to discover the sitemap from Search Console alone. This states
 both explicitly and changes nothing about what is crawlable.
 {%- endcomment -%}
 {%- if site.staging -%}
-# Staging build (_config.staging.yml): this host serves a full duplicate of
+# Staging build (`site.staging`): this host serves a full duplicate of
 # openmaptiles.org, so it is closed to crawlers and advertises no sitemap.
 User-agent: *
 Disallow: /

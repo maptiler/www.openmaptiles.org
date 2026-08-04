@@ -64,7 +64,7 @@ the docs collection before the site-wide default applies.
 Staging builds force noindex regardless of the page's own value. robots.txt already
 disallows the whole host, but Disallow only stops crawling — a URL discovered
 elsewhere can still be indexed unfetched. This meta tag is what keeps it out.
-Production is unaffected: `site.staging` is set only by _config.staging.yml.
+Production is unaffected: `site.staging` is never set by _config.yml.
 {%- endcomment -%}
 {%- if site.staging -%}
   {%- assign robots_value = "noindex, nofollow" -%}
