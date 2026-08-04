@@ -53,6 +53,7 @@ pair that animates on hover.
             <img
               src="{{ '/img/' | append: item.src | relative_url }}"
               alt="{{ item.alt }}"
+              loading="lazy"
               class="data__img data__img--{{ item.size }}"
             />
           </a>

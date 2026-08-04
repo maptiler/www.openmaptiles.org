@@ -50,6 +50,7 @@ without a leading slash, so they 404'd on every non-root page. Fixed via
           <img
             src="{{ parts[1] | relative_url }}"
             alt="{{ parts[0] }}"
+            loading="lazy"
             class="about-home__logo"
           />
           {%- endfor %}

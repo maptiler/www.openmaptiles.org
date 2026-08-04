@@ -21,6 +21,7 @@ structurally impossible.
       <img
         src="{{ '/img/home/' | append: name | append: '.png' | relative_url }}"
         alt="{{ name }}"
+        loading="lazy"
         class="companies__logo"
       />
       {%- endfor %}
