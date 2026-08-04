@@ -237,58 +237,87 @@ export function initMapStyles(config) {
   // Cards plus the "discover more" card — the spacers are not counted.
   const totalItems = track.querySelectorAll("[data-style-card]").length + 1;
   let activeIndex = 0;
+  let maxIndex = 0;
+
+  // One dot per reachable scroll position, not per card: with several cards
+  // visible the track stops scrolling long before the last card reaches the left
+  // edge, so a dot per card leaves the tail dots unreachable.
+  const maxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth);
+
+  const positionFor = (index, m) =>
+    Math.min(m.spacerWidth + index * m.cardWidth, maxScroll());
 
   const dots = [];
-  if (dotsHost) {
-    for (let i = 0; i < totalItems; i++) {
+
+  const syncDots = () => {
+    const m = metrics();
+    if (!m) return;
+    // ceil, not floor: the last position is the end of the track, which may sit
+    // mid-card.
+    const positions = Math.min(
+      totalItems,
+      Math.max(1, Math.ceil((maxScroll() - m.spacerWidth) / m.cardWidth) + 1)
+    );
+    maxIndex = positions - 1;
+    if (!dotsHost || dots.length === positions) return;
+
+    while (dots.length > positions) dots.pop().remove();
+    while (dots.length < positions) {
+      const index = dots.length;
       const dot = document.createElement("button");
       dot.type = "button";
       dot.className = "mapstyles__dot";
-      dot.setAttribute("aria-label", `Go to style ${i + 1}`);
-      dot.addEventListener("click", () => scrollToCard(i));
+      dot.setAttribute("aria-label", `Go to style ${index + 1}`);
+      dot.addEventListener("click", () => scrollToCard(index));
       dotsHost.appendChild(dot);
       dots.push(dot);
     }
-  }
+  };
 
   const render = () => {
     dots.forEach((dot, i) =>
       dot.setAttribute("aria-current", String(i === activeIndex))
     );
     if (prev) prev.disabled = activeIndex === 0;
-    if (next) next.disabled = activeIndex === totalItems - 1;
+    if (next) next.disabled = activeIndex >= maxIndex;
   };
 
   const updateActiveIndex = () => {
     const m = metrics();
     if (!m) return;
-    const scrollLeft = track.scrollLeft - m.spacerWidth;
-    const index = Math.max(0, Math.round(scrollLeft / m.cardWidth));
-    activeIndex = Math.min(index, totalItems - 1);
+    // Sub-pixel widths leave a scroll to the end a fraction short of maxScroll.
+    if (track.scrollLeft >= maxScroll() - 1) {
+      activeIndex = maxIndex;
+    } else {
+      const index = Math.round((track.scrollLeft - m.spacerWidth) / m.cardWidth);
+      activeIndex = Math.min(Math.max(0, index), maxIndex);
+    }
     render();
   };
 
   function scrollToCard(index) {
     const m = metrics();
     if (!m) return;
-    track.scrollTo({
-      left: m.spacerWidth + index * m.cardWidth,
-      behavior: "smooth",
-    });
+    track.scrollTo({ left: positionFor(index, m), behavior: "smooth" });
   }
 
-  const scrollBy = (direction) => {
-    const m = metrics();
-    if (!m) return;
-    track.scrollBy({
-      left: direction === "left" ? -m.cardWidth : m.cardWidth,
-      behavior: "smooth",
-    });
+  // Stepping from the active index, rather than scrollBy()-ing a card width, keeps
+  // the arrows on the dots' positions even after a drag has left the track between
+  // two cards.
+  const step = (delta) => {
+    scrollToCard(Math.min(Math.max(activeIndex + delta, 0), maxIndex));
   };
 
   track.addEventListener("scroll", updateActiveIndex, { passive: true });
-  if (prev) prev.addEventListener("click", () => scrollBy("left"));
-  if (next) next.addEventListener("click", () => scrollBy("right"));
+  if (prev) prev.addEventListener("click", () => step(-1));
+  if (next) next.addEventListener("click", () => step(1));
+
+  // Card and spacer widths are viewport-relative, so the dot count changes with
+  // the window.
+  window.addEventListener("resize", () => {
+    syncDots();
+    updateActiveIndex();
+  });
 
   // Each card reports the style_preview_open event
   // before navigating.
@@ -304,7 +333,14 @@ export function initMapStyles(config) {
     });
   });
 
-  render();
+  syncDots();
+  updateActiveIndex();
+
+  // Lazy-loaded card images change scrollWidth after first paint.
+  window.addEventListener("load", () => {
+    syncDots();
+    updateActiveIndex();
+  });
 
   initStyleModal(section, config);
 
