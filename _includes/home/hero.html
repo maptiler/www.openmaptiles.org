@@ -7,13 +7,6 @@ version the dialog was mounted conditionally from the same condition
 (`activeLanguage` or a pathname containing /languages).
 {%- endcomment -%}
 <section id="hero" class="hero">
-  {%- comment -%}
-  This backdrop is the page's LCP element, hence `fetchpriority` — left at the default
-  it queues against the mock-up below and the header wordmark.
-
-  No PNG fallback, unlike the mock-up: it is decorative, so a browser too old for WebP
-  loses a faint watermark and nothing else.
-  {%- endcomment -%}
   <img
     src="{{ '/img/header-map-2560px.webp' | relative_url }}"
     alt=""

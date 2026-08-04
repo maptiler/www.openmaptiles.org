@@ -60,11 +60,6 @@ measures the first spacer's width to convert scrollLeft into a card index.
         data-style-preview="{{ '/maps/style-preview.html' | relative_url }}?style={{ style.style_id | url_encode }}&amp;key={{ site.maps.key }}#{{ style.preview_hash }}"
       >
         <div class="mapstyles__thumb">
-          {%- comment -%}
-          Lazy twice over: the section is below the fold, and the track scrolls
-          horizontally, so all but the first card is off-screen sideways even once it
-          is reached. Eagerly these six are the largest thing the page fetches.
-          {%- endcomment -%}
           <img
             src="{{ '/img/' | append: style.img | relative_url }}"
             alt="{{ style.title }} map style"
