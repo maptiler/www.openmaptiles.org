@@ -171,9 +171,26 @@ done < <(find "$SITE" -name '*.html')
 
 # --- generated SEO assets ----------------------------------------------------
 section "Generated assets"
-for p in llm.txt robots.txt search.json _redirects; do
+for p in llm.txt robots.txt search.json _redirects _headers; do
   [ -s "$SITE/$p" ] && ok "$p" || bad "$p missing or empty"
 done
+
+# _headers is inert on the current host, so nothing about the live site changes when a
+# rule stops matching anything — rename or drop /media/ and the file keeps declaring a
+# cache lifetime for a path that no longer exists. Cross-check each rule's directory,
+# which is the only part of it a build can know about.
+if [ -s "$SITE/_headers" ]; then
+  stale_rules=0
+  while IFS= read -r rule; do
+    # Rules are unindented paths; the header lines under them are indented.
+    dir="${rule%/\*}"
+    [ -e "$SITE/$dir" ] || {
+      bad "_headers sets headers for $rule, which matches nothing in the artifact"
+      stale_rules=$((stale_rules + 1))
+    }
+  done < <(grep -E '^/' "$SITE/_headers")
+  [ "$stale_rules" -eq 0 ] && ok "_headers rules all match a path in the artifact"
+fi
 # Asserted both ways: present in production, absent on staging. Trusting the config to
 # have dropped jekyll-sitemap is exactly the mistake the CNAME check already avoids.
 if [ "$EXPECT_SITEMAP" = "1" ]; then

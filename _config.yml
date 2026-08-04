@@ -71,10 +71,11 @@ plugins:
   - jekyll-sitemap
   - jekyll-redirect-from
 
-# Jekyll skips dotfiles and anything starting with an underscore, so the
-# Cloudflare redirects file has to be named explicitly.
+# Jekyll skips dotfiles and anything starting with an underscore, so the two
+# Cloudflare files have to be named explicitly.
 include:
   - _redirects
+  - _headers
 
 # Setting `exclude` replaces Jekyll's defaults rather than adding to them, so the
 # usual entries (node_modules, vendor/bundle, Gemfile) have to be restated here.

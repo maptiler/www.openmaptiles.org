@@ -1,0 +1,48 @@
+# Cloudflare Pages response headers.
+#
+# THIS FILE IS INERT ON GITHUB PAGES, the current production origin. Pages serves
+# every asset with `Cache-Control: max-age=600` and gives no way to change it, so the
+# lifetime visitors actually get today is whatever the Cloudflare zone's Browser
+# Cache TTL overrides it to — measured 2026-08-04: 4h on openmaptiles.org, 8h on the
+# labs.maptiler.com staging host. Both numbers live in the Cloudflare dashboard
+# (Caching -> Configuration), not in this repo. Editing this file changes nothing
+# until the site moves to Cloudflare Pages; see DEPLOYMENT.md.
+#
+# It exists for the same reason `_redirects` does: so that move needs no second pass.
+# Jekyll skips underscore-prefixed files, so `_config.yml` names it under `include:`,
+# and script/verify-build asserts it reaches _site/ and that every directory it
+# mentions still exists — this is otherwise the kind of file that rots silently,
+# since nothing about the live site changes when it is wrong.
+#
+# 30 days, not the year Lighthouse asks for. Filenames here are not content-hashed
+# (`img/header-map-2560px.png`, `img/styles/openmaptiles.webp`), so the TTL is also
+# how long a repeat visitor keeps a stale copy after the file is replaced, and an
+# edge purge does not reach a browser already holding one. 30d clears Lighthouse's
+# threshold; a year would trade a passing audit for imagery no deploy can correct.
+# Fingerprint the filenames first if you want `immutable`.
+#
+# /assets/ gets 1 day for that same reason, and deliberately not 30. core.css and
+# main.js are unhashed too, but a stale stylesheet or module is a broken layout or a
+# dead interaction rather than an out-of-date photo, and it is the copy every page
+# depends on. A day is short enough that a fix lands on its own; raising it means
+# accepting that a CSS or JS regression stays live for repeat visitors for that long.
+#
+# Only directories that hold nothing but static assets are listed. /styles/ is NOT
+# one of them despite the name: the style thumbnails live under /img/styles/, while
+# /styles/:slug/ are the generated HTML pages from _plugins/datapage_generator.rb
+# and have to stay short-lived. HTML is left unlisted throughout for that reason.
+
+/assets/*
+  Cache-Control: public, max-age=86400
+
+/img/*
+  Cache-Control: public, max-age=2592000
+
+/media/*
+  Cache-Control: public, max-age=2592000
+
+/favicon.ico
+  Cache-Control: public, max-age=2592000
+
+/favicon.png
+  Cache-Control: public, max-age=2592000
