@@ -83,9 +83,56 @@ section "Stylesheets"
   && ok "core.css ($(wc -c < "$SITE/assets/css/core.css" | tr -d ' ') bytes)" \
   || bad "assets/css/core.css missing or empty — every page links it first"
 
+# Second failure mode, and the one Tailwind used to make impossible: a class in the
+# markup that no rule anywhere defines. Tailwind generated CSS for whatever you
+# wrote, so a name was never wrong. The classes are hand-authored now, so a typo, a
+# stale Tailwind utility left in an include, or a `class="grid gap-4"` pasted into a
+# doc is simply inert — it renders as unstyled stacked blocks and the build still
+# exits 0. That has already happened once, to the demo-app card in
+# _docs/mobile/mobile.md; the only reason it was caught is that someone looked.
+#
+# So: every class token in every page must resolve in one of the stylesheets THAT
+# page links. Anything that legitimately cannot is listed below, with a reason.
+# Keep this list short and keep the reasons true — an entry here is a statement that
+# the class is meant to reach no rule.
+class_allowed() {
+  case "$1" in
+    # Third-party, styled by their own script rather than by us.
+    csconsentlink) return 0 ;;
+
+    # Rouge's wrappers around highlighted blocks. Structural only — the palette in
+    # _sass/vendor/_prism-one-light.scss colours the token spans inside them.
+    highlighter-rouge|language-*) return 0 ;;
+
+    # Two Rouge token classes deliberately left uncoloured; see the note at the
+    # bottom of _sass/vendor/_prism-one-light.scss. Any OTHER bare token class
+    # should trip this check — that is a language whose tokens nothing colours.
+    w|err) return 0 ;;
+
+    # Hooks that intentionally carry no rule of their own:
+    #   icon              sized only in context (.site-header__menu-btn .icon--lg &c)
+    #   mapstyles__spacer BEM block; --lead and --trail carry everything
+    #   errorpg--gray     the 404 palette, which base .errorpg already sets — only
+    #                     the 500's errorpg--amber has to override anything
+    icon|mapstyles__spacer|errorpg--gray) return 0 ;;
+
+    # KNOWN LEAK, not yet resolved. arrow-left.svg still carries these two: they
+    # were a hover nudge on /osm2vectortiles/'s "Back to About" link, and
+    # `group-hover:` needs Tailwind's group machinery, which is gone entirely. So
+    # the nudge does not happen. Either reimplement it in _osm2vt-page.scss or
+    # strip both classes from the include, then delete this entry.
+    transition-transform|group-hover:-translate-x-1) return 0 ;;
+
+    *) return 1 ;;
+  esac
+}
+
 # Pages that link core.css are the ones with a layout; redirect stubs have none.
 missing_sheets=0
+orphans=0
 styled_pages=0
+defined_cache=$(mktemp -d)
+trap 'rm -rf "$defined_cache"' EXIT
 while IFS= read -r page; do
   grep -q 'assets/css/core\.css' "$page" || continue
   styled_pages=$((styled_pages + 1))
@@ -95,13 +142,42 @@ while IFS= read -r page; do
     bad "${page#"$SITE"} links core.css only — no section bundle, so its components are unstyled"
     missing_sheets=$((missing_sheets + 1))
   }
+  resolved=1
   for sheet in $sheets; do
-    [ -s "$SITE/assets/css/$sheet" ] || {
+    if [ -s "$SITE/assets/css/$sheet" ]; then
+      # Class tokens each bundle mentions, extracted once and reused across pages.
+      [ -f "$defined_cache/$sheet" ] || grep -ohE '\.[a-zA-Z][a-zA-Z0-9_-]*' \
+        "$SITE/assets/css/$sheet" | tr -d '.' | sort -u > "$defined_cache/$sheet"
+    else
       bad "${page#"$SITE"} links assets/css/$sheet, which is missing or empty"
       missing_sheets=$((missing_sheets + 1))
-    }
+      resolved=0
+    fi
   done
+  # Skip the orphan check when a bundle is missing: every class it would have defined
+  # is orphaned by definition, and reporting all of them buries the one finding that
+  # matters, which the FAIL above already made.
+  [ "$resolved" -eq 1 ] || continue
+
+  # Union of what this page's bundles define. Token-level on purpose: a token that
+  # appears in no stylesheet at all cannot match any selector, whatever its shape.
+  combo=$(printf '%s\n' "$sheets" | sort | tr '\n' '-')
+  [ -f "$defined_cache/combo$combo" ] || {
+    for sheet in $sheets; do cat "$defined_cache/$sheet"; done \
+      | sort -u > "$defined_cache/combo$combo"
+  }
+  while IFS= read -r cls; do
+    [ -n "$cls" ] || continue
+    class_allowed "$cls" && continue
+    bad "${page#"$SITE"} uses .$cls, which no stylesheet it links defines"
+    orphans=$((orphans + 1))
+  done < <(grep -oh 'class="[^"]*"' "$page" | sed 's/class="//;s/"$//' | tr ' ' '\n' \
+             | grep -oE '^[a-zA-Z][a-zA-Z0-9_:./-]*$' | sort -u \
+             | comm -23 - "$defined_cache/combo$combo")
 done < <(find "$SITE" -name '*.html')
+[ "$orphans" -eq 0 ] \
+  && ok "no orphaned classes — every class in every page resolves or is allowlisted" \
+  || bad "$orphans orphaned class use(s) — a class in the markup that styles nothing"
 [ "$missing_sheets" -eq 0 ] \
   && ok "$styled_pages pages, every linked bundle present and non-empty" \
   || bad "$missing_sheets unresolved stylesheet reference(s)"

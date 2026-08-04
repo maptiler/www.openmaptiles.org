@@ -35,7 +35,12 @@
     </script>
     <!-- End Google Tag Manager -->
   </head>
-  <body class="min-h-screen bg-white text-gray-900 flex flex-col font-sans">
+  {%- comment -%}
+  No classes on <body>. It carried `min-h-screen bg-white text-gray-900 flex
+  flex-col font-sans`, which _sass/_base.scss's `body` rule reproduces declaration
+  for declaration — so once Tailwind went, all six generated nothing.
+  {%- endcomment -%}
+  <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id={{ site.gtm_id }}"
@@ -48,7 +53,10 @@
     Search is lunr over search.json, built at compile time, so there is no crawler
     attribute to scope here.
     {%- endcomment -%}
-    <main id="main-content" class="flex-grow">
+    {%- comment -%}
+    `flex-grow` dropped for the same reason: _base.scss styles this by its id.
+    {%- endcomment -%}
+    <main id="main-content">
       {{ content }}
     </main>
     {% unless page.show_nav == false %}{% include footer.html %}{% endunless %}

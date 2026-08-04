@@ -392,6 +392,12 @@
     align-items: center;
     justify-content: center;
 
+    // 1.25rem, NOT the 1.5rem the carousel arrows get above, even though both use
+    // the same caret-{left,right}-bold include. Under Tailwind the `w-6 h-6` on the
+    // SVG itself sized both at 24px, so this is 4px smaller than the previous design
+    // rendered — deliberately kept, not a transcription slip. The Astro source is not
+    // in this repo (master is the pre-Astro Jekyll site), so it could not be
+    // re-verified either way. Leave it unless someone checks the live site.
     svg { width: 1.25rem; height: 1.25rem; }
 
     &:active { scale: 0.95; }
