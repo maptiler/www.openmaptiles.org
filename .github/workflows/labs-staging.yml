@@ -1,0 +1,110 @@
+name: Deploy to labs staging
+
+# Publishes the site to labs.maptiler.com/www.openmaptiles.org/ from the
+# maptiler/www.openmaptiles.org fork, so the full deployment path can be exercised
+# before anything is proposed to the openmaptiles org.
+#
+# It deploys the `cutover` branch, not `master` and not `port-jekyll-rewrite`.
+#
+# The three branches on this fork:
+#   master               mirror of openmaptiles/master — the legacy site, never diverges
+#   port-jekyll-rewrite  the clean tree proposed to the openmaptiles org, with none of
+#                        the fork's staging or cutover machinery in it
+#   cutover              port-jekyll-rewrite plus that machinery: this workflow,
+#                        _config.staging.yml, CUTOVER.md, verify-live and the legacy
+#                        baseline. Rebase it on port-jekyll-rewrite as that moves.
+#
+# So labs serves the proposed tree plus the staging overlay, and the upstream PR carries
+# nothing MapTiler-internal.
+#
+# Three things make this different from deploy.yml, and all are load-bearing:
+#
+#  1. It builds with the _config.staging.yml overlay. labs.maptiler.com serves this
+#     repo as an org *project* page, i.e. under a /www.openmaptiles.org path prefix.
+#     With the production `baseurl: ""` every absolute asset path 404s.
+#
+#  2. It deletes _site/CNAME before publishing. Shipping it would have this repo
+#     assert ownership of openmaptiles.org on every push. GitHub only lets one repo
+#     hold a custom domain, so today it is refused — but a workflow that keeps
+#     retrying to take production's domain is not something to leave running.
+#
+#  3. It deletes _site/sitemap.xml too. jekyll-sitemap lives in the Gemfile's
+#     :jekyll_plugins group, which Bundler auto-requires, so no config override can
+#     stop it generating — and the file it generates enumerates all 107 URLs of this
+#     duplicate site. robots.txt stops compliant crawlers, not a sitemap fed straight
+#     to a tool.
+#
+# The staging overlay also sets `staging: true`, which switches robots.txt to
+# Disallow and forces `noindex` on every page, so this copy cannot compete with
+# openmaptiles.org in search.
+#
+# Requires Settings -> Pages -> Source = "GitHub Actions" on the fork as well.
+
+on:
+  push:
+    branches: ["cutover"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # Fork only. Production is deploy.yml's job, and the two share the "pages"
+    # concurrency group.
+    if: github.repository == 'maptiler/www.openmaptiles.org'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Ruby version comes from .ruby-version (3.3.6) via setup-ruby's default. See
+      # deploy.yml for why there is no `ruby-version-file` input here.
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Build (staging config)
+        run: |
+          bundle exec jekyll build --trace \
+            --config _config.yml,_config.staging.yml
+        env:
+          JEKYLL_ENV: production
+
+      # See notes 2 and 3 above. verify-build asserts both files are really gone rather
+      # than trusting these two lines.
+      - name: Withhold the production custom domain and the sitemap
+        run: rm -f _site/CNAME _site/sitemap.xml
+
+      - name: Verify build output
+        run: script/verify-build
+        env:
+          REQUIRE_CNAME: "0"
+          EXPECT_SITEMAP: "0"
+          BASEURL: /www.openmaptiles.org
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: './_site'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

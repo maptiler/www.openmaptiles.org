@@ -220,7 +220,7 @@ section "Internal documents withheld"
 # Checks three shapes, because a root .md leaks differently depending on its front
 # matter: rendered to $p/index.html with `permalink: pretty`, to $p.html without it, or
 # copied through verbatim as $p.md when it has no front matter at all.
-for p in DEPLOYMENT THIRD-PARTY-NOTICES README; do
+for p in DEPLOYMENT CUTOVER THIRD-PARTY-NOTICES README; do
   { [ -e "$SITE/$p.html" ] || [ -d "$SITE/$p" ] || [ -e "$SITE/$p.md" ]; } \
     && bad "$p leaked into the site — add it to exclude: in _config.yml" \
     || ok "$p withheld"

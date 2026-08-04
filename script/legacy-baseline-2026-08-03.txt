@@ -1,0 +1,44 @@
+probing https://openmaptiles.org
+2026-08-03T10:04:38Z
+
+URL                            CODE   RESOLVES TO
+------------------------------ ------ -----------
+/layers/aerodrome_label/       200    /layers/aerodrome_label/
+/layers/aeroway/               200    /layers/aeroway/
+/layers/boundary/              200    /layers/boundary/
+/layers/building/              200    /layers/building/
+/layers/housenumber/           200    /layers/housenumber/
+/layers/landcover/             200    /layers/landcover/
+/layers/landuse/               200    /layers/landuse/
+/layers/mountain_peak/         200    /layers/mountain_peak/
+/layers/park/                  200    /layers/park/
+/layers/place/                 200    /layers/place/
+/layers/poi/                   200    /layers/poi/
+/layers/transportation/        200    /layers/transportation/
+/layers/transportation_name/   200    /layers/transportation_name/
+/layers/water/                 200    /layers/water/
+/layers/water_name/            200    /layers/water_name/
+/layers/waterway/              200    /layers/waterway/
+/schema/                       200    /schema/
+/inspect/                      200    /inspect/
+/mobile/                       200    /mobile/
+/mobile-app/                   200    /mobile-app/
+/mobile/sourcecode/            200    /mobile/sourcecode/
+/faq/                          200    /faq/
+/languages/                    200    /languages/
+/styles/                       200    /styles/
+/styles/openstreetmap/         404    /styles/openstreetmap/
+/support/                      200    https://docs.maptiler.com/
+/terms/                        200    https://www.maptiler.com/terms/server-data/
+/hosting/                      200    https://www.maptiler.com/cloud/
+/coordinate-systems/           200    https://www.maptiler.com/cloud/
+/extracts/                     200    https://cloud.maptiler.com/auth/widget?next=https://data.maptiler.com/my-extracts/?new-dataset
+/production-package/           200    https://www.maptiler.com/data/pricing/
+/downloads/                    200    https://www.maptiler.com/on-prem-datasets/planet/
+/downloads/embed/              200    https://www.maptiler.com/on-prem-datasets/planet/
+/docs/website/openlayers3/     200    https://docs.maptiler.com/openlayers/examples/vector-tiles-in-openlayers/
+/viewers.html                  404    /viewers.html
+/production-package.html       200    https://data.maptiler.com/production-package/  (meta-refresh stub)
+/docs/website/mapbox-gl-js/    404    /docs/website/mapbox-gl-js/
+/docs/generate/generate-vector-tiles/ 404    /docs/generate/generate-vector-tiles/
+/docs/generate/custom-vector/  404    /docs/generate/custom-vector/
