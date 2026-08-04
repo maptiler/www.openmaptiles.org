@@ -18,9 +18,8 @@
 
   .site-footer__inner {
     text-align: center;                        // text-center
-    // Plain declarations go BEFORE the include: `container` ends in @media blocks,
-    // and Sass emits any declaration written after a nested at-rule as a SECOND
-    // rule for the same selector rather than folding it into the first.
+    // Declarations go BEFORE the include: `container` ends in @media blocks, and a
+    // declaration after a nested at-rule becomes a SECOND rule for the same selector.
     @include container(80rem);                 // max-w-7xl
   }
 

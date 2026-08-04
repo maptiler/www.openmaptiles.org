@@ -1,42 +1,23 @@
-// Extracted verbatim, once, from the previous build's compiled CSS. The script that
-// produced it is gone, so there is nothing to regenerate from: this file is now the
-// source. Edit deliberately.
+// VENDOR — extracted verbatim, once, from the previous build's compiled CSS. The
+// script that produced it is gone, so this file is now the source. Edit deliberately.
 //
-// Port of @tailwindcss/typography's `prose` rules, carried over so spacing, type
-// scale and rhythm are unchanged.
+// Port of @tailwindcss/typography's `prose` rules, so spacing and rhythm are
+// unchanged. The `:where(...)` wrappers are verbatim: they contribute zero
+// specificity, which is what lets the unlayered project rules win. `@layer utilities`
+// is load-bearing for the same reason — without it prose's `:where(h2)` (0,1,0)
+// outranks _element-overrides.scss's `h1..h6` (0,0,1) and headings come out wrong.
 //
-// The `:where(...)` wrappers are kept verbatim — they contribute zero specificity,
-// which is what lets the unlayered project rules below win.
+// Trimmed from Tailwind's output, all for the same reason — kramdown + GFM cannot
+// produce the elements, or the site never uses the hook:
 //
-// What was dropped from the selectors: Tailwind guards every prose rule with
-// `:not(:where([class~=not-prose],[class~=not-prose] *))`, 76 times in this file.
-// `not-prose` appears nowhere in the site, and the guard adds no specificity
-// (`:not()` takes the specificity of its argument, and `:where()` is zero), so
-// removing it changes neither what matches nor the cascade — it only stops each
-// selector being 48 characters of noise. If a `not-prose` opt-out is ever needed,
-// re-add the guard rather than working around its absence.
+//   - the `:not(:where([class~=not-prose], ...))` guard, 76 times. Adds no
+//     specificity, and `not-prose` appears nowhere, so removing it changes neither
+//     matching nor cascade. Re-add it if an opt-out is ever needed.
+//   - dl, dt, dd, figure, figcaption, kbd, picture, video, and the prose-invert palette
+//   - `ol[type=A|a|I|i|1]` and `[class~=lead]`, which orphaned --omt-prose-lead
 //
-// Wrapped in `@layer utilities`, exactly where Tailwind emitted it. This is not
-// cosmetic: unlayered CSS beats layered CSS regardless of specificity, so the
-// layer is what lets the project's unlayered rules — `h1..h6 { color }`,
-// `p, li { color }`, and everything in _prose-overrides.scss — override prose
-// the same way they did in the previous design. Without it, prose's
-// `:where(h2)` (0,1,0) silently outranks `h1..h6` (0,0,1) and headings come out
-// the wrong colour.
-//
-// The `prose-invert` palette is omitted — nothing in the site uses it.
-//
-// Also omitted: every rule that only targets dl, dt, dd, figure, figcaption, kbd, picture, video. Those
-// elements cannot come out of kramdown + GFM, so only raw HTML in a doc could
-// produce them, and none does. `blockquote` and the table family ARE kept —
-// plain markdown reaches those from `> quote` and `| a | b |`. No doc uses either
-// today, so they are insurance for the next one, not live rules.
-//
-// The `ol[type=A|a|I|i|1]` list-style rules are dropped: kramdown + GFM has no
-// syntax that emits a `type` attribute, and no doc contains raw <ol type>.
-// The `[class~=lead]` rule is dropped for the same reason — nothing carries `lead`
-// — which is what orphaned `--omt-prose-lead`. `--omt-prose-captions` went with
-// the figcaption rules above.
+// blockquote and the table family are KEPT as insurance — plain markdown reaches them
+// from `> quote` and `| a | b |`, though no doc uses either today.
 
 @layer utilities {
 

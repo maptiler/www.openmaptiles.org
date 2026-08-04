@@ -230,10 +230,8 @@
   }
 }
 
-// Unlayered: the original carried the `link-omt` class from _element-overrides.scss,
-// whose accompanying underline utilities were layered, so this must outrank the
-// component layer. (`link-omt` itself reached no element in the rewrite and is gone;
-// the treatment it applied lives on here and in `.osm2vt__link`.)
+// Unlayered: the original carried `link-omt` alongside layered underline utilities,
+// so this has to outrank the component layer. Same treatment as `.osm2vt__link`.
 .about-page__link {
   color: var(--omt-link);
   text-decoration-line: underline;

@@ -38,9 +38,8 @@ module OpenMapTiles
                 "Mapbox GL, OpenLayers."
 
         site.pages << DataPage.new(site, "styles", style["slug"], "home", {
-          # Same CSS bundle as the homepage, since it is the same section stack.
-          # Stated per route family rather than derived from the layout name so a
-          # new family cannot silently request a stylesheet that does not exist.
+          # Stated per route family rather than derived from the layout name, so a new
+          # family cannot silently request a stylesheet that does not exist.
           "stylesheets"  => ["home"],
           "title"        => title,
           "description"  => desc,

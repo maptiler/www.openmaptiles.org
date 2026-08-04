@@ -1,29 +1,16 @@
-// Everything in this file COMPILES TO CSS, and it is loaded by exactly one entry
-// point — assets/css/core.scss, which every page links first. Keep it that way.
-// Sass emits a module's CSS once per compilation, so `@use`-ing this from a
-// per-page bundle as well would ship the whole :root block a second time on every
-// page. Mixins and Sass-only values live in _config.scss for that reason; that
-// one is safe to @use anywhere.
+// Compiles to CSS, so it belongs to assets/css/core.scss ALONE — Sass emits a
+// module's CSS once per compilation, so @use-ing this from a per-page bundle too would
+// ship the whole :root block twice. Mixins and Sass-only values live in _config.scss,
+// which is safe to @use anywhere.
 //
-// Layer order, mirroring Tailwind's. It has to be the first thing in the first
-// stylesheet: named layers take their order from wherever the statement appears,
-// and every layered rule in every bundle depends on it.
-//
-// Everything the project authors stays UNLAYERED and therefore outranks both
-// layers, which is exactly how the cascade worked in the previous design.
+// The @layer statement has to be the first thing in the first stylesheet: named layers
+// take their order from wherever it appears, and every layered rule depends on it.
+// Everything the project authors stays UNLAYERED and so outranks both layers.
 @layer base, components, utilities;
 
-// Design tokens.
-//
-// The --omt-* set is carried over unchanged from the :root block in
-// _element-overrides.scss — it was already the site's semantic palette, so it survives
-// the Tailwind removal intact.
-//
-// The --color-gray-* scale is Tailwind v4's default gray, extracted from the
-// generated stylesheet. It is kept because the ported prose rules and the
-// component styles reference these exact values; approximating them with hand
-// picked hex would be the single easiest way to introduce drift.
-
+// The --omt-* set is the site's semantic palette, carried over unchanged. The
+// --color-gray-* scale is Tailwind v4's default gray, extracted from the generated
+// stylesheet — the ported prose and component rules reference these exact values.
 :root {
   // ── Primary action button ────────────────────────────────────────────────
   --omt-primary: #cadba8;

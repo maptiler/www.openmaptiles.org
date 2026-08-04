@@ -1,13 +1,9 @@
 @use "config" as *;
 
-// Code blocks: the copy button and the <pre>/<code> chrome. Hand-written.
-//
-// The previous design styled all of this through inline attributes emitted by
-// react-syntax-highlighter. Rouge produces the markup now, reshaped to match the
-// original DOM by _plugins/codeblock.rb.
-//
-// The syntax colours are Prism's `oneLight` theme, which is vendor output rather
-// than a design decision — see _sass/vendor/_prism-one-light.scss.
+// Code blocks: the copy button and the <pre>/<code> chrome. The previous design used
+// inline attributes from react-syntax-highlighter; Rouge produces the markup now,
+// reshaped by _plugins/codeblock.rb. Token colours are vendor output, in
+// _sass/vendor/_prism-one-light.scss.
 
 @layer components {
 
@@ -84,7 +80,6 @@
   font-size: inherit;
 }
 
-// The token palette that colours the markup above is NOT here: it is verbatim
-// vendor output, so it lives in _sass/vendor/_prism-one-light.scss and loads
-// straight after this file. See assets/css/docs.scss.
+// Token palette lives in _sass/vendor/_prism-one-light.scss, loaded straight after
+// this file — see assets/css/docs.scss.
 

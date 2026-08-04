@@ -1,19 +1,13 @@
-// VENDOR — see the note in the sibling files. Not authored here, not regenerable.
+// VENDOR — not authored here, not regenerable. See the sibling files.
 //
-// Prism's `oneLight` token palette, taken verbatim from
+// Prism's `oneLight` token palette, verbatim from
 // node_modules/react-syntax-highlighter/dist/cjs/styles/prism/one-light.js, where the
-// previous design applied it through inline styles. The colours are unchanged; the
-// only work done here is mapping Prism's token names onto Rouge's Pygments-style
-// class names, since Rouge is what produces the markup now (reshaped to match the
-// original DOM by _plugins/codeblock.rb).
+// previous design applied it as inline styles. Only the Prism-token-to-Rouge-class
+// mapping is ours.
 //
-// UNLAYERED, for the same reason as the rules in _code.scss: prose's `:where(pre)`
-// and `:where(code)` sit in @layer utilities, which outranks @layer components no
-// matter the specificity, so a layered palette would lose. Inline styles outranked
-// everything in the previous design.
-//
-// Loads after _code.scss, which sets the base `.codeblock__pre` colours. No conflict
-// either way — that rule targets the <pre>, these target its descendants.
+// UNLAYERED, like the rules in _code.scss: prose's `:where(pre)` sits in
+// @layer utilities and would outrank a layered palette. Loads after _code.scss, which
+// sets the base `.codeblock__pre` colours — no conflict, different selectors.
 
 .codeblock__pre {
   // comment / prolog / cdata

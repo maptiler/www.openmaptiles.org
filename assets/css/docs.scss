@@ -2,22 +2,20 @@
 # Front matter fence is required for Jekyll to process this through sass.
 ---
 
-// The `docs` layout: /docs/, /docs/inspect/, /docs/schema/ and the _docs
-// collection. Loads after core.css.
+// The `docs` layout: /docs/**, /docs/inspect/, /docs/schema/ and the _docs collection.
 //
-// Load order inside this file is load-bearing. `typography` sits in
-// @layer utilities so the unlayered files after it win; `docs-embedded` must come
-// after both `docs` and `prose-overrides` — see the note in that file.
+// Load order is load-bearing: `typography` sits in @layer utilities so the unlayered
+// files after it win, and `docs-embedded` must follow both `docs-shell` and
+// `prose-overrides` — see the note in that file.
 
-@use "vendor/typography";  // @layer utilities — the ported `prose` rules, verbatim
-@use "prose-overrides";    // project customisations on top of prose
+@use "vendor/typography";  // the ported `prose` rules, verbatim
+@use "prose-overrides";
 @use "docs-shell";
-@use "docs-embedded";      // unlayered shim for the raw HTML in docs markdown
+@use "docs-embedded";
 @use "sidebar";
 @use "search";
-@use "code";               // the codeblock plugin's chrome
+@use "code";
 @use "vendor/prism-one-light";  // its token colours; must follow "code"
 
-// LAST: element rules that must outrank every component above. See the note at the
-// top of _element-overrides.scss.
+// LAST: element rules that must outrank every component above.
 @use "element-overrides";

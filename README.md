@@ -54,19 +54,15 @@ matter and resolved in `_layouts/base.html`:
 
 Three rules when editing `_sass/`:
 
-- **`_sass/vendor/` is not ours.** Tailwind's preflight, the `@tailwindcss/typography`
-  prose rules and Prism's `oneLight` palette, all carried over verbatim from the
-  previous build's compiled output. The script that produced them is gone, so there is
-  nothing to regenerate from and no upstream to pull — but they are also not design
-  decisions. Read them to understand a computed value; change them only deliberately.
-- **`_tokens.scss` emits CSS and belongs to `core.scss` alone.** Mixins and Sass-only
-  values go in `_config.scss`, which is free to `@use` anywhere. `@use`-ing tokens from
-  a second entry point ships the whole `:root` block twice.
-- **Each bundle ends with `element-overrides`**, which has to load after the components
-  it outranks. Adding a partial after it in an entry point breaks that.
+- **`_sass/vendor/` is not ours** — Tailwind's preflight, the `prose` rules and Prism's
+  palette, carried over verbatim. Nothing to regenerate from and no upstream to pull.
+- **`_tokens.scss` emits CSS, so it belongs to `core.scss` alone.** Mixins go in
+  `_config.scss`. `@use`-ing tokens from a second entry point ships `:root` twice.
+- **Each bundle ends with `element-overrides`**, which must load after the components
+  it outranks. Adding a partial after it breaks that.
 
-A page whose bundle fails to build renders unstyled with exit 0 — `script/verify-build`
-resolves every stylesheet href on every page to catch it.
+`script/verify-build` resolves every stylesheet href on every page, because a page
+whose bundle failed to build renders unstyled with exit 0.
 
 ## Documentation
 

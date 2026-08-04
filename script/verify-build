@@ -3,31 +3,21 @@
 # Asserts the shape of a built _site/ before it is published.
 #
 # Why: a static site on GitHub Pages has no runtime error surface — no 500s, no
-# monitoring. A build that comes out wrong is served cheerfully until a person happens
-# to look at the right page. This is the only thing between a bad build and production.
+# monitoring. A build that comes out wrong is served until a person happens to look at
+# the right page.
 #
-# What it is NOT a guard on: GitHub Pages' built-in --safe build, which skips
-# _plugins/. All workflows run `bundle exec jekyll build` themselves, so this only
-# ever sees output that had plugins. --safe happens when Settings -> Pages -> Source
-# is "Deploy from a branch", and then our artifact is not published at all and this
-# verdict is moot — actions/deploy-pages is what fails. Nothing in git guards a repo
-# setting. The plugin assertions below cover a plugin breaking on its own, no more.
-#
-# Calibration for whoever reads a green run: as of 2026-08-04 it has never failed in
-# CI. Every check here was written after a bug was found by hand. The one that had
-# really shipped was a missing logo, caught by "Local references". These hold ground;
-# they do not find things.
+# It does NOT guard against Pages' built-in --safe build skipping _plugins/. Every
+# workflow runs `bundle exec jekyll build` itself, so this only sees output that had
+# plugins; --safe applies when Settings -> Pages -> Source is "Deploy from a branch",
+# and then our artifact is never published and actions/deploy-pages is what fails.
+# Nothing in git guards a repo setting.
 #
 # Adding a check: it earns its place by catching something that has actually gone
 # wrong, or by protecting something outward-facing and hard to undo. "It could
-# theoretically break" is not enough — every check is also code that can break, and
-# one here shipped as a syntax error reporting "ok" until it was tested against a
-# deliberately broken build. Three extensions were considered and rejected for costing
-# more than they return: data-* hook drift (needs an allowlist revisited whenever the
-# JS changes), search.json document depth (speculative), and route targets built in JS
-# (resolving routes, not files). An orphaned-class check was written, then deleted for
-# the same reason: its allowlist encoded one day's markup and its only catch was inert
-# Tailwind leftovers that broke nothing.
+# theoretically break" is not enough — every check is also code that can break, and one
+# here shipped as a syntax error reporting "ok". Rejected on that basis: data-* hook
+# drift, search.json document depth, route targets built in JS, and an orphaned-class
+# check whose allowlist cost more than it returned.
 #
 # Run from the repo root, after a build:
 #   script/verify-build
@@ -120,14 +110,10 @@ else
 fi
 
 # --- javascript ---------------------------------------------------------------
-# The reference check above stops at main.js's front door. It cannot see the two
-# other ways this JS names a file:
-#
-#   1. `import { withBase } from "./baseurl.js"` — one unresolvable specifier and the
-#      browser abandons the whole module graph, so nav, carousel, search and all three
-#      dialogs stop working together while the page still returns 200 and looks right.
-#   2. Assets fetched at runtime from string constants, which appear in no markup, so
-#      the artifact can ship without them and every check above still passes.
+# Two things the reference check cannot see: relative `import` specifiers, where one
+# bad path makes the browser abandon the whole module graph so NO JS runs while the
+# page still returns 200, and assets fetched at runtime from string constants, which
+# appear in no markup.
 section "JavaScript"
 imports=$(grep -rhoE '(from|import) *"\.\.?/[^"]+"' "$SITE/assets/js"/*.js \
   | grep -oE '"\.\.?/[^"]+"' | tr -d '"' | sort -u)
@@ -247,19 +233,11 @@ if [ -n "$BASEURL" ]; then
 fi
 
 # --- legacy URL coverage -----------------------------------------------------
-# DELETE THIS SECTION AFTER THE CUTOVER. It is the largest check in the file and the
-# most temporary. Until the port is live it is the reason the cutover is safe: every
-# row of the manifest is a URL that answers 200 or 301 on the live legacy site and has
-# no route in this build, so it must be redirected rather than dropped.
-#
-# Afterwards, script/verify-live supersedes it. That probes the DEPLOYED site against
-# the same manifest, which is strictly more authoritative — it sees the Cloudflare
-# zone Redirect Rules that already answer nine of these paths at the edge, and this
-# script, looking only at the artifact, never can. Run verify-live before and after
-# the cutover and diff the two, as its header describes, then delete what follows.
-#
-# The residual risk once it is gone is a doc rename dropping a `redirect_from`, which
-# is real but rare, and which verify-live will catch on the next probe.
+# DELETE THIS SECTION AFTER THE CUTOVER — the largest check here and the most
+# temporary. Until the port is live it is why the cutover is safe: every row is a URL
+# that answers on the legacy site and has no route in this build. Afterwards
+# script/verify-live supersedes it, probing the deployed site against the same manifest
+# and seeing the Cloudflare zone rules that this, reading only the artifact, cannot.
 section "Legacy URL redirects ($MANIFEST)"
 test -f "$MANIFEST" || { bad "$MANIFEST missing"; exit 1; }
 

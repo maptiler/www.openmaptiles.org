@@ -13,13 +13,8 @@ const config = configEl ? JSON.parse(configEl.textContent) : {};
 
 initTracking();
 initUI();
-// The multilingual map is built when the hero dialog opens, not when its markup is
-// found: every page on the home layout carries that markup, and only
-// /languages/:code/ opens the dialog. Gating on presence downloaded the ~1.4 MB SDK
-// on the homepage for a map that could not be shown. See languages.js.
-//
-// On /languages/:code/ the dialog is server-rendered open, so initHero's initial
-// setOpen(true) fires this immediately — same behaviour as before on that route.
+// The multilingual map loads on the hero dialog's first open — see languages.js. On
+// /languages/:code/ the dialog is server-rendered open, so this fires immediately.
 initHero(config, () => initLanguages(config));
 initMapStyles(config);
 

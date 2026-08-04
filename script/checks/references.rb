@@ -1,23 +1,14 @@
 #!/usr/bin/env ruby
 #
 # Resolves every in-site reference in a built _site/ against the files actually
-# shipped. Called by script/verify-build; runnable on its own:
+# shipped. Called by script/verify-build; runnable alone:
 #
-#   ruby script/checks/references.rb _site
-#   ruby script/checks/references.rb _site /www.openmaptiles.org   # staging baseurl
+#   ruby script/checks/references.rb _site [baseurl]
 #
-# Prints one tab-separated finding per line, "<reference>\t<where>", and the number
-# of references examined to stderr. Exit status is 0 on a successful run whether or
-# not it found anything — the caller decides. That split matters: a non-zero exit
-# means this script broke, and a broken checker must never read as a clean build.
-#
-# Why it exists: a broken reference is a 404 the build has no opinion about. Jekyll
-# neither knows nor cares that an <img> points at a file nobody shipped. The Jekyll
-# rewrite deleted img/home/planet.png while _includes/home/companies.html still
-# listed `planet` in the name list it builds logo filenames from, so the homepage
-# logo wall rendered a broken-image icon on 67 pages. It survived review for the
-# reason that include's own header gives: the filenames are assembled at render
-# time, so grepping the source for "planet.png" finds nothing.
+# Prints one finding per line as "<reference>\t<where>", and the number examined to
+# stderr. Exits 0 on a successful run whether or not it found anything — the caller
+# decides. A non-zero exit means THIS script broke, which must never read as a clean
+# build.
 
 site = ARGV[0] or abort "usage: #{$PROGRAM_NAME} <site-dir> [baseurl]"
 baseurl = ARGV[1].to_s

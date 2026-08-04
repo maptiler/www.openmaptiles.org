@@ -1,12 +1,9 @@
 @use "sass:list";
 @use "sass:map";
 
-// Sass-only: breakpoints, mixins and the Tailwind lookup tables. NOTHING here
-// compiles to CSS on its own, which is what makes it safe to `@use "config" as *`
-// from every partial and from every per-page entry point in assets/css/ — a module
-// with no CSS output costs nothing to load twice. The `:root` tokens and the
-// `@layer` statement live in _tokens.scss precisely because they DO emit, and
-// therefore belong to core.scss alone.
+// Sass-only: breakpoints, mixins, lookup tables. Emits no CSS, which is what makes it
+// safe to `@use "config" as *` from every partial and every entry point. The `:root`
+// tokens and the `@layer` statement live in _tokens.scss because they DO emit.
 
 // ── Breakpoints ─────────────────────────────────────────────────────────────
 // Tailwind v4 defaults, in rem. Pinned explicitly: guessing these in px is a
@@ -87,18 +84,13 @@ $tw-text: (
   line-height: list.nth($pair, 2);
 }
 
-// The site's one page-shell idiom, `mx-auto px-4 sm:px-6 lg:px-8` under some
-// max-width, which the port had copied into eight component files.
+// The site's page-shell idiom, `mx-auto px-4 sm:px-6 lg:px-8` under some max-width,
+// which the port had copied into eight files. Put plain declarations BEFORE the
+// include — one after a nested at-rule becomes a second rule for the same selector.
 //
-// Callers that also need vertical padding add it themselves — `padding-block`
-// after the include lands in the same rule, and a following `@include md` lands
-// after the sm/lg media blocks, which is the order the Tailwind output had.
-//
-// Two shells deliberately do NOT use this: `.mapstyles__head` folds
-// `margin-bottom` into its own `sm` block, and `.docs-shell` stops at px-4 with
-// no ladder at all. Forcing either through here would emit a second `@media`
-// block for the same breakpoint — same rendering, but no longer the one-to-one
-// mapping the rest of this port maintains.
+// `.mapstyles__head` and `.docs-shell` deliberately do not use it: their breakpoint
+// blocks carry more than padding, so routing them through here would emit a duplicate
+// @media block for the same breakpoint.
 @mixin container($max) {
   max-width: $max;
   margin-inline: auto;

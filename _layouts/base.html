@@ -7,17 +7,10 @@
     {% include seo.html %}
 
     {%- comment -%}
-    CSS ships as core.css plus one bundle per section, instead of a single
-    stylesheet carrying all 29 partials. core.css is what every page needs and is
-    cached across the whole site; `stylesheets` names the rest.
-
-    Order matters: core.css declares the @layer order and the :root tokens, and
-    each bundle ends with the unlayered element overrides that must outrank its own
-    components. Never move a bundle ahead of core.
-
-    A page with no `stylesheets` gets core.css alone. That is correct for the
-    redirect stubs, and wrong for anything with real content — see the entry points
-    in assets/css/ for what each bundle covers.
+    core.css first — it declares the @layer order and the :root tokens — then the
+    bundles `stylesheets` names. Each bundle ends with the element overrides that must
+    outrank its own components, so never move one ahead of core. No `stylesheets` means
+    core.css alone: right for redirect stubs, wrong for anything with content.
     {%- endcomment -%}
     <link rel="stylesheet" href="{{ '/assets/css/core.css' | relative_url }}" />
     {%- for sheet in page.stylesheets %}
@@ -36,9 +29,8 @@
     <!-- End Google Tag Manager -->
   </head>
   {%- comment -%}
-  No classes on <body>. It carried `min-h-screen bg-white text-gray-900 flex
-  flex-col font-sans`, which _sass/_base.scss's `body` rule reproduces declaration
-  for declaration — so once Tailwind went, all six generated nothing.
+  No classes on <body> or <main>: _sass/_base.scss styles both, and the Tailwind
+  classes they used to carry generated nothing once Tailwind went.
   {%- endcomment -%}
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -52,9 +44,6 @@
     {%- comment -%}
     Search is lunr over search.json, built at compile time, so there is no crawler
     attribute to scope here.
-    {%- endcomment -%}
-    {%- comment -%}
-    `flex-grow` dropped for the same reason: _base.scss styles this by its id.
     {%- endcomment -%}
     <main id="main-content">
       {{ content }}
