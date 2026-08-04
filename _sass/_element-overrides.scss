@@ -20,10 +20,6 @@ p, li {
   color: var(--omt-text-body);
 }
 
-.section-alt-omt p {
-  color: var(--omt-text-muted);
-}
-
 // Every page section shares one divider token. Sections only ever carry a
 // bottom border, so only that edge shows — but this sets all four, exactly as
 // the original did, which is why the computed border-color is uniform.
@@ -42,21 +38,10 @@ header {
   border-color: var(--omt-border);
 }
 
-.section-alt-omt {
-  background-color: var(--omt-surface-alt);
-}
-
 .section-heading-omt {
   background-color: var(--omt-surface-alt);
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
-}
-
-.link-omt {
-  color: var(--omt-link);
-  transition: color 150ms ease-in-out;
-
-  &:hover { color: var(--omt-text-dark); }
 }
 
 a.underline {

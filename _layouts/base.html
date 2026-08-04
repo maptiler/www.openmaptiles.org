@@ -6,7 +6,23 @@
 
     {% include seo.html %}
 
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
+    {%- comment -%}
+    CSS ships as core.css plus one bundle per section, instead of a single
+    stylesheet carrying all 29 partials. core.css is what every page needs and is
+    cached across the whole site; `stylesheets` names the rest.
+
+    Order matters: core.css declares the @layer order and the :root tokens, and
+    each bundle ends with the unlayered element overrides that must outrank its own
+    components. Never move a bundle ahead of core.
+
+    A page with no `stylesheets` gets core.css alone. That is correct for the
+    redirect stubs, and wrong for anything with real content — see the entry points
+    in assets/css/ for what each bundle covers.
+    {%- endcomment -%}
+    <link rel="stylesheet" href="{{ '/assets/css/core.css' | relative_url }}" />
+    {%- for sheet in page.stylesheets %}
+    <link rel="stylesheet" href="{{ '/assets/css/' | append: sheet | append: '.css' | relative_url }}" />
+    {%- endfor %}
 
     <!-- Google Tag Manager -->
     <script>

@@ -39,6 +39,35 @@ Two things are load-bearing and easy to break silently:
   `script/redirects.tsv`. Adding a redirect without adding it there means nothing
   checks it.
 
+## Stylesheets
+
+CSS is **not** one bundle. Every page links `assets/css/core.css` — tokens, reset,
+header, footer — plus one bundle per section, named by the page's `stylesheets` front
+matter and resolved in `_layouts/base.html`:
+
+| Bundle | Pages |
+|---|---|
+| `home` | `/`, `/viewers/`, the 7 `/styles/:slug/` and 59 `/languages/:code/` pages |
+| `docs` | `/docs/**` and the `_docs` collection |
+| `docs-schema` | `/docs/schema/` only, on top of `docs` |
+| `about` · `osm2vt` · `error` | `/about/`, `/osm2vectortiles/`, `404`/`500` |
+
+Three rules when editing `_sass/`:
+
+- **`_sass/vendor/` is not ours.** Tailwind's preflight, the `@tailwindcss/typography`
+  prose rules and Prism's `oneLight` palette, all carried over verbatim from the
+  previous build's compiled output. The script that produced them is gone, so there is
+  nothing to regenerate from and no upstream to pull — but they are also not design
+  decisions. Read them to understand a computed value; change them only deliberately.
+- **`_tokens.scss` emits CSS and belongs to `core.scss` alone.** Mixins and Sass-only
+  values go in `_config.scss`, which is free to `@use` anywhere. `@use`-ing tokens from
+  a second entry point ships the whole `:root` block twice.
+- **Each bundle ends with `element-overrides`**, which has to load after the components
+  it outranks. Adding a partial after it in an entry point breaks that.
+
+A page whose bundle fails to build renders unstyled with exit 0 — `script/verify-build`
+resolves every stylesheet href on every page to catch it.
+
 ## Documentation
 
 | | |

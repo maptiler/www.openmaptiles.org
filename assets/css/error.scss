@@ -1,0 +1,15 @@
+---
+# Front matter fence is required for Jekyll to process this through sass.
+---
+
+// 404.html and 500.html only. Loads after core.css.
+//
+// This is the bundle the split helps most: the radar, compass and route cards are
+// ~9 KB that used to ship with every page on the site.
+
+@use "animations";   // .animate-ping, shared with home.scss
+@use "error-page";
+
+// LAST: element rules that must outrank the components above. See the note at the
+// top of _element-overrides.scss.
+@use "element-overrides";

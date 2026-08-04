@@ -72,6 +72,40 @@ for d in media inspect-tool assets; do
   [ -d "$SITE/$d" ] && ok "$d/" || bad "$d/ missing"
 done
 
+# --- stylesheets -------------------------------------------------------------
+# CSS ships as core.css plus one bundle per section, named by each page's
+# `stylesheets` front matter (see _layouts/base.html). That is silent when it goes
+# wrong: a page whose bundle failed to build, or whose front matter names a bundle
+# that does not exist, renders completely unstyled and Jekyll still exits 0. So
+# resolve every href every page actually emits, rather than checking a fixed list.
+section "Stylesheets"
+[ -s "$SITE/assets/css/core.css" ] \
+  && ok "core.css ($(wc -c < "$SITE/assets/css/core.css" | tr -d ' ') bytes)" \
+  || bad "assets/css/core.css missing or empty — every page links it first"
+
+# Pages that link core.css are the ones with a layout; redirect stubs have none.
+missing_sheets=0
+styled_pages=0
+while IFS= read -r page; do
+  grep -q 'assets/css/core\.css' "$page" || continue
+  styled_pages=$((styled_pages + 1))
+  sheets=$(grep -o 'href="[^"]*/assets/css/[^"]*\.css"' "$page" | sed 's/.*\/assets\/css\///;s/"$//')
+  # A layout page linking core.css alone means its `stylesheets` never resolved.
+  [ "$(printf '%s\n' "$sheets" | grep -c .)" -lt 2 ] && {
+    bad "${page#"$SITE"} links core.css only — no section bundle, so its components are unstyled"
+    missing_sheets=$((missing_sheets + 1))
+  }
+  for sheet in $sheets; do
+    [ -s "$SITE/assets/css/$sheet" ] || {
+      bad "${page#"$SITE"} links assets/css/$sheet, which is missing or empty"
+      missing_sheets=$((missing_sheets + 1))
+    }
+  done
+done < <(find "$SITE" -name '*.html')
+[ "$missing_sheets" -eq 0 ] \
+  && ok "$styled_pages pages, every linked bundle present and non-empty" \
+  || bad "$missing_sheets unresolved stylesheet reference(s)"
+
 # --- generated SEO assets ----------------------------------------------------
 section "Generated assets"
 for p in llm.txt robots.txt search.json _redirects; do

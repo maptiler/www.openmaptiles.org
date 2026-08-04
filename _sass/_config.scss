@@ -1,81 +1,12 @@
 @use "sass:list";
 @use "sass:map";
 
-// Layer order, mirroring Tailwind's. Declared here rather than in main.scss
-// because Sass requires every `@use` to precede any other rule, and this file
-// is the first module loaded — so this statement lands at the top of the
-// compiled output.
-//
-// Everything the project authors stays UNLAYERED and therefore outranks both
-// layers, which is exactly how the cascade worked in the previous design.
-@layer base, components, utilities;
-
-// Design tokens.
-//
-// The --omt-* set is carried over unchanged from the :root block in
-// _element-overrides.scss — it was already the site's semantic palette, so it survives
-// the Tailwind removal intact.
-//
-// The --color-gray-* scale is Tailwind v4's default gray, extracted from the
-// generated stylesheet. It is kept because the ported prose rules and the
-// component styles reference these exact values; approximating them with hand
-// picked hex would be the single easiest way to introduce drift.
-
-:root {
-  // ── Primary action button ────────────────────────────────────────────────
-  --omt-primary: #cadba8;
-  --omt-primary-hover: #bac99c;
-  --omt-primary-text: #435129;
-
-  // ── Secondary action button ──────────────────────────────────────────────
-  --omt-secondary-bg: #ffffff;
-  --omt-secondary-text: #6e8547;
-  --omt-secondary-border: #cadba8;
-  --omt-secondary-border-width: 2px;
-  --omt-secondary-hover-bg: #f9fafb;
-
-  // ── Page / header surface ────────────────────────────────────────────────
-  --omt-surface: #ffffff;
-  --omt-surface-alt: #f6f9f0;
-  --omt-border: #f2f2f2;
-  --omt-section-border: #eef1e9;
-
-  // ── Text scale ───────────────────────────────────────────────────────────
-  --omt-text-dark: #151711;
-  --omt-text-body: #252720;
-  --omt-text-muted: #252720;
-  --omt-link: #151711;
-
-  // ── Navigation ───────────────────────────────────────────────────────────
-  --omt-nav-active-bg: #f6f9f0;
-  --omt-nav-active-text: #111827;
-  --omt-nav-inactive-text: #6b7280;
-
-  // ── Accent (search, links) ───────────────────────────────────────────────
-  --omt-accent: #2563eb;
-
-  // ── Tailwind v4 default gray scale ───────────────────────────────────────
-  --color-gray-50: oklch(98.5% 0.002 247.839);
-  --color-gray-100: oklch(96.7% 0.003 264.542);
-  --color-gray-200: oklch(92.8% 0.006 264.531);
-  --color-gray-300: oklch(87.2% 0.01 258.338);
-  --color-gray-400: oklch(70.7% 0.022 261.325);
-  --color-gray-500: oklch(55.1% 0.027 264.364);
-  --color-gray-600: oklch(44.6% 0.03 256.802);
-  --color-gray-700: oklch(37.3% 0.034 259.733);
-  --color-gray-800: oklch(27.8% 0.033 256.848);
-  --color-gray-900: oklch(21% 0.034 264.665);
-  --color-black: #000;
-  --color-white: #fff;
-
-  // ── Typography stacks ────────────────────────────────────────────────────
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  --default-font-family: var(--font-sans);
-  --default-mono-font-family: var(--font-mono);
-}
+// Sass-only: breakpoints, mixins and the Tailwind lookup tables. NOTHING here
+// compiles to CSS on its own, which is what makes it safe to `@use "config" as *`
+// from every partial and from every per-page entry point in assets/css/ — a module
+// with no CSS output costs nothing to load twice. The `:root` tokens and the
+// `@layer` statement live in _tokens.scss precisely because they DO emit, and
+// therefore belong to core.scss alone.
 
 // ── Breakpoints ─────────────────────────────────────────────────────────────
 // Tailwind v4 defaults, in rem. Pinned explicitly: guessing these in px is a
@@ -154,6 +85,27 @@ $tw-text: (
   $pair: map.get($tw-text, $name);
   font-size: list.nth($pair, 1);
   line-height: list.nth($pair, 2);
+}
+
+// The site's one page-shell idiom, `mx-auto px-4 sm:px-6 lg:px-8` under some
+// max-width, which the port had copied into eight component files.
+//
+// Callers that also need vertical padding add it themselves — `padding-block`
+// after the include lands in the same rule, and a following `@include md` lands
+// after the sm/lg media blocks, which is the order the Tailwind output had.
+//
+// Two shells deliberately do NOT use this: `.mapstyles__head` folds
+// `margin-bottom` into its own `sm` block, and `.docs-shell` stops at px-4 with
+// no ladder at all. Forcing either through here would emit a second `@media`
+// block for the same breakpoint — same rendering, but no longer the one-to-one
+// mapping the rest of this port maintains.
+@mixin container($max) {
+  max-width: $max;
+  margin-inline: auto;
+  padding-inline: 1rem;                        // px-4
+
+  @include sm { padding-inline: 1.5rem; }      // sm:px-6
+  @include lg { padding-inline: 2rem; }        // lg:px-8
 }
 
 // `rounded-full` computes to calc(infinity * 1px), not 9999px.

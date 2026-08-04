@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "config" as *;
 
 // Wrapped in `@layer components` so the unlayered element rules in
 // _element-overrides.scss, which are unlayered, outrank these regardless of
@@ -7,13 +7,10 @@
 @layer components {
 
   .about-page {
-    max-width: 56rem;                          // max-w-4xl
-    margin-inline: auto;
-    padding-inline: 1rem;
+    // `padding-block` precedes the include on purpose — see the note in _footer.scss.
     padding-block: 3rem;                       // py-12
+    @include container(56rem);                 // max-w-4xl
 
-    @include sm { padding-inline: 1.5rem; }
-    @include lg { padding-inline: 2rem; }
     @include md { padding-block: 5rem; }       // md:py-20
   }
 
@@ -233,8 +230,10 @@
   }
 }
 
-// Unlayered: `link-omt` is an _element-overrides.scss class, and the underline utilities that
-// accompanied it were layered, so this must outrank the component layer.
+// Unlayered: the original carried the `link-omt` class from _element-overrides.scss,
+// whose accompanying underline utilities were layered, so this must outrank the
+// component layer. (`link-omt` itself reached no element in the rewrite and is gone;
+// the treatment it applied lives on here and in `.osm2vt__link`.)
 .about-page__link {
   color: var(--omt-link);
   text-decoration-line: underline;

@@ -35,11 +35,21 @@ defaults:
       path: "inspect-tool"
     values:
       sitemap: false
+  # `stylesheets` names the per-section CSS bundles a page links on top of
+  # core.css — see the comment in _layouts/base.html and the entry points in
+  # assets/css/. Set here for the two groups that are addressed by scope; the
+  # handful of one-off pages carry it in their own front matter, and the generated
+  # /styles/ and /languages/ pages get it from _plugins/datapage_generator.rb.
   - scope:
       path: ""
       type: docs
     values:
       layout: docs
+      stylesheets: [docs]
+  - scope:
+      path: "docs"
+    values:
+      stylesheets: [docs]
   - scope:
       path: ""
     values:
@@ -55,9 +65,10 @@ sass:
   style: compressed
   sass_dir: _sass
   # Jekyll 4 emits a source map by default, and jekyll-sass-converter embeds
-  # `sourcesContent`, so /assets/css/main.css.map published all 28 _sass/ partials
-  # verbatim — comments included — and doubled the CSS payload to ~290 KB. The legacy
-  # site shipped no map. Off.
+  # `sourcesContent`, so the map published every _sass/ partial reached by an entry
+  # point verbatim — comments included — and doubled the CSS payload. With one
+  # stylesheet that was ~290 KB; per-bundle it would be a map beside each. The
+  # legacy site shipped no map. Off.
   sourcemap: never
 
 plugins:

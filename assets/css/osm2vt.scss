@@ -1,0 +1,11 @@
+---
+# Front matter fence is required for Jekyll to process this through sass.
+---
+
+// /osm2vectortiles/ only. Loads after core.css.
+
+@use "osm2vt-page";
+
+// LAST: element rules that must outrank the components above. See the note at the
+// top of _element-overrides.scss.
+@use "element-overrides";

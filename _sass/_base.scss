@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "config" as *;
 
 // Document-level defaults.
 //
@@ -22,10 +22,6 @@ body {
 
 #main-content {
   flex-grow: 1;
-}
-
-.surface-alt {
-  background-color: var(--omt-surface-alt);
 }
 
 // Screen-reader-only, from Tailwind's `sr-only`.

@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "config" as *;
 // Wrapped in `@layer components` so the element rules in _element-overrides.scss,
 // which are unlayered, outrank these regardless of specificity. Unlayered CSS always
 // beats layered CSS in the cascade, which is what makes that file the single place to

@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "config" as *;
 // Wrapped in `@layer components` so the element rules in _element-overrides.scss,
 // which are unlayered, outrank these regardless of specificity. Unlayered CSS always
 // beats layered CSS in the cascade, which is what makes that file the single place to
@@ -17,13 +17,11 @@
   }
 
   .site-footer__inner {
-    max-width: 80rem;                          // max-w-7xl
-    margin-inline: auto;                       // mx-auto
-    padding-inline: 1rem;                      // px-4
     text-align: center;                        // text-center
-
-    @include sm { padding-inline: 1.5rem; }    // sm:px-6
-    @include lg { padding-inline: 2rem; }      // lg:px-8
+    // Plain declarations go BEFORE the include: `container` ends in @media blocks,
+    // and Sass emits any declaration written after a nested at-rule as a SECOND
+    // rule for the same selector rather than folding it into the first.
+    @include container(80rem);                 // max-w-7xl
   }
 
   .site-footer__credit {

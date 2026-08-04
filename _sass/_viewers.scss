@@ -1,17 +1,17 @@
-@use "variables" as *;
+@use "config" as *;
 @use "dialog" as *;
 //
 // `animate-in`, `fade-in`, `zoom-in-95` and `slide-in-from-bottom-5` are not
 // carried over: tailwindcss-animate is not installed, so they generated no CSS.
 // `animate-spin-slow` on the loader globe is the same story here — its keyframes
 // live in page-scoped blocks used by 404.html/500.html, so on /viewers/ the
-// glyph does not actually spin. It must NOT be reproduced: _error.scss defines
+// glyph does not actually spin. It must NOT be reproduced: _error-page.scss defines
 // .animate-spin-slow globally, and reusing the class would animate something
 // the previous design leaves still.
 //
 // `animate-pulse` and `animate-ping` ARE real Tailwind utilities and do run.
-// .animate-ping already exists in _error.scss; pulse is added here, unlayered,
-// the same way.
+// `.animate-ping` lives in _animations.scss because _error-page.scss needs it too;
+// `pulse` is used only here, so it stays here, unlayered, the same way.
 
 @keyframes pulse {
   50% { opacity: 0.5; }

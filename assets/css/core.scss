@@ -1,0 +1,29 @@
+---
+# Front matter fence is required for Jekyll to process this through sass.
+---
+
+// Every page links THIS file first, then whatever `stylesheets:` names for it —
+// see _layouts/base.html. It holds only what a page cannot render without: the
+// tokens, the reset, and the chrome that wraps every page.
+//
+// Before the split there was one main.css carrying all 29 partials, so a docs
+// reader downloaded the homepage's hero, carousels and modals, and a 404 visitor
+// downloaded the entire site. Splitting cuts each page to roughly half or less of
+// that, and this file is the part that stays cached across the whole site.
+//
+// Adding a partial here puts it on EVERY page. Anything used by one section
+// belongs in that section's bundle instead.
+
+@use "tokens";         // :root + the @layer order statement — must be first
+@use "vendor/reset";   // @layer base — Tailwind v4 preflight, verbatim
+@use "base";
+@use "buttons";
+
+// Chrome, on every page.
+@use "header";
+@use "footer";
+
+// NOTE: _element-overrides.scss is deliberately NOT here. It has to load after the
+// components it overrides, which live in the per-page bundles, so each bundle ends
+// with it. Putting it here would silently invert that for the unlayered files in
+// docs.scss (_prose-overrides, _docs-embedded, _search).

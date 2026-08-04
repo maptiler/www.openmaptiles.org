@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "config" as *;
 // from theme colour, the compass interior, and three strings.
 //
 // The keyframes below were page-scoped in the previous design's
@@ -18,14 +18,13 @@
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(-4px); }
 }
-@keyframes ping {
-  75%, 100% { transform: scale(2); opacity: 0; }
-}
 
 .animate-pulse-slow { animation: pulse-slow 8s infinite ease-in-out; }
 .animate-spin-slow { animation: spin-slow 25s infinite linear; }
 .animate-bounce-left { animation: bounce-left 1s infinite ease-in-out; }
-.animate-ping { animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+// `.animate-ping`, which the radar sweep also uses, moved to _animations.scss —
+// /viewers/ needs it too and the two never share a bundle. error.scss lists both.
 
 @layer components {
 

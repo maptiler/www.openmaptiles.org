@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "config" as *;
 // The open/closed state is driven by a data attribute, toggled by assets/js/ui.js.
 // Open is the default, so the sidebar is usable with JS off.
 

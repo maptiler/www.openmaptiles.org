@@ -38,6 +38,10 @@ module OpenMapTiles
                 "Mapbox GL, OpenLayers."
 
         site.pages << DataPage.new(site, "styles", style["slug"], "home", {
+          # Same CSS bundle as the homepage, since it is the same section stack.
+          # Stated per route family rather than derived from the layout name so a
+          # new family cannot silently request a stylesheet that does not exist.
+          "stylesheets"  => ["home"],
           "title"        => title,
           "description"  => desc,
           "keywords"     => "#{style["slug"]}, #{style["title"]}, map style, openmaptiles, " \
@@ -57,6 +61,7 @@ module OpenMapTiles
                 "#{name} (#{code.upcase}). Powered by open-source vector tiles and MapTiler."
 
         site.pages << DataPage.new(site, "languages", code, "home", {
+          "stylesheets"     => ["home"],   # see generate_styles
           "title"           => title,
           "description"     => desc,
           "keywords"        => "#{code}, #{name}, multilingual maps, openmaptiles, " \
