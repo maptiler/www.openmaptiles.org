@@ -15,7 +15,7 @@
 # since nothing about the live site changes when it is wrong.
 #
 # 30 days, not the year Lighthouse asks for. Filenames here are not content-hashed
-# (`img/header-map-2560px.png`, `img/styles/openmaptiles.webp`), so the TTL is also
+# (`img/header-map-2560px.webp`, `img/styles/openmaptiles.webp`), so the TTL is also
 # how long a repeat visitor keeps a stale copy after the file is replaced, and an
 # edge purge does not reach a browser already holding one. 30d clears Lighthouse's
 # threshold; a year would trade a passing audit for imagery no deploy can correct.
