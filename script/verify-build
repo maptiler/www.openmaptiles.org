@@ -2,11 +2,32 @@
 #
 # Asserts the shape of a built _site/ before it is published.
 #
-# Why this exists: `bundle exec jekyll build` exits 0 even when it produces almost
-# nothing. The specific way that happens here is GitHub Pages' built-in Jekyll
-# build, which runs in --safe mode, silently skips _plugins/, and publishes ~53
-# pages instead of 150+ without a single warning. This script is what turns that
-# into a failed job.
+# Why: a static site on GitHub Pages has no runtime error surface — no 500s, no
+# monitoring. A build that comes out wrong is served cheerfully until a person happens
+# to look at the right page. This is the only thing between a bad build and production.
+#
+# What it is NOT a guard on: GitHub Pages' built-in --safe build, which skips
+# _plugins/. All workflows run `bundle exec jekyll build` themselves, so this only
+# ever sees output that had plugins. --safe happens when Settings -> Pages -> Source
+# is "Deploy from a branch", and then our artifact is not published at all and this
+# verdict is moot — actions/deploy-pages is what fails. Nothing in git guards a repo
+# setting. The plugin assertions below cover a plugin breaking on its own, no more.
+#
+# Calibration for whoever reads a green run: as of 2026-08-04 it has never failed in
+# CI. Every check here was written after a bug was found by hand. The one that had
+# really shipped was a missing logo, caught by "Local references". These hold ground;
+# they do not find things.
+#
+# Adding a check: it earns its place by catching something that has actually gone
+# wrong, or by protecting something outward-facing and hard to undo. "It could
+# theoretically break" is not enough — every check is also code that can break, and
+# one here shipped as a syntax error reporting "ok" until it was tested against a
+# deliberately broken build. Three extensions were considered and rejected for costing
+# more than they return: data-* hook drift (needs an allowlist revisited whenever the
+# JS changes), search.json document depth (speculative), and route targets built in JS
+# (resolving routes, not files). An orphaned-class check was written, then deleted for
+# the same reason: its allowlist encoded one day's markup and its only catch was inert
+# Tailwind leftovers that broke nothing.
 #
 # Run from the repo root, after a build:
 #   script/verify-build
@@ -79,75 +100,18 @@ for d in media inspect-tool assets; do
 done
 
 # --- local references --------------------------------------------------------
-# Every in-site src= and href= must resolve to something in the artifact. A broken
-# one is a 404 the build has no opinion about: Jekyll neither knows nor cares that
-# an <img> points at a file nobody shipped.
-#
-# This is not hypothetical. The Jekyll rewrite deleted img/home/planet.png while
-# _includes/home/companies.html still listed `planet` in the name list it builds
-# logo filenames from, so the homepage logo wall rendered a broken-image icon on
-# every one of the 67 pages using that section. It survived review for the reason
-# that file's own header gives: the filenames are assembled at render time, so
-# grepping the source for "planet.png" finds nothing.
-#
-# Ruby rather than shell because the two things this has to get right — stripping
-# code samples, and resolving relative refs per page — are genuinely awkward in
-# bash, and the repo already hard-depends on Ruby.
+# Every in-site src= and href= must resolve to something in the artifact. See
+# script/checks/references.rb for what that catches and why it is not shell.
 section "Local references"
-# The count goes to stderr so it cannot be confused with a finding on stdout.
-refs_count_file="$scratch/refs-count"
-refs_out=$(ruby -e '
-require "uri"
-site, baseurl = ARGV[0], ARGV[1].to_s
-checked, broken = 0, []
-
-Dir.glob(File.join(site, "**", "*.html")).sort.each do |page|
-  html = File.read(page, encoding: "UTF-8", invalid: :replace, undef: :replace)
-  # Code samples are not references. Docs embed markup like `<script src="...">`,
-  # HTML-escaped, inside <pre> and inline <code>; resolving those would report
-  # every tutorial as broken.
-  html = html.gsub(%r{<pre\b.*?</pre>}mi, "").gsub(%r{<code\b.*?</code>}mi, "")
-
-  html.scan(/(?:src|href)="([^"]+)"/).each do |(ref)|
-    # Anything with a scheme, protocol-relative, or a bare fragment is not ours.
-    next if ref =~ %r{\A(?:[a-z][a-z0-9+.-]*:|//|#)}i
-    path = ref.split("#").first.to_s.split("?").first.to_s
-    next if path.empty?
-
-    target =
-      if path.start_with?("/")
-        # Root-absolute. Under a baseurl the rendered path carries the prefix and
-        # the file on disk does not, so strip it before resolving.
-        rel = path
-        if !baseurl.empty? && (rel == baseurl || rel.start_with?("#{baseurl}/"))
-          rel = rel[baseurl.length..] || ""
-        end
-        File.join(site, rel)
-      else
-        # Relative to the page. inspect-tool.html is a standalone document with no
-        # layout and legitimately uses these.
-        File.expand_path(path, File.dirname(page))
-      end
-
-    checked += 1
-    # A directory counts: pretty permalinks point at /docs/, served by its index.
-    ok = File.exist?(target) || File.exist?(File.join(target, "index.html"))
-    broken << [ref, page.sub(/\A#{Regexp.escape(site)}/, "")] unless ok
-  end
-end
-
-# One missing file is one problem, not 67. Group by the reference, name a page.
-grouped = broken.uniq.group_by(&:first)
-grouped.sort.each do |ref, rows|
-  pages = rows.map(&:last).sort
-  extra = pages.length > 1 ? " (#{pages.length} pages)" : ""
-  puts "#{ref}\t#{pages.first}#{extra}"
-end
-warn checked.to_s
-' "$SITE" "$BASEURL" 2>"$refs_count_file") || true
-refs_checked=$(tr -d "[:space:]" < "$refs_count_file" 2>/dev/null || echo "?")
-if [ -z "$refs_out" ]; then
-  ok "$refs_checked local references, all resolve"
+refs_count="$scratch/refs-count"
+refs_out=$(ruby script/checks/references.rb "$SITE" "$BASEURL" 2>"$refs_count") || refs_rc=$?
+# A checker that cannot run must never read as a pass: it writes only the count to
+# stderr on a good run, so a non-zero exit means the checker broke, not the site.
+if [ "${refs_rc:-0}" -ne 0 ]; then
+  bad "the local-reference checker failed to run — the artifact is unverified"
+  sed 's/^/          /' "$refs_count"
+elif [ -z "$refs_out" ]; then
+  ok "$(tr -d '[:space:]' < "$refs_count") local references, all resolve"
 else
   while IFS=$'\t' read -r ref where; do
     [ -n "$ref" ] || continue
@@ -155,112 +119,67 @@ else
   done <<< "$refs_out"
 fi
 
+# --- javascript ---------------------------------------------------------------
+# The reference check above stops at main.js's front door. It cannot see the two
+# other ways this JS names a file:
+#
+#   1. `import { withBase } from "./baseurl.js"` — one unresolvable specifier and the
+#      browser abandons the whole module graph, so nav, carousel, search and all three
+#      dialogs stop working together while the page still returns 200 and looks right.
+#   2. Assets fetched at runtime from string constants, which appear in no markup, so
+#      the artifact can ship without them and every check above still passes.
+section "JavaScript"
+imports=$(grep -rhoE '(from|import) *"\.\.?/[^"]+"' "$SITE/assets/js"/*.js \
+  | grep -oE '"\.\.?/[^"]+"' | tr -d '"' | sort -u)
+broken_imports=0
+for spec in $imports; do
+  [ -f "$SITE/assets/js/${spec#./}" ] || {
+    bad "$spec is imported but not in the artifact — the module graph fails, so no JS runs"
+    broken_imports=$((broken_imports + 1))
+  }
+done
+[ "$broken_imports" -eq 0 ] \
+  && ok "$(printf '%s\n' "$imports" | grep -c .) module imports resolve" \
+  || bad "$broken_imports unresolved module import(s)"
+
+# Listed rather than scanned: there are four, they change about never, and a scanner
+# for path-shaped string literals is more code than the thing it checks. If you add a
+# runtime fetch, add it here.
+for p in search.json assets/js/vendor/lunr.min.js \
+         assets/js/vendor/maptiler-sdk.umd.js assets/js/vendor/maptiler-sdk.css; do
+  [ -s "$SITE/$p" ] && ok "$p" || bad "$p missing — fetched at runtime by assets/js/"
+done
+
 # --- stylesheets -------------------------------------------------------------
 # CSS ships as core.css plus one bundle per section, named by each page's
-# `stylesheets` front matter (see _layouts/base.html). That is silent when it goes
-# wrong: a page whose bundle failed to build, or whose front matter names a bundle
-# that does not exist, renders completely unstyled and Jekyll still exits 0. So
-# resolve every href every page actually emits, rather than checking a fixed list.
+# `stylesheets` front matter (see _layouts/base.html). Get that wrong and the page
+# renders completely unstyled while Jekyll still exits 0 — so resolve the hrefs each
+# page actually emits rather than checking a fixed list.
+#
+# A page linking core.css alone is the tell: its `stylesheets` never resolved.
 section "Stylesheets"
 [ -s "$SITE/assets/css/core.css" ] \
   && ok "core.css ($(wc -c < "$SITE/assets/css/core.css" | tr -d ' ') bytes)" \
   || bad "assets/css/core.css missing or empty — every page links it first"
 
-# Second failure mode, and the one Tailwind used to make impossible: a class in the
-# markup that no rule anywhere defines. Tailwind generated CSS for whatever you
-# wrote, so a name was never wrong. The classes are hand-authored now, so a typo, a
-# stale Tailwind utility left in an include, or a `class="grid gap-4"` pasted into a
-# doc is simply inert — it renders as unstyled stacked blocks and the build still
-# exits 0. That has already happened once, to the demo-app card in
-# _docs/mobile/mobile.md; the only reason it was caught is that someone looked.
-#
-# So: every class token in every page must resolve in one of the stylesheets THAT
-# page links. Anything that legitimately cannot is listed below, with a reason.
-# Keep this list short and keep the reasons true — an entry here is a statement that
-# the class is meant to reach no rule.
-class_allowed() {
-  case "$1" in
-    # Third-party, styled by their own script rather than by us.
-    csconsentlink) return 0 ;;
-
-    # Rouge's wrappers around highlighted blocks. Structural only — the palette in
-    # _sass/vendor/_prism-one-light.scss colours the token spans inside them.
-    highlighter-rouge|language-*) return 0 ;;
-
-    # Two Rouge token classes deliberately left uncoloured; see the note at the
-    # bottom of _sass/vendor/_prism-one-light.scss. Any OTHER bare token class
-    # should trip this check — that is a language whose tokens nothing colours.
-    w|err) return 0 ;;
-
-    # Hooks that intentionally carry no rule of their own:
-    #   icon              sized only in context (.site-header__menu-btn .icon--lg &c)
-    #   mapstyles__spacer BEM block; --lead and --trail carry everything
-    #   errorpg--gray     the 404 palette, which base .errorpg already sets — only
-    #                     the 500's errorpg--amber has to override anything
-    icon|mapstyles__spacer|errorpg--gray) return 0 ;;
-
-    # KNOWN LEAK, not yet resolved. arrow-left.svg still carries these two: they
-    # were a hover nudge on /osm2vectortiles/'s "Back to About" link, and
-    # `group-hover:` needs Tailwind's group machinery, which is gone entirely. So
-    # the nudge does not happen. Either reimplement it in _osm2vt-page.scss or
-    # strip both classes from the include, then delete this entry.
-    transition-transform|group-hover:-translate-x-1) return 0 ;;
-
-    *) return 1 ;;
-  esac
-}
-
-# Pages that link core.css are the ones with a layout; redirect stubs have none.
 missing_sheets=0
-orphans=0
 styled_pages=0
-defined_cache="$scratch/css"
-mkdir -p "$defined_cache"
 while IFS= read -r page; do
+  # Pages linking core.css are the ones with a layout; redirect stubs have none.
   grep -q 'assets/css/core\.css' "$page" || continue
   styled_pages=$((styled_pages + 1))
   sheets=$(grep -o 'href="[^"]*/assets/css/[^"]*\.css"' "$page" | sed 's/.*\/assets\/css\///;s/"$//')
-  # A layout page linking core.css alone means its `stylesheets` never resolved.
   [ "$(printf '%s\n' "$sheets" | grep -c .)" -lt 2 ] && {
     bad "${page#"$SITE"} links core.css only — no section bundle, so its components are unstyled"
     missing_sheets=$((missing_sheets + 1))
   }
-  resolved=1
   for sheet in $sheets; do
-    if [ -s "$SITE/assets/css/$sheet" ]; then
-      # Class tokens each bundle mentions, extracted once and reused across pages.
-      [ -f "$defined_cache/$sheet" ] || grep -ohE '\.[a-zA-Z][a-zA-Z0-9_-]*' \
-        "$SITE/assets/css/$sheet" | tr -d '.' | sort -u > "$defined_cache/$sheet"
-    else
+    [ -s "$SITE/assets/css/$sheet" ] || {
       bad "${page#"$SITE"} links assets/css/$sheet, which is missing or empty"
       missing_sheets=$((missing_sheets + 1))
-      resolved=0
-    fi
+    }
   done
-  # Skip the orphan check when a bundle is missing: every class it would have defined
-  # is orphaned by definition, and reporting all of them buries the one finding that
-  # matters, which the FAIL above already made.
-  [ "$resolved" -eq 1 ] || continue
-
-  # Union of what this page's bundles define. Token-level on purpose: a token that
-  # appears in no stylesheet at all cannot match any selector, whatever its shape.
-  combo=$(printf '%s\n' "$sheets" | sort | tr '\n' '-')
-  [ -f "$defined_cache/combo$combo" ] || {
-    for sheet in $sheets; do cat "$defined_cache/$sheet"; done \
-      | sort -u > "$defined_cache/combo$combo"
-  }
-  while IFS= read -r cls; do
-    [ -n "$cls" ] || continue
-    class_allowed "$cls" && continue
-    bad "${page#"$SITE"} uses .$cls, which no stylesheet it links defines"
-    orphans=$((orphans + 1))
-  done < <(grep -oh 'class="[^"]*"' "$page" | sed 's/class="//;s/"$//' | tr ' ' '\n' \
-             | grep -oE '^[a-zA-Z][a-zA-Z0-9_:./-]*$' | sort -u \
-             | comm -23 - "$defined_cache/combo$combo")
 done < <(find "$SITE" -name '*.html')
-[ "$orphans" -eq 0 ] \
-  && ok "no orphaned classes — every class in every page resolves or is allowlisted" \
-  || bad "$orphans orphaned class use(s) — a class in the markup that styles nothing"
 [ "$missing_sheets" -eq 0 ] \
   && ok "$styled_pages pages, every linked bundle present and non-empty" \
   || bad "$missing_sheets unresolved stylesheet reference(s)"
@@ -328,8 +247,19 @@ if [ -n "$BASEURL" ]; then
 fi
 
 # --- legacy URL coverage -----------------------------------------------------
-# The reason the cutover is safe. Every row of the manifest is a URL that answers
-# 200 or 301 on the live legacy site and has no route in this build.
+# DELETE THIS SECTION AFTER THE CUTOVER. It is the largest check in the file and the
+# most temporary. Until the port is live it is the reason the cutover is safe: every
+# row of the manifest is a URL that answers 200 or 301 on the live legacy site and has
+# no route in this build, so it must be redirected rather than dropped.
+#
+# Afterwards, script/verify-live supersedes it. That probes the DEPLOYED site against
+# the same manifest, which is strictly more authoritative — it sees the Cloudflare
+# zone Redirect Rules that already answer nine of these paths at the edge, and this
+# script, looking only at the artifact, never can. Run verify-live before and after
+# the cutover and diff the two, as its header describes, then delete what follows.
+#
+# The residual risk once it is gone is a doc rename dropping a `redirect_from`, which
+# is real but rare, and which verify-live will catch on the next probe.
 section "Legacy URL redirects ($MANIFEST)"
 test -f "$MANIFEST" || { bad "$MANIFEST missing"; exit 1; }
 
