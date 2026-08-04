@@ -31,9 +31,8 @@ concurrency:
 
 jobs:
   build:
-    # Production only. Forks — notably maptiler/www.openmaptiles.org, which stages to
-    # A non-production host must not publish a build carrying the production CNAME and
-    # canonical URLs.
+    # Production only. A fork must not publish a build carrying this repo's CNAME and
+    # canonical URLs, so the job is pinned to the upstream repository by name.
     if: github.repository == 'openmaptiles/www.openmaptiles.org'
     runs-on: ubuntu-latest
     steps:
