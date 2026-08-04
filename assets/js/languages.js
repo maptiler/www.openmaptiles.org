@@ -4,9 +4,19 @@
 // loaded on demand so the ~1.4 MB payload only lands on pages that show the map.
 // It attaches to window.maptilersdk.
 //
-// No re-entrancy guard around map creation is needed here. Such guards exist to survive
-// a component framework's
-// mount→unmount→remount cycle and have no counterpart here.
+// "Pages that show the map" used to mean "pages whose markup contains the map",
+// which main.js tested with `[data-languages-map]`. Those are not the same thing:
+// the picker is rendered inside the hero dialog, which every page on the home
+// layout carries and which starts CLOSED everywhere except /languages/:code/. So
+// the homepage, /viewers/ and the 7 /styles/:slug/ pages each downloaded the SDK
+// (~379 KB gzipped, plus 16 KB of CSS) and initialised a WebGL map into a hidden
+// container — for a dialog with no open trigger, which nothing but a full
+// navigation to /languages/:code/ can reveal.
+//
+// initHero now calls this the first time the dialog actually opens, so the
+// entry point is reached at most once per page and only when the map is visible.
+// The guard below is what makes "at most once" true: the dialog can open, close
+// and reopen (popstate), and each open must not build another map.
 
 const ZURICH_CENTER = [8.5417, 47.3769];
 const ZURICH_ZOOM = 10.5;
@@ -55,7 +65,14 @@ function initialCode(root, languages) {
   return "en";
 }
 
+let started = false;
+
 export async function initLanguages(config) {
+  // Set before the first await, not after: two opens in the same tick would both
+  // get past a flag that is only raised once the SDK has finished loading.
+  if (started) return;
+  started = true;
+
   const root = document.querySelector("[data-languages-map]");
   if (!root) return;
 

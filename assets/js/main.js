@@ -13,13 +13,15 @@ const config = configEl ? JSON.parse(configEl.textContent) : {};
 
 initTracking();
 initUI();
-initHero();
-initMapStyles();
-
-// Only pages that actually render the map pay for the SDK download.
-if (document.querySelector("[data-languages-map]")) {
-  initLanguages(config);
-}
+// The multilingual map is built when the hero dialog opens, not when its markup is
+// found: every page on the home layout carries that markup, and only
+// /languages/:code/ opens the dialog. Gating on presence downloaded the ~1.4 MB SDK
+// on the homepage for a map that could not be shown. See languages.js.
+//
+// On /languages/:code/ the dialog is server-rendered open, so initHero's initial
+// setOpen(true) fires this immediately — same behaviour as before on that route.
+initHero(config, () => initLanguages(config));
+initMapStyles(config);
 
 // /viewers/ only — pulls maplibre-gl, leaflet and ol from their CDNs.
 if (document.querySelector("[data-viewers-modal]")) {

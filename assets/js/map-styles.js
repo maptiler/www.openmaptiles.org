@@ -4,6 +4,7 @@
 // modal renders from that slug. The cards are real links, so they work with JS off,
 // and initStyleModal() intercepts them to open in place.
 import { gitHubRepo } from "./tracking.js";
+import { withBase } from "./baseurl.js";
 
 // The snippet offered by the modal's copy button. The </script> inside is split so
 // it cannot close this module's own tag if the file is ever inlined.
@@ -36,7 +37,7 @@ function generateMapCode(styleId, styleName) {
 }
 
 // The modal is server-rendered open on /styles/:slug/ and hidden everywhere else.
-function initStyleModal(section) {
+function initStyleModal(section, config) {
   const modal = section.querySelector("[data-style-modal]");
   const cards = Array.from(section.querySelectorAll("[data-style-card]"));
   if (!modal || !cards.length) return;
@@ -125,7 +126,7 @@ function initStyleModal(section) {
     modal.removeAttribute("hidden");
     setBodyScroll(true);
     if (push) {
-      window.history.pushState({}, "", `/styles/${slugOf(card)}/`);
+      window.history.pushState({}, "", withBase(config, `/styles/${slugOf(card)}/`));
     }
     scrollSectionIntoView();
   };
@@ -136,7 +137,7 @@ function initStyleModal(section) {
     resetCopy();
     // Tears the preview map down so it stops rendering while hidden.
     mountIframe(null);
-    if (push) window.history.pushState({}, "", "/#map-styles");
+    if (push) window.history.pushState({}, "", withBase(config, "/#map-styles"));
   };
 
   const navigate = (direction) => {
@@ -212,7 +213,7 @@ function initStyleModal(section) {
   }
 }
 
-export function initMapStyles() {
+export function initMapStyles(config) {
   const section = document.querySelector("[data-map-styles]");
   if (!section) return;
 
@@ -305,7 +306,7 @@ export function initMapStyles() {
 
   render();
 
-  initStyleModal(section);
+  initStyleModal(section, config);
 
   // On a /styles/:slug/ page, scroll the section into view on load.
   if (window.location.pathname.includes("/styles")) {

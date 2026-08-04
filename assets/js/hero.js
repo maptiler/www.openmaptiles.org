@@ -1,9 +1,16 @@
 // Interactive parts of the homepage hero:
 // the map-mockup click-through and the multilingual dialog's open/close rules.
 
+import { withBase } from "./baseurl.js";
+
+// Substring test, so it holds under a baseurl prefix as well as at the root.
 const isLanguagesRoute = () => window.location.pathname.includes("/languages");
 
-export function initHero() {
+// `onLanguagesOpen` is called the first time the multilingual dialog is shown, and
+// is what pulls in the MapTiler SDK. It lives here because this is the only code
+// that knows when the dialog becomes visible — see the note in languages.js for why
+// "the markup exists" was the wrong signal.
+export function initHero(config, onLanguagesOpen) {
   // Map mockup opens the style preview, reporting the same tracking event
   // openMapStylesBasic() pushed before navigating.
   const mockup = document.querySelector("[data-hero-style-preview]");
@@ -16,7 +23,7 @@ export function initHero() {
         style_title: "MapTiler Basic",
         timestamp: new Date().toISOString(),
       });
-      window.location.href = "/styles/maptiler-basic/";
+      window.location.href = withBase(config, "/styles/maptiler-basic/");
     });
   }
 
@@ -27,11 +34,14 @@ export function initHero() {
     dialog.toggleAttribute("hidden", !open);
     // Body scroll stays locked while the dialog is open.
     document.body.style.overflow = open ? "hidden" : "";
+    // The map is built on the first open, once the container has a size. Calling
+    // this on every open is fine — initLanguages ignores all but the first.
+    if (open && onLanguagesOpen) onLanguagesOpen();
   };
 
   const close = () => {
     // closeLanguages() rewrote the URL to the site root without a reload.
-    window.history.pushState({}, "", "/");
+    window.history.pushState({}, "", withBase(config, "/"));
     setOpen(false);
   };
 

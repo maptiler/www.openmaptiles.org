@@ -6,6 +6,8 @@
 // is vendored, unlike languages.js: these are three third-party viewers being compared,
 // not a dependency of the site itself.
 
+import { withBase } from "./baseurl.js";
+
 const STYLES = [
   "https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css",
   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
@@ -74,7 +76,7 @@ export function initViewersModal(config) {
 
   const close = () => {
     // Nothing owns this dialog's closed state, so closing navigates home.
-    window.location.href = "/";
+    window.location.href = withBase(config, "/");
   };
 
   modal.querySelectorAll("[data-viewers-close]").forEach((el) => {
