@@ -24,7 +24,7 @@ runtime; search.js only fills the drawer.
   {%- unless here_last == "/" -%}{%- assign here = here | append: "/" -%}{%- endunless -%}
 {%- endunless -%}
 
-<aside class="docs-sidebar" data-docs-sidebar>
+<aside class="docs-sidebar" data-docs-sidebar data-section="docs_sidebar">
   <div class="docs-sidebar__top">
     <div class="docs-sidebar__search">
       {% include docs/search.html %}

@@ -10,8 +10,12 @@ static and the event contract lives in one place:
   data-track-section  source_section
   data-track-label    cta_label
                       destination_url is taken from href
+
+data-section on the wrapper is the fallback source_section: it covers the
+untagged links here and every outbound_click, which carry no data-track-section
+of their own.
 {%- endcomment -%}
-<footer class="site-footer">
+<footer class="site-footer" data-section="footer">
   <div class="site-footer__inner">
     <p class="site-footer__credit">
       OpenMapTiles.org is an open-source project from OMT community and

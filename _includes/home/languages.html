@@ -6,7 +6,7 @@ An earlier version carried elaborate guards around map creation (a cancellable
 removal timer, a re-entrancy check) purely to survive a component framework's
 mount→unmount→remount cycle. None of that applies here, so it is not ported.
 {%- endcomment -%}
-<div class="languages" data-languages-map data-active-language="{{ page.active_language }}">
+<div class="languages" data-languages-map data-section="languages" data-active-language="{{ page.active_language }}">
   <div class="languages__banner">
     <div class="languages__banner-inner">
       <div class="languages__banner-row">

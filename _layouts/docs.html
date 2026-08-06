@@ -11,7 +11,7 @@ the first paragraph loses its 1.25em top margin.
 {%- endcomment -%}
 <div class="docs-shell">
   {% include docs/sidebar.html %}
-  <article class="docs-content prose">
+  <article class="docs-content prose" data-section="docs_content">
     {% if page.collection == "docs" %}<h1>{{ page.title }}</h1>{% endif %}
     {{ content }}
   </article>

@@ -18,7 +18,10 @@ module OpenMapTiles
     # the `.prose a:not(.no-underline)` rule, which at (0,2,1) outranks
     # `.doclink--button` at (0,1,0). Without the class the button rendered as a
     # plain underlined dark link instead of white-on-neutral-800.
-    ARTICLE = %r{(<article\s+class="docs-content[^"]*">)(.*?)(</article>)}m
+    # `[^>]*>` for the tail, not `[^"]*">`: the latter required class to be the LAST
+    # attribute on the tag, so adding data-section after it silently stopped the whole
+    # plugin — every external docs link rendered bare.
+    ARTICLE = %r{(<article\s+class="docs-content[^>]*>)(.*?)(</article>)}m
     ANCHOR  = %r{<a\s+(?<attrs>[^>]*?)href="(?<href>[^"]*)"(?<rest>[^>]*)>(?<label>.*?)</a>}m
 
     def self.transform(html)

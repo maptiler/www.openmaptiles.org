@@ -6,7 +6,7 @@ assets/js/hero.js when the page is a /languages/:code/ route. In an earlier
 version the dialog was mounted conditionally from the same condition
 (`activeLanguage` or a pathname containing /languages).
 {%- endcomment -%}
-<section id="hero" class="hero">
+<section id="hero" class="hero" data-section="hero">
   <img
     src="{{ '/img/header-map-2560px.webp' | relative_url }}"
     alt=""
@@ -29,6 +29,7 @@ version the dialog was mounted conditionally from the same condition
         href="{{ '/docs/' | relative_url }}"
         data-track-event="hero_cta_click"
         data-track-label="Documentation"
+        data-track-variant="primary"
         class="btn-primary-omt hero__btn"
       >{% include icons/file-text.svg %}Documentation</a>
       <a
@@ -38,6 +39,7 @@ version the dialog was mounted conditionally from the same condition
         data-tracked="true"
         data-track-event="hero_cta_click"
         data-track-label="Code on Github"
+        data-track-variant="secondary"
         class="btn-secondary-omt hero__btn"
       >{% include icons/hero-code.svg %}Code on Github</a>
     </div>

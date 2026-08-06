@@ -27,7 +27,7 @@ Note "/" must be an exact test — `contains` would mark Home active everywhere.
 {%- if page.url contains "/docs" -%}{%- assign is_docs = true -%}{%- endif -%}
 {%- if page.url contains "/about" -%}{%- assign is_about = true -%}{%- endif -%}
 
-<header class="site-header">
+<header class="site-header" data-section="header">
   <div class="site-header__inner">
     <div class="site-header__bar">
       <div class="site-header__brand-wrap">

@@ -6,7 +6,7 @@ without a leading slash, so they 404'd on every non-root page. Fixed via
 `relative_url`. Note MapTiler's logo sits at /img/, the rest at /img/home/.
 {%- endcomment -%}
 {%- assign contributors = "MapTiler|/img/maptiler-logo.svg,KlokanTech|/img/home/klokantech-h.png,HSR|/img/home/hsr_logo.png,Qwant|/img/home/qwant.png,Wikimedia|/img/home/wikimedia.png" | split: "," -%}
-<section id="about" class="about-home">
+<section id="about" class="about-home" data-section="about">
   <div class="about-home__inner">
     <div class="about-home__body">
       <h2 class="about-home__title">Rooted in open-source history</h2>

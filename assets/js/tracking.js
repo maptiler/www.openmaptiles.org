@@ -5,12 +5,18 @@
 //
 // Attribute contract (see _includes/footer.html for the canonical example):
 //   data-track-event        dataLayer event name
-//   data-track-section      source_section
+//   data-track-section      source_section (falls back to the enclosing data-section)
 //   data-track-label        cta_label
 //   data-track-destination  destination (download/server events)
 //   data-track-repo         repo (github events)
 //   data-track-style-id     style_id (style_customize_click)
+//   data-track-variant      variant (hero_cta_click)
 // href supplies destination_url.
+//
+// Section wrappers carry data-section; sourceSection() walks up to the nearest
+// one. Without it the only source_section a click can get is the data-track-section
+// on the element itself, so untagged links — every outbound_click — go out with
+// the key undefined and GTM drops it.
 
 const push = (event) => {
   window.dataLayer = window.dataLayer || [];
@@ -103,13 +109,19 @@ function handleClick(event) {
     const destination = anchor.getAttribute("data-track-destination");
     const repo = anchor.getAttribute("data-track-repo");
     const styleId = anchor.getAttribute("data-track-style-id");
+    const variant = anchor.getAttribute("data-track-variant");
     const href = anchor.getAttribute("href");
 
-    if (section) payload.source_section = section;
+    // An explicit data-track-section wins; otherwise take the enclosing
+    // data-section, so events that never declared one still get it.
+    const resolvedSection = section || sourceSection(anchor);
+
+    if (resolvedSection) payload.source_section = resolvedSection;
     if (label) payload.cta_label = label;
     if (destination) payload.destination = destination;
     if (repo) payload.repo = repo;
     if (styleId) payload.style_id = styleId;
+    if (variant) payload.variant = variant;
     if (href && href !== "#") payload.destination_url = anchor.href;
 
     push(payload);
@@ -128,13 +140,16 @@ function handleClick(event) {
   const host = hostnameOf(anchor.href);
   if (!host) return;
 
-  push({
+  const payload = {
     event: "outbound_click",
     destination_host: host,
     destination_url: anchor.href,
     cta_label: elementText(anchor),
-    source_section: sourceSection(anchor),
-  });
+  };
+  const section = sourceSection(anchor);
+  if (section) payload.source_section = section;
+
+  push(payload);
 }
 
 export function initTracking() {
