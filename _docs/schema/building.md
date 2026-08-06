@@ -1,7 +1,6 @@
 ---
 title: building
 category: schema
-redirect_from: /layers/building/
 ---
 
 ![ETL Graph](/media/etl_building.png)

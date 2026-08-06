@@ -21,6 +21,23 @@ collections:
     permalink: /docs/:path/
 
 defaults:
+  # Schema layer docs (_docs/schema/*.md) are only meant to be read inline on
+  # /docs/schema/ (see docs/schema.html's `site.docs | where: "category",
+  # "schema"` loop, which reads `layer.content` regardless of this setting).
+  # Collection output:true would also emit each one as its own
+  # /docs/schema/<layer>/ page, duplicating the same content that already
+  # renders inline. Product decision: content lives only on /docs/schema/,
+  # with per-layer anchors — not on separate pages, even though /layers/<name>
+  # were real distinct pages on the legacy production site (see
+  # script/legacy-baseline-2026-08-03.txt). The manual stubs at layers/*.html
+  # and docs/schema/*.html carry the old and interim URLs to the matching
+  # anchor instead of a duplicate page. See _redirects and
+  # script/redirects.tsv for the URLs this affects.
+  - scope:
+      path: "schema"
+      type: docs
+    values:
+      output: false
   # Iframe/embed helpers, not content. jekyll-sitemap picks up any .html static
   # file, and the hand-written Astro sitemap did not list these.
   - scope:

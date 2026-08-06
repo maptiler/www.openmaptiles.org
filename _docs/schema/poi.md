@@ -1,7 +1,6 @@
 ---
 title: poi
 category: schema
-redirect_from: /layers/poi/
 ---
 
 ![ETL Graph](/media/etl_poi.png)

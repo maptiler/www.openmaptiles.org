@@ -1,7 +1,6 @@
 ---
 title: park
 category: schema
-redirect_from: /layers/park/
 ---
 
 ![ETL Graph](/media/etl_park.png)

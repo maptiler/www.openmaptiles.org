@@ -276,7 +276,7 @@ while IFS=$'\t' read -r url target scope; do
     *)  expected="$target" ;;
   esac
   if ! grep -qF "location=\"$expected\"" "$out"; then
-    got=$(grep -oE 'location="[^"]*"' "$out" | head -1)
+    got=$(grep -oE 'location="[^"]*"' "$out" | head -1) || true
     bad "$url — stub points at ${got:-nothing}, expected \"$expected\""
     continue
   fi

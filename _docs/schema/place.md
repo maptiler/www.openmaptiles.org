@@ -1,7 +1,6 @@
 ---
 title: place
 category: schema
-redirect_from: /layers/place/
 ---
 
 ![ETL Graph](/media/etl_place.png)

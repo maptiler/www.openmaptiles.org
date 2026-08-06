@@ -1,7 +1,6 @@
 ---
 title: boundary
 category: schema
-redirect_from: /layers/boundary/
 ---
 
 ![ETL Graph](/media/etl_boundary.png)

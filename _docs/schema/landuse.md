@@ -1,7 +1,6 @@
 ---
 title: landuse
 category: schema
-redirect_from: /layers/landuse/
 ---
 
 ![ETL Graph](/media/etl_landuse.png)

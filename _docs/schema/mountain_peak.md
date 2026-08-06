@@ -1,7 +1,6 @@
 ---
 title: mountain_peak
 category: schema
-redirect_from: /layers/mountain_peak/
 ---
 
 ![ETL Graph](/media/etl_mountain_peak.png)

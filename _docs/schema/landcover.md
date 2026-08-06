@@ -1,7 +1,6 @@
 ---
 title: landcover
 category: schema
-redirect_from: /layers/landcover/
 ---
 
 ![ETL Graph](/media/etl_landcover.png)

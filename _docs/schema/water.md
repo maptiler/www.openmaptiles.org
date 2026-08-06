@@ -1,7 +1,6 @@
 ---
 title: water
 category: schema
-redirect_from: /layers/water/
 ---
 
 ![ETL Graph](/media/etl_water.png)

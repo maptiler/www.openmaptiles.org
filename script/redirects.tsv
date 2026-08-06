@@ -14,23 +14,25 @@
 # routes against this build, and by reading the live 301 targets back off
 # production (several off-site targets in the inherited _redirects were stale).
 
-# --- schema reference: /layers/* -> /docs/schema/* -----------------------------
-/layers/aerodrome_label/	/docs/schema/aerodrome_label/	both
-/layers/aeroway/	/docs/schema/aeroway/	both
-/layers/boundary/	/docs/schema/boundary/	both
-/layers/building/	/docs/schema/building/	both
-/layers/housenumber/	/docs/schema/housenumber/	both
-/layers/landcover/	/docs/schema/landcover/	both
-/layers/landuse/	/docs/schema/landuse/	both
-/layers/mountain_peak/	/docs/schema/mountain_peak/	both
-/layers/park/	/docs/schema/park/	both
-/layers/place/	/docs/schema/place/	both
-/layers/poi/	/docs/schema/poi/	both
-/layers/transportation/	/docs/schema/transportation/	both
-/layers/transportation_name/	/docs/schema/transportation_name/	both
-/layers/water/	/docs/schema/water/	both
-/layers/water_name/	/docs/schema/water_name/	both
-/layers/waterway/	/docs/schema/waterway/	both
+# --- schema reference: /layers/* -> /docs/schema/#anchor -----------------------
+# No standalone page per layer any more (see the "_docs/schema" scope in
+# _config.yml) — every row lands on the matching anchor on the combined page.
+/layers/aerodrome_label/	/docs/schema/#aerodrome_label	both
+/layers/aeroway/	/docs/schema/#aeroway	both
+/layers/boundary/	/docs/schema/#boundary	both
+/layers/building/	/docs/schema/#building	both
+/layers/housenumber/	/docs/schema/#housenumber	both
+/layers/landcover/	/docs/schema/#landcover	both
+/layers/landuse/	/docs/schema/#landuse	both
+/layers/mountain_peak/	/docs/schema/#mountain_peak	both
+/layers/park/	/docs/schema/#park	both
+/layers/place/	/docs/schema/#place	both
+/layers/poi/	/docs/schema/#poi	both
+/layers/transportation/	/docs/schema/#transportation	both
+/layers/transportation_name/	/docs/schema/#transportation_name	both
+/layers/water/	/docs/schema/#water	both
+/layers/water_name/	/docs/schema/#water_name	both
+/layers/waterway/	/docs/schema/#waterway	both
 
 # --- routes that moved --------------------------------------------------------
 /schema/	/docs/schema/	both
@@ -67,3 +69,25 @@
 /docs/website/mapbox-gl-js/	/docs/website/maplibre-gl-js/	stub-only
 /docs/generate/generate-vector-tiles/	/docs/generate/generate-openmaptiles/	stub-only
 /docs/generate/custom-vector/	/docs/generate/custom-vector-from-shapefile-geojson/	stub-only
+
+# --- interim URLs from this rewrite's own development --------------------------
+# /docs/schema/<layer>/ existed only mid-rewrite (never shipped to production —
+# no entry in script/legacy-baseline-2026-08-03.txt), unlike /layers/<name>/
+# above. Redirected rather than dropped in case it was linked or crawled during
+# review. Owner: docs/schema/*.html manual stubs.
+/docs/schema/aerodrome_label/	/docs/schema/#aerodrome_label	stub-only
+/docs/schema/aeroway/	/docs/schema/#aeroway	stub-only
+/docs/schema/boundary/	/docs/schema/#boundary	stub-only
+/docs/schema/building/	/docs/schema/#building	stub-only
+/docs/schema/housenumber/	/docs/schema/#housenumber	stub-only
+/docs/schema/landcover/	/docs/schema/#landcover	stub-only
+/docs/schema/landuse/	/docs/schema/#landuse	stub-only
+/docs/schema/mountain_peak/	/docs/schema/#mountain_peak	stub-only
+/docs/schema/park/	/docs/schema/#park	stub-only
+/docs/schema/place/	/docs/schema/#place	stub-only
+/docs/schema/poi/	/docs/schema/#poi	stub-only
+/docs/schema/transportation/	/docs/schema/#transportation	stub-only
+/docs/schema/transportation_name/	/docs/schema/#transportation_name	stub-only
+/docs/schema/water/	/docs/schema/#water	stub-only
+/docs/schema/water_name/	/docs/schema/#water_name	stub-only
+/docs/schema/waterway/	/docs/schema/#waterway	stub-only

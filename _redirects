@@ -20,25 +20,27 @@
 # artifact and had drifted from the live rules.
 
 # ---------------------------------------------------------------------------
-# Schema reference — the most externally cited part of the site.
-# Owner: redirect_from: in _docs/schema/*.md
+# Schema reference — the most externally cited part of the site. No standalone
+# page per layer any more (see the "_docs/schema" scope in _config.yml) — every
+# row lands on the matching anchor on the combined page instead.
+# Owner: layers/*.html manual stubs
 # ---------------------------------------------------------------------------
-/layers/aerodrome_label      /docs/schema/aerodrome_label/          301
-/layers/aeroway              /docs/schema/aeroway/                  301
-/layers/boundary             /docs/schema/boundary/                 301
-/layers/building             /docs/schema/building/                 301
-/layers/housenumber          /docs/schema/housenumber/              301
-/layers/landcover            /docs/schema/landcover/                301
-/layers/landuse              /docs/schema/landuse/                  301
-/layers/mountain_peak        /docs/schema/mountain_peak/            301
-/layers/park                 /docs/schema/park/                     301
-/layers/place                /docs/schema/place/                    301
-/layers/poi                  /docs/schema/poi/                      301
-/layers/transportation       /docs/schema/transportation/           301
-/layers/transportation_name  /docs/schema/transportation_name/      301
-/layers/water                /docs/schema/water/                    301
-/layers/water_name           /docs/schema/water_name/               301
-/layers/waterway             /docs/schema/waterway/                 301
+/layers/aerodrome_label      /docs/schema/#aerodrome_label           301
+/layers/aeroway              /docs/schema/#aeroway                   301
+/layers/boundary             /docs/schema/#boundary                  301
+/layers/building             /docs/schema/#building                  301
+/layers/housenumber          /docs/schema/#housenumber               301
+/layers/landcover            /docs/schema/#landcover                 301
+/layers/landuse              /docs/schema/#landuse                   301
+/layers/mountain_peak        /docs/schema/#mountain_peak             301
+/layers/park                 /docs/schema/#park                      301
+/layers/place                /docs/schema/#place                     301
+/layers/poi                  /docs/schema/#poi                       301
+/layers/transportation       /docs/schema/#transportation            301
+/layers/transportation_name  /docs/schema/#transportation_name       301
+/layers/water                /docs/schema/#water                     301
+/layers/water_name           /docs/schema/#water_name                301
+/layers/waterway             /docs/schema/#waterway                  301
 
 # ---------------------------------------------------------------------------
 # Routes that moved. Owner: redirect_from: on the destination page.

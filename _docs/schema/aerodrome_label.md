@@ -1,7 +1,6 @@
 ---
 title: aerodrome_label
 category: schema
-redirect_from: /layers/aerodrome_label/
 ---
 
 ![ETL Graph](/media/etl_aerodrome_label.png)

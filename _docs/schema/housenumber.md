@@ -1,7 +1,6 @@
 ---
 title: housenumber
 category: schema
-redirect_from: /layers/housenumber/
 ---
 
 ![ETL Graph](/media/etl_housenumber.png)

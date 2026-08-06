@@ -1,7 +1,6 @@
 ---
 title: waterway
 category: schema
-redirect_from: /layers/waterway/
 ---
 
 ![ETL Graph](/media/etl_waterway.png)

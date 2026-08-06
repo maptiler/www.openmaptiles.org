@@ -1,0 +1,11 @@
+---
+# /layers/<name>/ was a real, distinct page on the legacy production site (see
+# script/legacy-baseline-2026-08-03.txt: 200 OK). This rewrite deliberately does
+# not keep a standalone page per layer — see the "_docs/schema" scope in
+# _config.yml — so the old URL lands on the matching anchor on the combined
+# page instead. Not a jekyll-redirect-from redirect_from: on the destination
+# page/anchor, so it is a manual stub like docs/website/openlayers3.html.
+permalink: /layers/aerodrome_label/
+redirect_to: /docs/schema/#aerodrome_label
+sitemap: false
+---

@@ -1,7 +1,6 @@
 ---
 title: aeroway
 category: schema
-redirect_from: /layers/aeroway/
 ---
 
 ![ETL Graph](/media/etl_aeroway.png)

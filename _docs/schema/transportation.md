@@ -1,7 +1,6 @@
 ---
 title: transportation
 category: schema
-redirect_from: /layers/transportation/
 ---
 
 ![ETL Graph](/media/etl_transportation.png)
