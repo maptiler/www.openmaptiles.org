@@ -1,7 +1,5 @@
 ---
 title: transportation
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_transportation.png)

@@ -57,7 +57,7 @@ renderer returned null. The toggle and the lightbox are wired in Phase 5.
     </div>
 
     {%- comment -%}
-    Sourced from the _docs/schema collection, which is the same markdown
+    Sourced from the _schema collection, which is the same markdown
     _SchemaPage.tsx reads with import.meta.glob — NOT from _data/layers.json.
     That file's `content` had the leading diagram images and the `sql` fence
     stripped, so this page was missing all 16 SQL blocks (~4.2 KB of visible
@@ -65,7 +65,7 @@ renderer returned null. The toggle and the lightbox are wired in Phase 5.
     with nothing to toggle. Sorted by title, which equals the filename for all
     16 layers, matching the component's sort by slug.
     {%- endcomment -%}
-    {%- assign layers = site.docs | where: "category", "schema" | sort: "title" -%}
+    {%- assign layers = site.schema | sort: "title" -%}
     {%- for layer in layers %}
     <section id="{{ layer.title }}" class="schema-layer">
       <h2 class="schema-layer__title">{{ layer.title }}</h2>
@@ -86,7 +86,7 @@ renderer returned null. The toggle and the lightbox are wired in Phase 5.
   <nav class="schema-page__nav">
     <p class="schema-page__nav-title">Layers</p>
     <ul class="schema-page__nav-list">
-      {%- assign nav_layers = site.docs | where: "category", "schema" | sort: "title" -%}
+      {%- assign nav_layers = site.schema | sort: "title" -%}
       {%- for layer in nav_layers %}
       <li><a href="#{{ layer.title }}" class="schema-page__nav-link">{{ layer.title }}</a></li>
       {%- endfor %}

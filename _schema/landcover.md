@@ -1,7 +1,5 @@
 ---
 title: landcover
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_landcover.png)

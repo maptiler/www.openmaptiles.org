@@ -1,7 +1,5 @@
 ---
 title: water_name
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_water_name.png)

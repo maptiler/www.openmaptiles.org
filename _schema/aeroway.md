@@ -1,7 +1,5 @@
 ---
 title: aeroway
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_aeroway.png)

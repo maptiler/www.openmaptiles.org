@@ -1,7 +1,5 @@
 ---
 title: poi
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_poi.png)

@@ -1,7 +1,5 @@
 ---
 title: landuse
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_landuse.png)

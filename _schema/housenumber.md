@@ -1,7 +1,5 @@
 ---
 title: housenumber
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_housenumber.png)

@@ -15,7 +15,7 @@
 # production (several off-site targets in the inherited _redirects were stale).
 
 # --- schema reference: /layers/* -> /docs/schema/#anchor -----------------------
-# No standalone page per layer any more (see the "_docs/schema" scope in
+# No standalone page per layer any more (see the "schema" collection scope in
 # _config.yml) — every row lands on the matching anchor on the combined page.
 /layers/aerodrome_label/	/docs/schema/#aerodrome_label	both
 /layers/aeroway/	/docs/schema/#aeroway	both

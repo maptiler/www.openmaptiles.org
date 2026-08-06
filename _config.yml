@@ -19,27 +19,27 @@ collections:
   docs:
     output: true
     permalink: /docs/:path/
+  # Schema layer docs (_schema/*.md, read via `site.schema` on /docs/schema/)
+  # are only meant to be read inline there — see docs/schema.html's loop, which
+  # reads `layer.content` regardless of this setting. output:true would also
+  # emit each one as its own /docs/schema/<layer>/ page, duplicating the same
+  # content that already renders inline, and colliding with the manual
+  # redirect stubs at docs/schema/*.html that own that URL (see _redirects and
+  # script/redirects.tsv). Product decision: content lives only on
+  # /docs/schema/, with per-layer anchors — not on separate pages, even though
+  # /layers/<name> were real distinct pages on the legacy production site (see
+  # script/legacy-baseline-2026-08-03.txt).
+  #
+  # Jekyll's `output` is a collection-level switch only — a document's own
+  # `output: false` front matter is not read by Document#write? (it checks
+  # Collection#write? and nothing else), so this cannot be suppressed via a
+  # `defaults` scope or per-file front matter within the `docs` collection.
+  # These had to move into their own collection to get their own output
+  # setting.
+  schema:
+    output: false
 
 defaults:
-  # Schema layer docs (_docs/schema/*.md) are only meant to be read inline on
-  # /docs/schema/ (see docs/schema.html's `site.docs | where: "category",
-  # "schema"` loop, which reads `layer.content` regardless of this setting).
-  # Collection output:true would also emit each one as its own
-  # /docs/schema/<layer>/ page, duplicating the same content that already
-  # renders inline. Product decision: content lives only on /docs/schema/,
-  # with per-layer anchors — not on separate pages, even though /layers/<name>
-  # were real distinct pages on the legacy production site (see
-  # script/legacy-baseline-2026-08-03.txt). The manual stubs at layers/*.html
-  # and docs/schema/*.html carry the old and interim URLs to the matching
-  # anchor instead of a duplicate page. See _redirects and
-  # script/redirects.tsv for the URLs this affects.
-  #
-  # A `defaults` scope keyed on path+type was tried here and did not suppress
-  # output — Jekyll kept emitting these documents and colliding with the
-  # docs/schema/*.html stubs at the same destination (see verify-build's
-  # "stub points at nothing" failures). `output: false` is set directly in
-  # each _docs/schema/*.md file's own front matter instead, which Jekyll
-  # honors unconditionally.
   # Iframe/embed helpers, not content. jekyll-sitemap picks up any .html static
   # file, and the hand-written Astro sitemap did not list these.
   - scope:

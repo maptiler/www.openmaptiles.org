@@ -1,7 +1,5 @@
 ---
 title: mountain_peak
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_mountain_peak.png)

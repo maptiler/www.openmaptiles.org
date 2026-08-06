@@ -1,7 +1,5 @@
 ---
 title: aerodrome_label
-category: schema
-output: false
 ---
 
 ![ETL Graph](/media/etl_aerodrome_label.png)
