@@ -1,6 +1,7 @@
 ---
 title: place
 category: schema
+output: false
 ---
 
 ![ETL Graph](/media/etl_place.png)

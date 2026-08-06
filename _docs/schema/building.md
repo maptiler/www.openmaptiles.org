@@ -1,6 +1,7 @@
 ---
 title: building
 category: schema
+output: false
 ---
 
 ![ETL Graph](/media/etl_building.png)

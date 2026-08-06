@@ -1,6 +1,7 @@
 ---
 title: waterway
 category: schema
+output: false
 ---
 
 ![ETL Graph](/media/etl_waterway.png)

@@ -33,11 +33,13 @@ defaults:
   # and docs/schema/*.html carry the old and interim URLs to the matching
   # anchor instead of a duplicate page. See _redirects and
   # script/redirects.tsv for the URLs this affects.
-  - scope:
-      path: "schema"
-      type: docs
-    values:
-      output: false
+  #
+  # A `defaults` scope keyed on path+type was tried here and did not suppress
+  # output — Jekyll kept emitting these documents and colliding with the
+  # docs/schema/*.html stubs at the same destination (see verify-build's
+  # "stub points at nothing" failures). `output: false` is set directly in
+  # each _docs/schema/*.md file's own front matter instead, which Jekyll
+  # honors unconditionally.
   # Iframe/embed helpers, not content. jekyll-sitemap picks up any .html static
   # file, and the hand-written Astro sitemap did not list these.
   - scope:

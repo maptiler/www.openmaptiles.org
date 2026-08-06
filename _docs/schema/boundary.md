@@ -1,6 +1,7 @@
 ---
 title: boundary
 category: schema
+output: false
 ---
 
 ![ETL Graph](/media/etl_boundary.png)
