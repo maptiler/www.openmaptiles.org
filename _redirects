@@ -77,7 +77,10 @@
 /docs/website/openlayers3    https://docs.maptiler.com/openlayers/examples/vector-tiles-in-openlayers/ 301
 
 # ---------------------------------------------------------------------------
-# Legacy .html URLs. Owner: redirect_from: in viewers.html
+# Legacy .html URLs. Owner: redirect_from: in viewers.html; maps/leaflet-*.html
+# manual stubs for the two dropped Leaflet embeds.
 # ---------------------------------------------------------------------------
-/viewers.html                /viewers/                              301
-/production-package.html     https://maptiler.com/data/pricing/     301
+/viewers.html                  /viewers/                              301
+/production-package.html       https://maptiler.com/data/pricing/     301
+/maps/leaflet-vectorgrid.html   /viewers/                             301
+/maps/leaflet-mapbox-gl.html    /viewers/                             301

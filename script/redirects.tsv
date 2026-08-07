@@ -61,6 +61,8 @@
 # --- legacy .html URLs --------------------------------------------------------
 /viewers.html	/viewers/	both
 /production-package.html	https://maptiler.com/data/pricing/	both
+/maps/leaflet-vectorgrid.html	/viewers/	both
+/maps/leaflet-mapbox-gl.html	/viewers/	both
 
 # --- pre-existing, emitted from the docs' own front matter --------------------
 # These three carried redirect_from through from the legacy Jekyll site. They 404 in

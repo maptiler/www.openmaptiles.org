@@ -122,7 +122,7 @@ nothing in it fires on the current host. Every rule is therefore also shipped as
 | `/schema/ /inspect/ /mobile/ /mobile-app/ /mobile/sourcecode/ /faq/` | 6 | `redirect_from:` on the destination page |
 | `/languages/ /styles/ /styles/openstreetmap/` | 3 | `languages.html`, `styles.html`, `styles/openstreetmap.html` |
 | off-site (9) | 9 | `support.html`, `terms.html`, `hosting.html`, `coordinate-systems.html`, `extracts.html`, `production-package.html`, `downloads.html`, `downloads-embed.html`, `docs/website/openlayers3.html` |
-| legacy `.html` URLs | 2 | `redirect_from:` in `viewers.html`, `production-package-html.html` |
+| legacy `.html` URLs | 4 | `redirect_from:` in `viewers.html`, `production-package-html.html`; `redirect_to:` in `maps/leaflet-vectorgrid.html`, `maps/leaflet-mapbox-gl.html` |
 | pre-existing docs redirects | 3 | already present in `_docs/` front matter |
 
 `/layers/*` is the schema reference and the most externally cited part of the site.
@@ -281,29 +281,31 @@ Two smaller items for whoever owns the Cloudflare zone:
 
 ## 6. Two deliberate omissions, and three content fixes reapplied
 
-### The two `/maps/` Leaflet embeds are dropped on purpose
+### The two `/maps/` Leaflet embeds redirect to `/viewers/`
 
 `/maps/leaflet-mapbox-gl.html` and `/maps/leaflet-vectorgrid.html` answer **200** on
-production today and are absent from this build, so those two URLs begin to 404. Note
-that only the `.html` URLs are live — their pretty-permalink variants
-(`/maps/leaflet-mapbox-gl/`) already 404. The reasoning, so it is not relitigated:
+production today. Rather than let them 404, both are restored as manual
+`redirect_to` stubs (`maps/leaflet-vectorgrid.html`, `maps/leaflet-mapbox-gl.html`,
+same pattern as `docs/schema/*.html`) pointing at `/viewers/`, listed in
+`script/redirects.tsv` and `_redirects`. Note that only the `.html` URLs were live —
+their pretty-permalink variants (`/maps/leaflet-mapbox-gl/`) already 404 and are not
+redirected.
+
+Background, so the earlier drop-it reasoning is not mistaken for the current state:
 
 - **Nothing links to them** in either tree, and production serves **no sitemap at all**
   (`/sitemap.xml` 404s there), so they were never listed in one. They were already
   orphaned: their natural host page, `docs/website/leaflet.md`, was a meta-refresh stub
-  rather than an article. The embeds that survive are wired up —
+  rather than an article. The embeds that survive as pages are wired up —
   `_docs/website/openlayers.md` iframes `/maps/ol.html`, and
   `_docs/website/maplibre-gl-js.md` iframes `/maps/maplibre-gl-js.html`.
-- `leaflet-mapbox-gl.html` is **already half-broken in production**: it passes
-  `accessToken: '{token}'`, an unsubstituted literal placeholder. It also loads
-  `/js/leaflet-mapbox-gl.js`, and the whole `js/` directory is superseded by `assets/`.
-- It pulls **mapbox-gl-js v0.35.1**, the library this rewrite replaces with MapLibre
-  throughout — the same decision as the `/docs/website/mapbox-gl-js/` →
-  `/docs/website/maplibre-gl-js/` redirect in `script/redirects.tsv`.
-
-If one should come back, `leaflet-vectorgrid.html` is the safe choice: self-contained,
-no missing dependency, no deprecated library. Add it to `script/redirects.tsv` or
-nothing will check it.
+- `leaflet-mapbox-gl.html` was **already half-broken in production**: it passes
+  `accessToken: '{token}'`, an unsubstituted literal placeholder, loads
+  `/js/leaflet-mapbox-gl.js` (the whole `js/` directory is superseded by `assets/`),
+  and pulls **mapbox-gl-js v0.35.1**, the library this rewrite replaces with MapLibre
+  throughout. Not worth reviving as a page — hence a redirect rather than a rebuild.
+- `/viewers/` is the destination because it is this rewrite's actual viewer-comparison
+  hub, and both dropped embeds were "try a viewer" pages in spirit.
 
 ### `docs/media/` keeps its single file
 
