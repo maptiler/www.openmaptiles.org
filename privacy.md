@@ -16,14 +16,6 @@ visit our website [openmaptiles.org](https://openmaptiles.org/) (the
 "**Site**"), we process some of your personal data, as described below.
 MapTiler AG is the data controller responsible for that processing.
 
-## Scope of this policy
-
-This policy covers **openmaptiles.org only**. If you follow a link from here
-to `maptiler.com`, `cloud.maptiler.com`, `docs.maptiler.com`, or
-`data.maptiler.com`, what happens on those domains is covered by
-[MapTiler's own Privacy Policy](https://www.maptiler.com/privacy-policy/),
-not this one.
-
 ## What data we collect
 
 The Site has no accounts, forms, or newsletter sign-up - we never ask you to
@@ -50,7 +42,7 @@ necessary cookies runs. Only two categories exist on this Site:
 | Category | Purpose | Your choice |
 | --- | --- | --- |
 | Necessary | Remembering your cookie choice; basic site functionality. | Always on - the Site can't work without it |
-| Analytics | Understanding how visitors use the Site (Google Analytics 4). | Off by default - you decide in the cookie banner |
+| Analytics | Understanding how visitors use the Site (Google Analytics). | Off by default - you decide in the cookie banner |
 
 We do not use an advertising or personalization cookie category on
 openmaptiles.org. You can change your choice at any time using **Cookie
@@ -58,23 +50,24 @@ settings** in the footer of any page.
 
 ## Analytics and cross-domain measurement with MapTiler
 
-We use Google Analytics 4 to understand how visitors use the Site.
-openmaptiles.org has its **own, separate GA4 property** - its analytics data
-is not pooled into MapTiler's main property.
+We use Google Analytics to understand how visitors use the Site.
 
 Part of what OpenMapTiles does is introduce visitors to MapTiler's commercial
 products (MapTiler Cloud, Server and Data). To measure that, when you click
 through from openmaptiles.org to a MapTiler domain, an anonymous identifier
 travels with you so that a later action there - such as creating a MapTiler
 account - can be counted back as an outcome of your visit here. That signal
-is reported into MapTiler's own GA4 property so the two properties can be
-joined into one funnel report. It tells us that an anonymous OpenMapTiles
-visit converted; it does not give MapTiler a line-by-line copy of your
-browsing history on this Site.
+is also reported to MapTiler's own analytics, so a single funnel report can
+be built across both. It tells us that an anonymous OpenMapTiles visit
+converted; it does not give MapTiler a line-by-line copy of your browsing
+history on this Site.
 
 Because of this cross-domain reporting, MapTiler AG processes this
 particular analytics data both as the operator of openmaptiles.org and as the
-operator of maptiler.com.
+operator of maptiler.com. This policy only covers openmaptiles.org; once
+you're on maptiler.com, cloud.maptiler.com, docs.maptiler.com or
+data.maptiler.com, [MapTiler's own Privacy
+Policy](https://www.maptiler.com/privacy-policy/) applies instead.
 
 ## Legal basis
 
@@ -86,11 +79,18 @@ operator of maptiler.com.
 
 ## Who we share data with
 
-- **Google** - as our analytics processor (Google Analytics 4). Google may
-  process data outside Switzerland and the EEA; this is covered by the
-  EU-U.S. Data Privacy Framework and/or Standard Contractual Clauses.
+We use a small number of trusted third-party service providers to run the
+Site:
+
+- **Google** - as our analytics processor (Google Analytics).
+- **CookieScript** - as our cookie consent management provider, to record
+  and honour your cookie choice.
 - **MapTiler AG's other systems** - for the cross-domain measurement
   described above.
+
+Where data is transferred outside the EEA or Switzerland, we rely on
+approved transfer mechanisms, primarily the EU-U.S. Data Privacy Framework
+(DPF) or Standard Contractual Clauses (SCCs).
 
 We do not sell personal data, and we do not share it with advertisers.
 
@@ -109,11 +109,6 @@ EU/EEA or UK, you also have the right to lodge a complaint with your local
 data protection authority; in Switzerland, MapTiler AG's supervisory
 authority is the [Federal Data Protection and Information Commissioner
 (FDPIC)](https://www.edoeb.admin.ch/).
-
-## Children
-
-This Site is not directed at children, and we do not knowingly collect
-personal data from them.
 
 ## Changes to this policy
 
