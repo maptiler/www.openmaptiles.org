@@ -2,7 +2,7 @@
 layout: legal
 permalink: /about/privacy/
 stylesheets: [docs]
-title: "Privacy Policy"
+title: "Privacy policy"
 description: "How openmaptiles.org collects and uses data, including the analytics it shares with MapTiler."
 keywords: "openmaptiles, privacy policy, cookies, analytics, GDPR"
 ---
