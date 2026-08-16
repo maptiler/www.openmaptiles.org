@@ -1,0 +1,23 @@
+---
+layout: base
+---
+{%- comment -%}
+Shared by /, /styles/:slug/ and /languages/:code/.
+
+Note the difference in section order: the homepage does NOT include Schema, while
+/styles/:slug/ and /languages/:code/
+both do, right after MapTiler.
+{%- endcomment -%}
+
+{% include home/hero.html %}
+{% include home/maptiler.html %}
+{% if page.active_style or page.active_language or page.force_schema %}{% include home/schema.html %}{% endif %}
+{% include home/companies.html %}
+{% include home/map-styles.html %}
+{% include home/data.html %}
+{% include home/about.html %}
+
+{%- comment -%}
+/viewers/ mounts the viewers dialog after About, on that page only.
+{%- endcomment -%}
+{% if page.viewers_modal %}{% include home/viewers-modal.html %}{% endif %}
