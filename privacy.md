@@ -19,8 +19,10 @@ MapTiler AG is the data controller responsible for that processing.
 ## What data we collect
 
 The Site has no accounts, forms, or newsletter sign-up - we never ask you to
-type in personal details. The only personal data we process is generated
-automatically by your browser while you use the Site:
+type in personal details. Besides basic, anonymous, non-cookie signals used
+simply to count page views and measure site performance without collecting
+any user-related identifiers, the only personal data we process is
+generated automatically by your browser while you use the Site:
 
 - **Technical data** - IP address (used only to derive an approximate
   location, then discarded), browser and device type, operating system,
