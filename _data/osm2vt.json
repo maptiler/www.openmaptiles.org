@@ -1,0 +1,40 @@
+{
+  "contributors": [
+    {
+      "name": "Manuel Roth",
+      "img": "manuelroth.jpg",
+      "href": "https://github.com/manuelroth",
+      "role": "CS Student at HSR"
+    },
+    {
+      "name": "Lukas Martinelli",
+      "img": "lukasmartinelli.jpg",
+      "href": "http://lukasmartinelli.ch/",
+      "role": "CS Student at HSR"
+    },
+    {
+      "name": "Petr Pridal, PhD",
+      "img": "petrpridal.jpg",
+      "href": "https://www.maptiler.com",
+      "role": "CEO MapTiler"
+    },
+    {
+      "name": "Prof. Stefan Keller",
+      "img": "stefankeller.png",
+      "href": "http://wiki.hsr.ch/StefanKeller/wiki.cgi?StefanKeller",
+      "role": "Professor for GIS at HSR"
+    }
+  ],
+  "partners": [
+    {
+      "href": "https://www.maptiler.com",
+      "img": "klokantech-logo.png",
+      "alt": "Klokan Technologies"
+    },
+    {
+      "href": "http://www.ifs.hsr.ch/Geometa-Lab.12520.0.html",
+      "img": "hsr-logo.png",
+      "alt": "Geometalab HSR"
+    }
+  ]
+}
