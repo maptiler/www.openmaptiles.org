@@ -16,8 +16,8 @@ function generateMapCode(styleId, styleName) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${styleName} Map</title>
-  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v4.0.2/maptiler-sdk.umd.min.js">${close}
-  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v4.0.2/maptiler-sdk.css" rel="stylesheet" />
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.umd.min.js">${close}
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.css" rel="stylesheet" />
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -37,8 +37,11 @@ function generateMapCode(styleId, styleName) {
 }
 
 // The modal is server-rendered open on /styles/:slug/ and hidden everywhere else.
+// It is emitted by the layout ahead of every section — not inside this one — so that
+// its title is the first heading in the document on /styles/:slug/. Hence the
+// document-level lookup; the cards below still come from the section.
 function initStyleModal(section, config) {
-  const modal = section.querySelector("[data-style-modal]");
+  const modal = document.querySelector("[data-style-modal]");
   const cards = Array.from(section.querySelectorAll("[data-style-card]"));
   if (!modal || !cards.length) return;
 

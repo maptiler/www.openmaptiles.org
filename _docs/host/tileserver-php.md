@@ -6,48 +6,48 @@ description: Serve map tiles with open-source TileServer PHP
 order: 4
 ---
 
-In case you wish to publish vector tiles and already have a PHP stack running
+In case you wish to publish vector tiles and already have a PHP stack running,
 you can use TileServer PHP for serving vector or raster tiles.
-TileServer PHP is implementing the OGC WMTS standard for pre-rendered
-raster tiles but it is fully prepared for fast serving of vector tiles.
-TileServer PHP is only one PHP file which you need to copy together with the
+TileServer PHP implements the OGC WMTS standard for pre-rendered
+raster tiles, but it is fully prepared for fast serving of vector tiles.
+TileServer PHP is a single PHP file that you need to copy alongside the
 MBTiles file.
 
-More information on [GitHub page of the project](https://github.com/maptiler/tileserver-php).
+More information is on [the project's GitHub page](https://github.com/maptiler/tileserver-php).
 
 ## Requirements for running
 
 - Apache webserver (with mod_rewrite / .htaccess supported)
 - PHP 5.2+ with SQLite module (php5-sqlite)
 
-Note: If you don't have PHP stack already installed you can use WAMP or XAMPP package for quick installation.
+Note: If you don't already have a PHP stack installed, you can use the WAMP or XAMPP package for a quick installation.
 
 ## Quick start
 
 ### 1. Download TileServer PHP
 
-Source code is available on TileServer's [GitHub](https://github.com/maptiler/tileserver-php). Download the latest release and
-unpack it to directory on your LAMP/WAMP server.
+The source code is available on TileServer's [GitHub](https://github.com/maptiler/tileserver-php). Download the latest release and
+unpack it to a directory on your LAMP/WAMP server.
 
 ### 2. Download Vector Tiles
 
 Go to the [Downloads page](https://data.maptiler.com/downloads/) and download the vector tiles for your region or the
-planet. You need to copy this file into a directory with TileServer-php.
+planet. You need to copy this file into a directory with TileServer PHP.
 
 ### 3. Open TileServer in your browser
 
-Tileserver is distributed with sample viewer for debugging. So you can view vector tiles directly without style.
+TileServer is distributed with a sample viewer for debugging, so you can view vector tiles directly without a style.
 
 ### 4. Own viewer with style
 
-TileServer doesn't serve styles so you need to host them with your apache in separate folder.
+TileServer doesn't serve styles, so you need to host them with Apache in a separate folder.
 Create your own [HTML viewer with MapLibre GL JS](/docs/website/maplibre-gl-js/) and link TileJSON from TileServer with links to PBF tiles.
 
-![X-Ray](/docs/media/tileserver-php_1.png)
+![X-ray map style](/docs/media/tileserver-php_1.png)
 
 ## Styling your tiles
 
-The screenshot above is a raw debug view of your map data. For transformation into a pretty map, you need a browser tile renderer, such as [Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js). Defining the look is done by style file that points at your tile server. You may also need to serve various supporting files for rendering, such as fonts to render the labels.
+The screenshot above is a raw debug view of your map data. For transformation into a pretty map, you need a browser tile renderer, such as [Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js). The look is defined by a style file that points at your tile server. You may also need to serve various supporting files for rendering, such as fonts to render the labels.
 
 You can start from an existing style, and adjust it as needed. [OSM Bright](https://github.com/openmaptiles/osm-bright-gl-style) is a good starting point. Note that you will need to clone the [gh-pages](https://github.com/openmaptiles/osm-bright-gl-style/tree/gh-pages) branch, rather than master, to get the files you need for your website.
 
@@ -85,7 +85,7 @@ You should have the map working now - open index.html in a web browser to test.
 
 ### Hosting everything locally
 
-After you are done with the steps above, you are serving tiles directly from your webserver altogether with the style. However, the renderer (MapLibre GL JS) comes from CDN or Mapbox servers, and the fonts come from `https://fonts.openmaptiles.org/` or other providers. If you like to serve everything from your own server, there are few extra steps.
+After you are done with the steps above, you are serving tiles directly from your webserver, along with the style. However, the renderer (MapLibre GL JS) comes from a CDN or Mapbox servers, and the fonts come from `https://fonts.openmaptiles.org/` or other providers. If you want to serve everything from your own server, there are a few extra steps.
 
 First, download Mapbox GL JS. You need all the files from the [dist](https://github.com/mapbox/mapbox-gl-js/tree/master/dist/) folder of the GitHub repository, and also the .js file. You can generate the .js yourself if you clone the entire mapbox-gl-js repository and follow the guide. However, this step requires Node.js. Alternatively, you can download the pregenerated .js file from the URL provided at the [Mapbox GL JS documentation page](https://www.mapbox.com/mapbox-gl-js/api/) - it is the one used for `<script src="...">`. The .js file should go alongside the .css file.
 
@@ -108,7 +108,7 @@ For example, if your style index is at `http://example.com/index.html`, and your
 "glyphs": "http://example.com/fonts/{fontstack}/{range}.pbf",
 ```
 
-You will also need to adjust the font references in the style, so they only reference a single font family at once, rather than several alternatives. Alternatives are not supported when hosting fonts as static files. You need to find *all* places that mention `"text-font"`, which will look somehow like this:
+You will also need to adjust the font references in the style, so they only reference a single font family at once, rather than several alternatives. Alternatives are not supported when hosting fonts as static files. You need to find *all* places that mention `"text-font"`, which will look something like this:
 
 ```json
 "text-font": [
@@ -126,21 +126,21 @@ and edit *each one*, so that the list has only one font in it, e.g.:
 ],
 ```
 
-(Don't forget to remove the comma before closing `]`! If your style suddenly stops working after you did this change, it's probably because you have forgotten a comma somewhere.)
+(Don't forget to remove the comma before closing `]`! If your style suddenly stops working after you make this change, it's probably because you have forgotten a comma somewhere.)
 
 Now you can test your changes by reloading index.html. If everything was done right, you should see the rendered map again.
 
-With this setup, you can serve maps from a server running on the same machine as the browser without an Internet connection - effectively, the combination of TileServer PHP and Mapbox GL JS becomes an offline vector .mbtiles map viewer.
+With this setup, you can serve maps from a server running on the same machine as the browser without an internet connection - effectively, the combination of TileServer PHP and Mapbox GL JS becomes an offline vector .mbtiles map viewer.
 
-## Server from folder structure
+## Serve from a folder structure
 
 This functionality is used to increase the performance of serving.
-The vector tiles can be unpacked from MBTiles (SQLite) container and hosted just
-a in direct folder structure - the same way as raster tiles are typically made
-with a software like MapTiler or GDAL2Tiles. The demonstration of such approach
-is visible at <http://klokantech.github.io/mapbox-gl-js-offline-example/>.
+The vector tiles can be unpacked from an MBTiles (SQLite) container and hosted
+directly in a folder structure - the same way as raster tiles are typically made
+with software like MapTiler or GDAL2Tiles. A demonstration of this approach
+can be seen at <http://klokantech.github.io/mapbox-gl-js-offline-example/>.
 
-To unpack and ungzip the tiles is useded mb-util than it is neccesery to unzip PBF files:
+Use mb-util to unpack the tiles; then you need to unzip the PBF files:
 
 ```bash
 ./mb-util --image_format=pbf countries.mbtiles countries

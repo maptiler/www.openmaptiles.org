@@ -12,7 +12,13 @@
 // instead of --omt-text-body, and headings rendered gray-900 instead of
 // --omt-text-dark.
 
-h1, h2, h3, h4, h5, h6 {
+// The three dialog/hero titles are listed by class because each renders as a heading
+// or a <p> depending on the route (exactly one H1 per page). Without them the <p> form
+// would fall to the `p, li` rule below and change colour: this file is unlayered and
+// the component SCSS sits in @layer components, so the element selector outranks
+// `.hero__title` regardless of specificity.
+h1, h2, h3, h4, h5, h6,
+.hero__title, .languages__title, .style-modal__title {
   color: var(--omt-text-dark);
 }
 

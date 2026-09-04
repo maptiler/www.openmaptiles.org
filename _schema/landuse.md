@@ -2,14 +2,14 @@
 title: landuse
 ---
 
-![ETL Graph](/media/etl_landuse.png)
-![Mapping Graph](/media/mapping_landuse.png)
+![Landuse ETL Graph](/media/etl_landuse.png)
+![Landuse Mapping Graph](/media/mapping_landuse.png)
 
 ```sql
 SELECT geometry, class FROM layer_landuse(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
 ```
 
-Landuse is used to describe use of land by humans. At lower zoom levels this is
+Landuse is used to describe the use of land by humans. At lower zoom levels, this is
 from Natural Earth data for residential (urban) areas and at higher zoom levels mostly OSM `landuse` tags.
 
 ## Fields
@@ -22,7 +22,7 @@ Original value of either the
 [`amenity`](http://wiki.openstreetmap.org/wiki/Key:amenity),
 [`leisure`](http://wiki.openstreetmap.org/wiki/Key:leisure),
 [`tourism`](http://wiki.openstreetmap.org/wiki/Key:tourism),
-[`place`](http://wiki.openstreetmap.org/wiki/Key:place)
+[`place`](http://wiki.openstreetmap.org/wiki/Key:place),
 or [`waterway`](http://wiki.openstreetmap.org/wiki/Key:waterway) tag.
 
 Possible values:

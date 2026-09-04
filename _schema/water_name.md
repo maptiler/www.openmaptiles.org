@@ -2,15 +2,15 @@
 title: water_name
 ---
 
-![ETL Graph](/media/etl_water_name.png)
-![Mapping Graph](/media/mapping_water_name.png)
+![Water name ETL Graph](/media/etl_water_name.png)
+![Water name Mapping Graph](/media/mapping_water_name.png)
 
 ```sql
 SELECT osm_id, geometry, name, name_en, name_de, NULLIF(tags->'name_int', '') AS "name_int", NULLIF(tags->'name:latin', '') AS "name:latin", NULLIF(tags->'name:nonlatin', '') AS "name:nonlatin", class, intermittent FROM layer_water_name(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
 ```
 
-Lake center lines for labelling lake bodies.
-This is based of the [osm-lakelines](https://github.com/openmaptiles/osm-lakelines) project
+Lake centerlines for labeling lakes.
+This is based on the [osm-lakelines](https://github.com/openmaptiles/osm-lakelines) project,
 which derives nice centerlines from OSM water bodies. Only the most important lakes contain labels.
 
 ## Fields

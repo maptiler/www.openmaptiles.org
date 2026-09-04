@@ -39,7 +39,7 @@ You can point your Leaflet layer to a tile hosting service (like MapTiler Cloud)
         const map = L.map('map').setView([47.3769, 8.5417], 13); // Zurich, Switzerland
 
         // Load raster tiles generated from OpenMapTiles
-        L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=YOUR_API_KEY', {
+        L.tileLayer('https://api.maptiler.com/maps/openstreetmap/{z}/{x}/{y}.png?key=YOUR_API_KEY', {
             attribution: '<a href="https://openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
             maxZoom: 19
         }).addTo(map);
@@ -83,7 +83,7 @@ It provides an extremely simple API that loads high-performance vector basemaps 
         // Add the official MapTiler vector layer to Leaflet
         const mtLayer = L.maptiler.maptilerLayer({
             apiKey: 'YOUR_MAPTILER_API_KEY_HERE',
-            style: L.maptiler.MapStyle.STREETS
+            style: L.maptiler.MapStyle.OPENSTREETMAP
         }).addTo(map);
     </script>
 </body>
@@ -109,11 +109,11 @@ This lets you take advantage of sharp, zoomable vector layers and custom styling
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <!-- MapLibre GL JS CSS & JS -->
-    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet" />
 
     <!-- MapLibre GL Leaflet Bridge -->
-    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet/leaflet-maplibre-gl.js"></script>
+    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js"></script>
 
     <style>
         body { margin: 0; padding: 0; }
@@ -128,7 +128,7 @@ This lets you take advantage of sharp, zoomable vector layers and custom styling
 
         // Initialize MapLibre GL layer inside Leaflet
         const glLayer = L.maplibreGL({
-            style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=YOUR_API_KEY'
+            style: 'https://api.maptiler.com/maps/openstreetmap/style.json?key=YOUR_API_KEY'
         }).addTo(map);
     </script>
 </body>

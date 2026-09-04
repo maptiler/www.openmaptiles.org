@@ -6,11 +6,11 @@ description: Edit map style with MapTiler Customize map design tool.
 order: 1
 ---
 
-## Customize Map Styles Visual Editor
+## Customize Map Styles with the Visual Editor
 
 Because OpenMapTiles uses a structured, standardized schema (with clearly defined layers like `water`, `road`, `building`, `landuse`, etc.), designing custom map styles is incredibly straightforward.
 
-Instead of manually editing raw JSON stylesheets containing thousands of lines of style rules, you can use the **MapTiler Customize visual editor** to modify map designs in real-time right in your web browser.
+Instead of manually editing raw JSON stylesheets containing thousands of lines of style rules, you can use the **MapTiler Customize visual editor** to modify map designs in real time right in your web browser.
 
 ### Visual Map Customization
 
@@ -18,7 +18,7 @@ The MapTiler Customize tool provides an easy-to-use, slide-out configuration pan
 
 - **Quick Colors**: Change the main colors of your map (land, water, forests, roads, and buildings) with simple color pickers.
 - **Font Control**: Choose from a wide range of modern typefaces to style labels globally.
-- **Language Selection**: Toggle map labels to show local names, english translations, or bilingual labels with a single click.
+- **Language Selection**: Toggle map labels to show local names, English translations, or bilingual labels with a single click.
 - **Layer Visibility**: Easily show or hide complete categories (such as transit networks, specific labels, or administrative boundaries) based on your use case.
 
 ### Advanced Style Editor

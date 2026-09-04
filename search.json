@@ -15,7 +15,7 @@ content pages. The 60 language and 6 style pages are deliberately excluded — t
 render the same homepage section stack, so any homepage term would return 66
 near-identical hits and bury the docs. See open item 13.
 
-`description` and `keywords` are indexed alongside the body because three pages —
+`description` is indexed alongside the body because three pages —
 `/`, `/viewers/` and `/docs/inspect/` — carry no page content at all: their text
 lives in the `home` layout's section includes. Pagefind indexed the rendered HTML
 and so covered them; front matter is the closest equivalent Liquid can reach.
@@ -30,7 +30,7 @@ throughout the docs.
 {%- for doc in site.docs -%}
   {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
   {%- assign body = doc.content | markdownify | strip_html | normalize_whitespace -%}
-  {"url":{{ doc.url | relative_url | jsonify }},"title":{{ doc.title | jsonify }},"category":{{ doc.category | jsonify }},"description":{{ doc.description | default: "" | jsonify }},"keywords":{{ doc.keywords | default: "" | jsonify }},"body":{{ body | jsonify }}}
+  {"url":{{ doc.url | relative_url | jsonify }},"title":{{ doc.title | jsonify }},"category":{{ doc.category | jsonify }},"description":{{ doc.description | default: "" | jsonify }},"body":{{ body | jsonify }}}
 {%- endfor -%}
 
 {%- for url in extra_urls -%}
@@ -38,7 +38,7 @@ throughout the docs.
   {%- if match -%}
     {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
     {%- assign body = match.content | markdownify | strip_html | normalize_whitespace -%}
-    {"url":{{ match.url | relative_url | jsonify }},"title":{{ match.title | jsonify }},"category":{{ match.category | default: "" | jsonify }},"description":{{ match.description | default: "" | jsonify }},"keywords":{{ match.keywords | default: "" | jsonify }},"body":{{ body | jsonify }}}
+    {"url":{{ match.url | relative_url | jsonify }},"title":{{ match.title | jsonify }},"category":{{ match.category | default: "" | jsonify }},"description":{{ match.description | default: "" | jsonify }},"body":{{ body | jsonify }}}
   {%- endif -%}
 {%- endfor -%}
 ]

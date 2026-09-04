@@ -7,7 +7,11 @@ relative path with no leading slash — so the logos resolved correctly only on
 `/` and 404'd on all 66 style and language pages. `relative_url` makes that
 structurally impossible.
 {%- endcomment -%}
-{%- assign companies = "amazon,bosch,carto,ibm,planet,siemens" | split: "," -%}
+{%- comment -%}
+Each entry is `filename-stem|alt`: the stem still builds the src, but the alt is
+now written out rather than reused from it.
+{%- endcomment -%}
+{%- assign companies = "amazon|Amazon logo,bosch|Bosch logo,carto|Carto logo,ibm|IBM logo,planet|Planet logo,siemens|Siemens logo" | split: "," -%}
 <section id="companies" class="companies" data-section="companies">
   <div class="companies__inner">
     <div class="companies__intro">
@@ -17,10 +21,11 @@ structurally impossible.
       <div class="companies__rule"></div>
     </div>
     <div class="companies__logos">
-      {%- for name in companies %}
+      {%- for entry in companies %}
+      {%- assign parts = entry | split: "|" %}
       <img
-        src="{{ '/img/home/' | append: name | append: '.png' | relative_url }}"
-        alt="{{ name }}"
+        src="{{ '/img/home/' | append: parts[0] | append: '.png' | relative_url }}"
+        alt="{{ parts[1] }}"
         loading="lazy"
         class="companies__logo"
       />

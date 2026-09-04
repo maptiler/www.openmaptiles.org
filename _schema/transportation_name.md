@@ -2,17 +2,17 @@
 title: transportation_name
 ---
 
-![ETL Graph](/media/etl_transportation_name.png)
-![Mapping Graph](/media/mapping_transportation_name.png)
+![Transportation name ETL Graph](/media/etl_transportation_name.png)
+![Transportation name Mapping Graph](/media/mapping_transportation_name.png)
 
 ```sql
 SELECT geometry, name, name_en, name_de, NULLIF(tags->'name_int', '') AS "name_int", NULLIF(tags->'name:latin', '') AS "name:latin", NULLIF(tags->'name:nonlatin', '') AS "name:nonlatin", ref, ref_length, network::text, class::text, subclass, brunnel, layer, level, indoor, route_1_network, route_1_ref, route_1_name, route_1_colour, route_2_network, route_2_ref, route_2_name, route_2_colour, route_3_network, route_3_ref, route_3_name, route_3_colour, route_4_network, route_4_ref, route_4_name, route_4_colour, route_5_network, route_5_ref, route_5_name, route_5_colour, route_6_network, route_6_ref, route_6_name, route_6_colour FROM layer_transportation_name(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
 ```
 
-This is the layer for labelling the highways. Only highways that are named `name=*` and are long enough
+This is the layer for labeling the highways. Only highways that are named `name=*` and are long enough
 to place text upon appear. The OSM roads are stitched together if they contain the same name
 to have better label placement than having many small linestrings.
-For motorways you should use the `ref` field to label them while for other roads you should use `name`.
+For motorways, you should use the `ref` field to label them while for other roads you should use `name`.
 
 ## Fields
 
@@ -34,11 +34,11 @@ The OSM [`ref`](http://wiki.openstreetmap.org/wiki/Key:ref) tag of the motorway 
 
 ### ref_length
 
-Length of the `ref` field. Useful for having a shield icon as background for labeling motorways.
+Length of the `ref` field. Useful for having a shield icon as a background for labeling motorways.
 
 ### network
 
-The network type derived mainly from [`network`](http://wiki.openstreetmap.org/wiki/Key:network) tag of the road.
+The network type derived mainly from the [`network`](http://wiki.openstreetmap.org/wiki/Key:network) tag of the road.
 See more info about [`us-*`](http://wiki.openstreetmap.org/wiki/Road_signs_in_the_United_States),
 [`ca-transcanada`](https://en.wikipedia.org/wiki/Trans-Canada_Highway),
 or [`gb-*`](http://wiki.openstreetmap.org/wiki/United_Kingdom_Tagging_Guidelines#UK_roads).
@@ -93,8 +93,8 @@ Possible values:
 
 ### subclass
 
-Distinguish more specific classes of path:
-Subclass is value of the
+Distinguish more specific classes of paths:
+Subclass is the value of the
 [`highway`](http://wiki.openstreetmap.org/wiki/Key:highway) (for paths),
 and "junction" for [`motorway junctions`](http://wiki.openstreetmap.org/wiki/Tag:highway=motorway_junction).
 
@@ -113,7 +113,7 @@ Possible values:
 
 ### brunnel
 
-Mark whether way is a bridge, a tunnel or a ford.
+Mark whether the way is a bridge, a tunnel, or a ford.
 
 Possible values:
 
@@ -125,17 +125,17 @@ Possible values:
 ### level
 
 Experimental feature! Filled only for steps and footways. Original
-value of [`level`](http://wiki.openstreetmap.org/wiki/Key:level) tag.
+value of the [`level`](http://wiki.openstreetmap.org/wiki/Key:level) tag.
 
 ### layer
 
 Experimental feature! Filled only for steps and footways. Original
-value of [`layer`](http://wiki.openstreetmap.org/wiki/Key:layer) tag.
+value of the [`layer`](http://wiki.openstreetmap.org/wiki/Key:layer) tag.
 
 ### indoor
 
 Experimental feature! Filled only for steps and footways. Original
-value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
+value of the [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
 
 Possible values:
 
@@ -156,7 +156,7 @@ Possible values:
 
 ### route_1_colour
 
-1st route concurrency colour.
+1st route concurrency color.
 
 ### route_2_network
 
@@ -172,7 +172,7 @@ Possible values:
 
 ### route_2_colour
 
-2nd route concurrency colour.
+2nd route concurrency color.
 
 ### route_3_network
 
@@ -188,7 +188,7 @@ Possible values:
 
 ### route_3_colour
 
-3rd route concurrency colour.
+3rd route concurrency color.
 
 ### route_4_network
 
@@ -204,7 +204,7 @@ Possible values:
 
 ### route_4_colour
 
-4th route concurrency colour.
+4th route concurrency color.
 
 ### route_5_network
 
@@ -220,7 +220,7 @@ Possible values:
 
 ### route_5_colour
 
-5th route concurrency colour.
+5th route concurrency color.
 
 ### route_6_network
 
@@ -236,7 +236,7 @@ Possible values:
 
 ### route_6_colour
 
-6th route concurrency colour.
+6th route concurrency color.
 
 
 

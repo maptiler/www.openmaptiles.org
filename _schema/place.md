@@ -2,17 +2,17 @@
 title: place
 ---
 
-![ETL Graph](/media/etl_place.png)
-![Mapping Graph](/media/mapping_place.png)
+![Place ETL Graph](/media/etl_place.png)
+![Place Mapping Graph](/media/mapping_place.png)
 
 ```sql
 SELECT osm_id, geometry, name, name_en, name_de, NULLIF(tags->'name_int', '') AS "name_int", NULLIF(tags->'name:latin', '') AS "name:latin", NULLIF(tags->'name:nonlatin', '') AS "name:nonlatin", class, rank, capital, iso_a2 FROM layer_place(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14, 1)
 ```
 
-The place layer consists out of [countries](http://wiki.openstreetmap.org/wiki/Tag:place%3Dcountry),
-[states](http://wiki.openstreetmap.org/wiki/Tag:place%3Dstate), [cities](http://wiki.openstreetmap.org/wiki/Key:place)
+The place layer consists of [countries](http://wiki.openstreetmap.org/wiki/Tag:place%3Dcountry),
+[states](http://wiki.openstreetmap.org/wiki/Tag:place%3Dstate), [cities](http://wiki.openstreetmap.org/wiki/Key:place),
 and [islands](https://wiki.openstreetmap.org/wiki/Tag:place%3Disland).
-Apart from the roads this is also one of the more important layers to create a beautiful map.
+Apart from the roads, this is also one of the more important layers to create a beautiful map.
 We suggest you use different font styles and sizes to create a text hierarchy.
 
 ## Fields
@@ -48,7 +48,7 @@ Possible values:
 
 Original value of the
 [`place`](http://wiki.openstreetmap.org/wiki/Key:place) tag.
-Distinguish between continents, countries, states, islands and
+Distinguish between continents, countries, states, islands, and
 places like settlements or smaller entities.
 Use **class** to separately style the different places and build
 a text hierarchy according to their importance. For places derived
@@ -82,20 +82,20 @@ Original value of the
 
 ### rank
 
-Countries, states and the most important cities all have a
+Countries, states, and the most important cities all have a
 **rank** to boost their importance on the map.
 The **rank** field for countries and states ranges from
 `1` to `6` while the **rank** field for cities ranges from
 `1` to `10` for the most important cities
 and continues from `10` serially based on the
 local importance of the city (derived from population and city class).
-You can use the **rank** to limit density of labels or improve
+You can use the **rank** to limit the density of labels or improve
 the text hierarchy.
-The rank value is a combination of the Natural Earth
-`scalerank`, `labelrank` and `datarank` values for countries
-and states and for cities consists out of a shifted
-Natural Earth `scalerank` combined with a local rank
-within a grid for cities that do not have a Natural Earth `scalerank`.
+For countries and states, the rank value is a combination of the
+Natural Earth `scalerank`, `labelrank`, and `datarank` values.
+For cities, it consists of a shifted Natural Earth `scalerank`
+combined with a local rank within a grid for cities that do not
+have a Natural Earth `scalerank`.
 
 
 

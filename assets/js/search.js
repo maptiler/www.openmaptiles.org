@@ -157,7 +157,6 @@ export function initSearch(config) {
       idx = lunr(function () {
         this.ref("url");
         this.field("title", { boost: 10 });
-        this.field("keywords", { boost: 5 });
         this.field("category", { boost: 4 });
         this.field("description", { boost: 4 });
         this.field("body");

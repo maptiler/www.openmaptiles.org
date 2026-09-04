@@ -72,7 +72,6 @@ Production is unaffected: `site.staging` is never set by _config.yml.
   {%- assign robots_value = page.robots | default: "index, follow" -%}
 {%- endif -%}
 <meta name="robots" content="{{ robots_value }}" />
-{% if page.keywords %}<meta name="keywords" content="{{ page.keywords }}" />{% endif %}
 
 {%- comment -%}
 og:title and twitter:title use raw_title, NOT page.title. They are set
@@ -98,8 +97,21 @@ suffix on all 36 doc pages.
 <meta name="twitter:image" content="{{ absolute_image }}" />
 <meta name="twitter:site" content="{{ site.twitter }}" />
 
+{%- comment -%}
+A page may point its canonical at another page by setting `canonical` in front
+matter to a site-root-relative path (e.g. /docs/host/maptiler-cloud/). It gets
+the site.url prefix the same way absolute_url above does, so the emitted tag
+follows the host the site is built for — localhost when served locally,
+openmaptiles.org in production.
+{%- endcomment -%}
+{%- if page.canonical -%}
+  {%- assign canonical_url = site.url | append: page.canonical -%}
+{%- else -%}
+  {%- assign canonical_url = absolute_url -%}
+{%- endif -%}
+
 <!-- Canonical URL -->
-<link rel="canonical" href="{{ absolute_url }}" />
+<link rel="canonical" href="{{ canonical_url }}" />
 
 <!-- Favicon / Icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="{{ '/favicon.png' | relative_url }}" />

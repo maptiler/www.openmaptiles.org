@@ -12,9 +12,20 @@ mount→unmount→remount cycle. None of that applies here, so it is not ported.
       <div class="languages__banner-row">
         <div class="languages__banner-info">
           <div>
-            <h1 class="languages__title" data-languages-title></h1>
+            {%- comment -%}
+            Seeded from _data/languages.json so the heading is in the served HTML rather
+            than only after languages.js runs; the script sets the same string again.
+            Off a /languages/:code/ route this dialog is closed and the hero owns the
+            H1, so the element drops to a <p> there.
+            {%- endcomment -%}
+            {%- assign language_title = page.language.titlelocalized | default: page.language.title -%}
+            {% if page.active_language %}
+            <h1 class="languages__title" data-languages-title>{{ language_title }}</h1>
+            {% else %}
+            <p class="languages__title" data-languages-title></p>
+            {% endif %}
             <p class="languages__subtitle">
-              OpenMapTiles are multi-lingual — display the map in your own
+              OpenMapTiles is multilingual - display the map in your own
               language.
             </p>
           </div>
@@ -30,7 +41,7 @@ mount→unmount→remount cycle. None of that applies here, so it is not ported.
       <div class="languages__card-top">
         <img
           src="{{ '/img/maptiler-logo.svg' | relative_url }}"
-          alt="MapTiler"
+          alt="MapTiler logotype"
           loading="lazy"
           class="languages__card-logo"
         />

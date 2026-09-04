@@ -2,25 +2,25 @@
 title: boundary
 ---
 
-![ETL Graph](/media/etl_boundary.png)
-![Mapping Graph](/media/mapping_boundary.png)
+![Boundary ETL Graph](/media/etl_boundary.png)
+![Boundary Mapping Graph](/media/mapping_boundary.png)
 
 ```sql
 SELECT geometry, admin_level, adm0_l, adm0_r, disputed, disputed_name, claimed_by, maritime, class, name, NULLIF(tags->'name_int', '') AS "name_int", NULLIF(tags->'name:latin', '') AS "name:latin", NULLIF(tags->'name:nonlatin', '') AS "name:nonlatin" FROM layer_boundary(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
 ```
 
 Contains administrative boundaries as linestrings and aboriginal lands as polygons.
-Until z4 [Natural Earth data](http://www.naturalearthdata.com/downloads/) is used after which
+Until z4, [Natural Earth data](http://www.naturalearthdata.com/downloads/) is used, after which
 OSM boundaries ([`boundary=administrative`](http://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative))
 are present from z5 to z14 (also for maritime boundaries with `admin_level <= 2` at z4).
-OSM data contains several [`admin_level`](http://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative#admin_level)
+OSM data contains several [`admin_level`](http://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative#admin_level) values,
 but for most styles it makes sense to just style `admin_level=2` and `admin_level=4`.
 
 ## Fields
 
 ### class
 
-Use the **class** to differentiate between different kinds of boundaries.  The class for `boundary=aboriginal_lands` is `aboriginal_lands`.
+Use the **class** to differentiate between different kinds of boundaries. The class for `boundary=aboriginal_lands` is `aboriginal_lands`.
 
 ### name
 
@@ -32,7 +32,7 @@ OSM [admin_level](http://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrati
 indicating the level of importance of this boundary.
 The `admin_level` corresponds to the lowest `admin_level`
 the line participates in.
-At low zoom levels the Natural Earth boundaries are mapped to the equivalent admin levels.
+At low zoom levels, the Natural Earth boundaries are mapped to the equivalent admin levels.
 
 ### adm0_l
 
@@ -54,9 +54,9 @@ Possible values:
 
 ### disputed_name
 
-Field containing name of the disputed area (extracted from border relation in OSM, without spaces).
+Field containing the name of the disputed area (extracted from border relation in OSM, without spaces).
 For country boundaries only (`admin_level = 2`).
-Value examples from Asian OSM pbf extract
+Value examples from the Asian OSM PBF extract.
 
 Possible values:
 
@@ -75,7 +75,7 @@ Possible values:
 
 ### claimed_by
 
-ISO2 code of country, which wants to see the boundary line.
+ISO2 code of the country that wants to see the boundary line.
 For country boundaries only (`admin_level = 2`).
 
 ### maritime
