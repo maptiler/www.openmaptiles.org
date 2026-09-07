@@ -1,6 +1,6 @@
 [
   {
-    "title": "Get Started",
+    "title": "Get started",
     "items": [
       {
         "name": "Introduction",
@@ -13,10 +13,10 @@
     ]
   },
   {
-    "title": "Generate Vector Tiles",
+    "title": "Generate vector tiles",
     "items": [
       {
-        "name": "Generate own map",
+        "name": "Generate your own map",
         "path": "/docs/generate/generate-openmaptiles"
       },
       {
@@ -34,10 +34,10 @@
     ]
   },
   {
-    "title": "Hosting Map Tiles",
+    "title": "Hosting map tiles",
     "items": [
       {
-        "name": "Ready to use API",
+        "name": "Ready-to-use API",
         "path": "/docs/host/maptiler-cloud"
       },
       {
@@ -55,7 +55,7 @@
     ]
   },
   {
-    "title": "Style your Map",
+    "title": "Style your map",
     "items": [
       {
         "name": "MapTiler",
@@ -72,10 +72,10 @@
     ]
   },
   {
-    "title": "Display Map",
+    "title": "Display a map",
     "items": [
       {
-        "name": "Interactive Web Viewers",
+        "name": "Interactive web viewers",
         "path": "/viewers"
       },
       {
@@ -97,7 +97,7 @@
     ]
   },
   {
-    "title": "Maps in a Mobile App",
+    "title": "Maps in a mobile app",
     "items": [
       {
         "name": "Create a mobile app",
@@ -106,14 +106,14 @@
     ]
   },
   {
-    "title": "Generate Raster Tiles",
+    "title": "Generate raster tiles",
     "items": [
       {
-        "name": "Ready to use API",
+        "name": "Ready-to-use API",
         "path": "/docs/raster/maptiler-cloud"
       },
       {
-        "name": "Custom Raster Layer",
+        "name": "Custom raster layer",
         "path": "/docs/raster/custom-raster"
       },
       {

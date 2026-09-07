@@ -7,9 +7,9 @@ order: 2
 ---
 ## MapTiler Server
 
-**The easiest way how to deploy world basemap powered by OpenStreetMap.**
+**The easiest way to deploy a world basemap powered by OpenStreetMap.**
 
-### Download and install
+### 1. Download and install
 
 Download an installer for your system:
 
@@ -22,11 +22,11 @@ On Linux, install with:
 - (DEB) `sudo dpkg -i maptiler-server-x.x.x.deb`
 - (RPM) `sudo rpm -i maptiler-server-x.x.x.rpm`
 
-### 2. Start server
+### 2. Start the server
 
 Windows: Launch the installed application
 
-Linux: Run directly with `maptiler-server` or as system service `maptiler-server-servicify`.
+Linux: Run directly with `maptiler-server` or as a system service `maptiler-server-servicify`.
 
 ### 3. Add data and run administration
 

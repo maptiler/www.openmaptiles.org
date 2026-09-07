@@ -43,8 +43,6 @@ module OpenMapTiles
           "stylesheets"  => ["home"],
           "title"        => title,
           "description"  => desc,
-          "keywords"     => "#{style["slug"]}, #{style["title"]}, map style, openmaptiles, " \
-                            "vector tiles, openstreetmap, tileserver",
           "active_style" => style["slug"],
           "style"        => style,
         })
@@ -63,8 +61,6 @@ module OpenMapTiles
           "stylesheets"     => ["home"],   # see generate_styles
           "title"           => title,
           "description"     => desc,
-          "keywords"        => "#{code}, #{name}, multilingual maps, openmaptiles, " \
-                               "vector tiles, openstreetmap, translation",
           "active_language" => code,
           "language"        => lang,
         })

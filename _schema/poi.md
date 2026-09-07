@@ -2,15 +2,15 @@
 title: poi
 ---
 
-![ETL Graph](/media/etl_poi.png)
-![Mapping Graph](/media/mapping_poi.png)
+![POI ETL Graph](/media/etl_poi.png)
+![POI Mapping Graph](/media/mapping_poi.png)
 
 ```sql
 SELECT osm_id, geometry, name, name_en, name_de, NULLIF(tags->'name_int', '') AS "name_int", NULLIF(tags->'name:latin', '') AS "name:latin", NULLIF(tags->'name:nonlatin', '') AS "name:nonlatin", class, subclass, agg_stop, layer, level, indoor, rank FROM layer_poi(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14, 1)
 ```
 
-[Points of interests](http://wiki.openstreetmap.org/wiki/Points_of_interest) containing
-a of a variety of OpenStreetMap tags. Mostly contains amenities, sport, shop and tourist POIs.
+[Points of interest](http://wiki.openstreetmap.org/wiki/Points_of_interest) containing
+a variety of OpenStreetMap tags. Mostly contains amenities, sport, shop, and tourist POIs.
 
 ## Fields
 
@@ -28,7 +28,7 @@ German name `name:de` if available, otherwise `name` or `name:en`. This is depre
 
 ### class
 
-More general classes of POIs. If there is no more general `class` for the `subclass`
+More general classes of POIs. If there is no more general `class` for the `subclass`,
 this field will contain the same value as `subclass`.
 But for example for schools you only need to style the class `school` to filter the subclasses `school`
 and `kindergarten`. Or use the class `shop` to style all shops.
@@ -93,21 +93,21 @@ Original value of either the
 [`highway`](http://wiki.openstreetmap.org/wiki/Key:highway),
 [`office`](https://wiki.openstreetmap.org/wiki/Key:office)
 or [`waterway`](http://wiki.openstreetmap.org/wiki/Key:waterway)
-tag.  Use this to do more precise styling.
+tag. Use this to do more precise styling.
 
 ### rank
 
 The POIs are ranked ascending according to their importance within a grid. The `rank` value shows the
-local relative importance of a POI within it's cell in the grid. This can be used to reduce label density at *z14*.
-Since all POIs already need to be contained at *z14* you can use `less than rank=10` epxression to limit
-POIs. At some point like *z17* you can show all POIs.
+local relative importance of a POI within its cell in the grid. This can be used to reduce label density at *z14*.
+Since all POIs already need to be contained at *z14*, you can use a `less than rank=10` expression to limit
+POIs. At some point, such as *z17*, you can show all POIs.
 
 ### agg_stop
 
-Experimental feature! Indicates main platform of public transport
+Experimental feature! Indicates the main platform of public transport
 stops (buses, trams, and subways). Grouping of platforms is
-implemented using
-[`uic_ref`](http://wiki.openstreetmap.org/wiki/Key:uic_ref) tag that
+implemented using the
+[`uic_ref`](http://wiki.openstreetmap.org/wiki/Key:uic_ref) tag, which
  is not used worldwide.
 
 Possible values:
@@ -117,15 +117,15 @@ Possible values:
 
 ### level
 
-Original value of [`level`](http://wiki.openstreetmap.org/wiki/Key:level) tag.
+Original value of the [`level`](http://wiki.openstreetmap.org/wiki/Key:level) tag.
 
 ### layer
 
-Original value of [`layer`](http://wiki.openstreetmap.org/wiki/Key:layer) tag.
+Original value of the [`layer`](http://wiki.openstreetmap.org/wiki/Key:layer) tag.
 
 ### indoor
 
-Original value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
+Original value of the [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
 
 Possible values:
 

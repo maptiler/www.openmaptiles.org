@@ -8,7 +8,7 @@ order: 1
 
 ## MapTiler SDK JS
 
-[MapTiler SDK JS](https://github.com/maptiler/maptiler-sdk-js) is a modern, high-performance Javascript library for interactive web maps. Built as a direct extension of **MapLibre GL JS**, it preserves the complete feature set of MapLibre while adding several helper classes, simplifying API configuration, and providing elegant built-in components.
+[MapTiler SDK JS](https://github.com/maptiler/maptiler-sdk-js) is a modern, high-performance JavaScript library for interactive web maps. Built as a direct extension of **MapLibre GL JS**, it preserves the complete feature set of MapLibre while adding several helper classes, simplifying API configuration, and providing elegant built-in components.
 
 Since the MapTiler SDK JS is designed to work seamlessly with the OpenMapTiles schema, it is the recommended client library if you host your maps on MapTiler Cloud or use standard OpenMapTiles styles.
 
@@ -24,8 +24,8 @@ Since the MapTiler SDK JS is designed to work seamlessly with the OpenMapTiles s
 To use the MapTiler SDK JS, include the library and CSS files in the `<head>` of your HTML document:
 
 ```html
-<script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.0/maptiler-sdk.umd.min.js"></script>
-<link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.0/maptiler-sdk.css" rel="stylesheet" />
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.umd.min.js"></script>
+<link href="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.css" rel="stylesheet" />
 ```
 
 Then, initialize the map inside a container element:
@@ -37,8 +37,8 @@ Then, initialize the map inside a container element:
     <meta charset="utf-8" />
     <title>Display Map with MapTiler SDK JS</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.0/maptiler-sdk.umd.min.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.0/maptiler-sdk.css" rel="stylesheet" />
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.css" rel="stylesheet" />
     <style>
         body { margin: 0; padding: 0; }
         #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -53,7 +53,7 @@ Then, initialize the map inside a container element:
         // Initialize the map
         const map = new maptilersdk.Map({
             container: 'map',
-            style: maptilersdk.MapStyle.STREETS, // Preset compatible with OpenMapTiles
+            style: maptilersdk.MapStyle.OPENSTREETMAP, // Preset compatible with OpenMapTiles
             center: [8.5417, 47.3769], // Zurich, Switzerland
             zoom: 12
         });

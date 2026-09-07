@@ -50,7 +50,11 @@ loadStyle() did — nothing is vendored for this widget.
 
       <div class="viewers__panel">
         <div class="viewers__panel-head">
-          <h3 class="viewers__panel-title">Interactive Web Viewers</h3>
+          {%- comment -%}
+          H1: home.html emits this include on /viewers/ only, and the dialog is that
+          page's subject, so the hero headline steps down to an <h2> there.
+          {%- endcomment -%}
+          <h1 class="viewers__panel-title">Interactive web viewers</h1>
         </div>
 
         <p class="viewers__panel-text">
@@ -69,7 +73,7 @@ loadStyle() did — nothing is vendored for this widget.
         <div class="viewers__cloud">
           <img
             src="{{ '/img/maptiler-logo-icon.png' | relative_url }}"
-            alt="MapTiler Logo"
+            alt="MapTiler logo"
             loading="lazy"
             class="viewers__cloud-logo"
           />
@@ -83,7 +87,7 @@ loadStyle() did — nothing is vendored for this widget.
             (classifyMapTiler returns "cloud"), so nothing fires.
             {%- endcomment -%}
             class="viewers__cloud-link"
-          >Try our Maps API <span class="viewers__cloud-note">— free or commercial plans for raster and vector tiles.</span></a>
+          >Try our Maps API <span class="viewers__cloud-note">- free or commercial plans for raster and vector tiles.</span></a>
         </div>
       </div>
 

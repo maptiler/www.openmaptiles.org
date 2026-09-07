@@ -82,7 +82,7 @@ measures the first spacer's width to convert scrollLeft into a card index.
               srcset="{{ '/img/home-banner-map.webp' | relative_url }}"
               type="image/webp"
             />
-            <img src="{{ '/img/home-banner-map.png' | relative_url }}" alt="More styles" loading="lazy" class="mapstyles__more-img" />
+            <img src="{{ '/img/home-banner-map.png' | relative_url }}" alt="MapTiler Basic map style from OpenStreetMap" loading="lazy" class="mapstyles__more-img" />
           </picture>
           <div class="mapstyles__more-icon">{% include icons/github-logo.svg %}</div>
         </div>
@@ -110,9 +110,4 @@ measures the first spacer's width to convert scrollLeft into a card index.
 
     <div class="mapstyles__dots" data-carousel-dots></div>
   </div>
-
-  {%- comment -%}
-  Last child of the section, so it overlays the cards above it.
-  {%- endcomment -%}
-  {% include home/style-modal.html %}
 </section>

@@ -2,9 +2,8 @@
 layout: legal
 permalink: /about/privacy/
 stylesheets: [docs]
-title: "Privacy policy"
+title: "Our privacy policy"
 description: "How openmaptiles.org collects and uses data, including the analytics it shares with MapTiler."
-keywords: "openmaptiles, privacy policy, cookies, analytics, GDPR"
 ---
 
 ## Who we are
@@ -28,7 +27,7 @@ generated automatically by your browser while you use the Site:
   location, then discarded), browser and device type, operating system,
   referring page, and the pages you visit.
 - **Interaction data** - which links you click (for example, links to
-  GitHub, to MapTiler's Cloud, Server or Data products, or to a map-style
+  GitHub, to MapTiler's Cloud, Server, or Data products, or to a map-style
   preview). If you use the search box inside our documentation, the text of
   your search query is recorded together with that interaction, so please
   avoid typing personal information into it.
@@ -55,7 +54,7 @@ settings** in the footer of any page.
 We use Google Analytics to understand how visitors use the Site.
 
 Part of what OpenMapTiles does is introduce visitors to MapTiler's commercial
-products (MapTiler Cloud, Server and Data). To measure that, when you click
+products (MapTiler Cloud, Server, and Data). To measure that, when you click
 through from openmaptiles.org to a MapTiler domain, an anonymous identifier
 travels with you so that a later action there - such as creating a MapTiler
 account - can be counted back as an outcome of your visit here. That signal
@@ -67,7 +66,7 @@ history on this Site.
 Because of this cross-domain reporting, MapTiler AG processes this
 particular analytics data both as the operator of openmaptiles.org and as the
 operator of maptiler.com. This policy only covers openmaptiles.org; once
-you're on maptiler.com, cloud.maptiler.com, docs.maptiler.com or
+you're on maptiler.com, cloud.maptiler.com, docs.maptiler.com, or
 data.maptiler.com, [MapTiler's own Privacy
 Policy](https://www.maptiler.com/privacy-policy/) applies instead.
 
@@ -86,7 +85,7 @@ Site:
 
 - **Google** - as our analytics processor (Google Analytics).
 - **CookieScript** - as our cookie consent management provider, to record
-  and honour your cookie choice.
+  and honor your cookie choice.
 - **MapTiler AG's other systems** - for the cross-domain measurement
   described above.
 
@@ -104,7 +103,7 @@ Google Analytics.
 ## Your rights
 
 Depending on where you live, you may have the right to access, correct,
-delete or export the personal data we hold about you, to object to or
+delete, or export the personal data we hold about you, to object to or
 restrict its processing, and to withdraw consent at any time. To exercise
 any of these rights, contact us using the details above. If you are in the
 EU/EEA or UK, you also have the right to lodge a complaint with your local
@@ -116,4 +115,4 @@ authority is the [Federal Data Protection and Information Commissioner
 
 We may update this policy as the Site or its analytics setup changes.
 
-*Last updated: August 13th, 2026*
+*Last updated: August 13, 2026*

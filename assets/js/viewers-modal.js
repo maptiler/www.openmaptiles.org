@@ -1,6 +1,6 @@
 // Interactive web viewers: the side-by-side comparison dialog.
 //
-// Three mapping libraries render the same basic-v2 style side by side, one
+// Three mapping libraries render the same openstreetmap style side by side, one
 // visible at a time, with centre and zoom carried across when you switch tabs.
 // All four libraries load from their CDNs on demand rather than upfront. Nothing here
 // is vendored, unlike languages.js: these are three third-party viewers being compared,
@@ -9,19 +9,19 @@
 import { withBase } from "./baseurl.js";
 
 const STYLES = [
-  "https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+  "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css",
   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-  "https://cdn.jsdelivr.net/npm/ol@8.2.0/ol.css",
+  "https://cdn.jsdelivr.net/npm/ol@10.10.0/ol.css",
 ];
 
 const SCRIPTS = [
-  "https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+  "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js",
   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
-  "https://cdn.jsdelivr.net/npm/ol@8.2.0/dist/ol.js",
+  "https://cdn.jsdelivr.net/npm/ol@10.10.0/dist/ol.js",
 ];
 
 // olms needs `ol` in global scope, so it loads only after the batch above.
-const OLMS = "https://cdn.jsdelivr.net/npm/ol-mapbox-style@12.1.0/dist/olms.js";
+const OLMS = "https://cdn.jsdelivr.net/npm/ol-mapbox-style@13.4.3/dist/olms.js";
 
 // Both loaders resolve immediately if the asset is already in the document.
 function loadScript(src) {
@@ -68,8 +68,8 @@ export function initViewersModal(config) {
 
   const domain = config.mapsDomain || "https://api.maptiler.com";
   const apiKey = config.apiKey || "";
-  const styleUrl = `${domain}/maps/basic-v2/style.json?key=${apiKey}`;
-  const xyzUrl = `${domain}/maps/basic-v2/256/{z}/{x}/{y}.png?key=${apiKey}`;
+  const styleUrl = `${domain}/maps/openstreetmap/style.json?key=${apiKey}`;
+  const xyzUrl = `${domain}/maps/openstreetmap/256/{z}/{x}/{y}.png?key=${apiKey}`;
 
   // The modal is the whole page on /viewers/, so the lock is unconditional.
   document.body.style.overflow = "hidden";
@@ -105,14 +105,14 @@ export function initViewersModal(config) {
     modal.querySelector(`[data-viewers-container="${name}"]`);
 
   function initMaps() {
-    // A. MapLibre GL JS — zoom 1 here equals zoom 2 in the other two.
+    // A. MapLibre GL JS — zoom 2 here equals zoom 3 in the other two.
     try {
       const maplibregl = window.maplibregl;
       const map = new maplibregl.Map({
         container: containerFor("mlgljs"),
         style: styleUrl,
         center: [0, 0],
-        zoom: 1,
+        zoom: 2,
         attributionControl: true,
       });
       map.addControl(new maplibregl.NavigationControl(), "top-right");
@@ -127,7 +127,7 @@ export function initViewersModal(config) {
       const map = L.map(containerFor("leaflet"), {
         zoomControl: false,
         attributionControl: true,
-      }).setView([0, 0], 2);
+      }).setView([0, 0], 3);
       L.control.zoom({ position: "topright" }).addTo(map);
       L.tileLayer(xyzUrl, {
         maxZoom: 18,

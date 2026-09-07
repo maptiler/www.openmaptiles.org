@@ -16,13 +16,13 @@
       "name": "Petr Pridal, PhD",
       "img": "petrpridal.jpg",
       "href": "https://www.maptiler.com",
-      "role": "CEO MapTiler"
+      "role": "CEO of MapTiler"
     },
     {
       "name": "Prof. Stefan Keller",
       "img": "stefankeller.png",
-      "href": "http://wiki.hsr.ch/StefanKeller/wiki.cgi?StefanKeller",
-      "role": "Professor for GIS at HSR"
+      "href": "https://www.ost.ch/de/person/stefan-f-keller-1419",
+      "role": "Professor at OST"
     }
   ],
   "partners": [
@@ -32,9 +32,9 @@
       "alt": "Klokan Technologies"
     },
     {
-      "href": "http://www.ifs.hsr.ch/Geometa-Lab.12520.0.html",
+      "href": "https://www.ost.ch/de/forschung-und-dienstleistungen/informatik/ifs-institut-fuer-software",
       "img": "hsr-logo.png",
-      "alt": "Geometalab HSR"
+      "alt": "HSR Hochschule für Technik Rapperswil gray logo"
     }
   ]
 }

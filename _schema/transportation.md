@@ -2,8 +2,8 @@
 title: transportation
 ---
 
-![ETL Graph](/media/etl_transportation.png)
-![Mapping Graph](/media/mapping_transportation.png)
+![Transportation ETL Graph](/media/etl_transportation.png)
+![Transportation Mapping Graph](/media/mapping_transportation.png)
 
 ```sql
 SELECT geometry, class, subclass, network, oneway, ramp, brunnel, service, access, toll, expressway, layer, level, indoor, bicycle, foot, horse, mtb_scale, official, surface FROM layer_transportation(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
@@ -12,10 +12,10 @@ SELECT geometry, class, subclass, network, oneway, ramp, brunnel, service, acces
 **transportation** contains roads, railways, aerial ways, and shipping
  lines.
 This layer is directly derived from the OSM road hierarchy.
-At lower zoom levels major highways from Natural Earth are used.
-It contains all roads from motorways to primary, secondary and
+At lower zoom levels, major highways from Natural Earth are used.
+It contains all roads from motorways to primary, secondary, and
 tertiary roads to residential roads and
-foot paths. Styling the roads is the most essential part of the map.
+footpaths. Styling the roads is the most essential part of the map.
 The `transportation` layer also contains polygons for features like plazas.
 
 ## Fields
@@ -63,7 +63,7 @@ Possible values:
 ### subclass
 
 Distinguish more specific classes of railway and path:
-Subclass is value of the
+Subclass is the value of the
 [`railway`](http://wiki.openstreetmap.org/wiki/Key:railway),
 [`highway`](http://wiki.openstreetmap.org/wiki/Key:highway) (for paths), or
 [`public_transport`](http://wiki.openstreetmap.org/wiki/Key:public_transport) (for platforms) tag.
@@ -91,7 +91,7 @@ Possible values:
 
 ### network
 
-The network type derived mainly from [`network`](http://wiki.openstreetmap.org/wiki/Key:network) tag of the road.
+The network type derived mainly from the [`network`](http://wiki.openstreetmap.org/wiki/Key:network) tag of the road.
 See more info about [`us-*`](http://wiki.openstreetmap.org/wiki/Road_signs_in_the_United_States),
 [`ca-transcanada`](https://en.wikipedia.org/wiki/Trans-Canada_Highway),
 [`gb-*`](http://wiki.openstreetmap.org/wiki/United_Kingdom_Tagging_Guidelines#UK_roads),
@@ -99,7 +99,7 @@ or [`ie-*`](http://wiki.openstreetmap.org/wiki/Ireland/Roads).
 
 ### brunnel
 
-Mark whether way is a tunnel or bridge.
+Mark whether the way is a tunnel or bridge.
 
 Possible values:
 
@@ -110,9 +110,9 @@ Possible values:
 
 ### oneway
 
-Mark with `1` whether way is a oneway in the direction of the way,
-with `-1` whether way is a oneway in the opposite direction of the way
-or not a oneway with `0`.
+Mark with `1` if the way is one-way in the direction of the way,
+with `-1` if it is one-way in the opposite direction,
+and with `0` if it is not one-way.
 
 Possible values:
 
@@ -122,8 +122,8 @@ Possible values:
 
 ### ramp
 
-Mark with `1` whether way is a ramp (link or steps)
-or not with `0`.
+Mark with `1` if the way is a ramp (link or steps),
+and with `0` if it is not.
 
 Possible values:
 
@@ -147,7 +147,7 @@ Possible values:
 
 ### access
 
-Access restrictions on this road.  Supported values of the
+Access restrictions on this road. Supported values of the
 [`access`](http://wiki.openstreetmap.org/wiki/Key:access) tag are `no` and `private`,
 which resolve to `no`.
 
@@ -222,7 +222,7 @@ Possible values:
 
 ### surface
 
-Values of [`surface`](https://wiki.openstreetmap.org/wiki/Key:surface) tag devided into 2 groups `paved` (paved, asphalt, cobblestone, concrete, concrete:lanes, concrete:plates, metal, paving_stones, sett, unhewn_cobblestone, wood) and `unpaved` (unpaved, compacted, dirt, earth, fine_gravel, grass, grass_paver, gravel, gravel_turf, ground, ice, mud, pebblestone, salt, sand, snow, woodchips).
+Values of the [`surface`](https://wiki.openstreetmap.org/wiki/Key:surface) tag, divided into two groups: `paved` (paved, asphalt, cobblestone, concrete, concrete:lanes, concrete:plates, metal, paving_stones, sett, unhewn_cobblestone, wood) and `unpaved` (unpaved, compacted, dirt, earth, fine_gravel, grass, grass_paver, gravel, gravel_turf, ground, ice, mud, pebblestone, salt, sand, snow, woodchips).
 
 Possible values:
 

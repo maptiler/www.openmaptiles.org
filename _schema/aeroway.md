@@ -2,16 +2,16 @@
 title: aeroway
 ---
 
-![ETL Graph](/media/etl_aeroway.png)
-![Mapping Graph](/media/mapping_aeroway.png)
+![Aeroway ETL Graph](/media/etl_aeroway.png)
+![Aeroway Mapping Graph](/media/mapping_aeroway.png)
 
 ```sql
 SELECT geometry, ref, class FROM layer_aeroway(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
 ```
 
-Aeroway polygons based of OpenStreetMap [aeroways](http://wiki.openstreetmap.org/wiki/Aeroways).
-Airport buildings are contained in the **building** layer but all
-other airport related polygons can be found in the **aeroway** layer.
+Aeroway polygons based on OpenStreetMap [aeroways](http://wiki.openstreetmap.org/wiki/Aeroways).
+Airport buildings are contained in the **building** layer, but all
+other airport-related polygons can be found in the **aeroway** layer.
 
 ## Fields
 

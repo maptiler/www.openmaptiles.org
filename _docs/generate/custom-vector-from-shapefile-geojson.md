@@ -2,8 +2,8 @@
 layout: docs
 category: generate
 order: 2
-title: Custom vector tiles from GeoJSON or Shapefile
-description: Custom Vector Tiles from GeoJSON or Shapefile using open-source tools
+title: Custom vector tiles from GeoJSON & Shapefile
+description: How to generate custom vector tiles from GeoJSON or Shapefile using open-source tools and combine it with a map.
 redirect_from: /docs/generate/custom-vector/
 ---
 

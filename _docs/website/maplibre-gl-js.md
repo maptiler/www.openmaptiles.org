@@ -7,11 +7,11 @@ order: 2
 redirect_from: /docs/website/mapbox-gl-js/
 ---
 
-[MapLibre GL JS](https://www.maplibre.org/) is a community led fork derived from mapbox-gl-js prior to their switch to a non-OSS license. It's a web mapping library based on WebGL.
+[MapLibre GL JS](https://www.maplibre.org/) is a community-led fork derived from mapbox-gl-js prior to their switch to a non-OSS license. It's a web mapping library based on WebGL.
 
-Using MapLibre GL JS for serving OpenMapTiles tileset is the most common use case.
+Using MapLibre GL JS for serving an OpenMapTiles tileset is the most common use case.
 
-<iframe class="doc-embed" src="/maps/maplibre-gl-js.html" frameborder="0" scrolling="0" width="100%" height="540px"></iframe>
+<iframe class="doc-embed" src="/maps/maplibre-gl-js.html?key={{ site.maps.key }}" frameborder="0" scrolling="0" width="100%" height="540px"></iframe>
 
 ## Reference the Style
 
@@ -22,10 +22,10 @@ Create an HTML page and include the MapLibre GL JS viewer. You need to point the
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>OpenMapTiles OSM Bright style</title>
+    <title>OpenMapTiles with MapLibre GL JS</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet" />
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -36,7 +36,7 @@ Create an HTML page and include the MapLibre GL JS viewer. You need to point the
     <script>
         var map = new maplibregl.Map({
             container: 'map',
-            style: '{{ site.maps.domain }}/maps/bright/style.json?key=insert_your_key_here',
+            style: '{{ site.maps.domain }}/maps/openstreetmap/style.json?key=insert_your_key_here',
             center: [8.5456, 47.3739],
             zoom: 11
         });
@@ -60,4 +60,4 @@ All [OpenMapTiles styles](/#map-styles) can be referenced directly in a viewer.
 
 ## Fonts and Sprites
 
-MapLibre GL JS requires fonts being packaged as PBFs and symbols packaged as sprites. Check the [GL style specification documentation](/docs/style/mapbox-gl-style-spec/) for OpenMapTiles to create your own fonts and sprites packages.
+MapLibre GL JS requires fonts to be packaged as PBFs and symbols to be packaged as sprites. Check the [GL style specification documentation](/docs/style/mapbox-gl-style-spec/) for OpenMapTiles to create your own font and sprite packages.

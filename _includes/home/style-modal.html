@@ -57,7 +57,19 @@ structural stays put.
         ></iframe>
 
         <div class="style-modal__card">
-          <h3 class="style-modal__title" data-style-modal-title>{{ active.title }}</h3>
+          {%- comment -%}
+          On /styles/:slug/ this dialog is what the page is about, so its title is the
+          page's H1 and the hero headline steps down to an <h2>. Everywhere else the
+          modal is closed and this element is empty, so it renders as a <p> — the
+          layout emits this dialog first, and an empty heading must not lead the
+          document outline. map-styles.js addresses it by data-style-modal-title,
+          not by tag, and the colour comes from the class — see _element-overrides.scss.
+          {%- endcomment -%}
+          {% if page.active_style %}
+          <h1 class="style-modal__title" data-style-modal-title>{{ active.title }}</h1>
+          {% else %}
+          <p class="style-modal__title" data-style-modal-title>{{ active.title }}</p>
+          {% endif %}
           <p class="style-modal__desc" data-style-modal-desc>{{ active.description }}</p>
 
           <div class="style-modal__actions">
@@ -70,7 +82,7 @@ structural stays put.
               data-track-section="map_styles_modal"
               class="btn-primary-omt style-modal__btn"
               data-style-modal-github
-            >{% include icons/code-bold.svg %}Github</a>
+            >{% include icons/code-bold.svg %}GitHub</a>
 
             {%- comment -%}
             Both icons ship; CSS shows one. Swapping the element would work, but
@@ -101,7 +113,7 @@ structural stays put.
           <div class="style-modal__more">
             <img
               src="{{ '/img/maptiler-logo-icon.png' | relative_url }}"
-              alt="MapTiler Logo"
+              alt="MapTiler logo"
               loading="lazy"
               class="style-modal__more-logo"
             />

@@ -2,8 +2,8 @@
 title: aerodrome_label
 ---
 
-![ETL Graph](/media/etl_aerodrome_label.png)
-![Mapping Graph](/media/mapping_aerodrome_label.png)
+![Aerodrome ETL Graph](/media/etl_aerodrome_label.png)
+![Aerodrome Mapping Graph](/media/mapping_aerodrome_label.png)
 
 ```sql
 SELECT id, geometry, name, name_en, name_de, NULLIF(tags->'name_int', '') AS "name_int", NULLIF(tags->'name:latin', '') AS "name:latin", NULLIF(tags->'name:nonlatin', '') AS "name:nonlatin", class, iata, icao, ele, ele_ft FROM layer_aerodrome_label(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
@@ -44,11 +44,11 @@ Possible values:
 
 ### iata
 
-3-character code issued by the IATA.
+3-character code issued by IATA.
 
 ### icao
 
-4-letter code issued by the ICAO.
+4-character code issued by ICAO.
 
 ### ele
 
@@ -56,7 +56,7 @@ Elevation (`ele`) in meters.
 
 ### ele_ft
 
-Elevation (`ele`) in feets.
+Elevation (`ele`) in feet.
 
 
 
