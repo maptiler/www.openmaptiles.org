@@ -2,8 +2,8 @@
 title: aerodrome_label
 ---
 
-![Aerodome ETL Graph](/media/etl_aerodrome_label.png)
-![Aerodome Mapping Graph](/media/mapping_aerodrome_label.png)
+![Aerodrome ETL Graph](/media/etl_aerodrome_label.png)
+![Aerodrome Mapping Graph](/media/mapping_aerodrome_label.png)
 
 ```sql
 SELECT id, geometry, name, name_en, name_de, NULLIF(tags->'name_int', '') AS "name_int", NULLIF(tags->'name:latin', '') AS "name:latin", NULLIF(tags->'name:nonlatin', '') AS "name:nonlatin", class, iata, icao, ele, ele_ft FROM layer_aerodrome_label(ST_SetSRID('BOX3D(-20037508.34 -20037508.34, 20037508.34 20037508.34)'::box3d, 3857), 14)
