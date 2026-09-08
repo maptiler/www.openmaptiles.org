@@ -21,14 +21,14 @@ Two things are load-bearing and easy to break silently:
 
 - **Pages Source must be "GitHub Actions."** The built-in Pages build runs Jekyll in
   `--safe` mode, which skips `_plugins/` and *exits 0* — measured, 91 HTML files instead
-  of 156, with no error. `datapage_generator.rb` accounts for all 65: the 59
+  of 140, with no error. `datapage_generator.rb` accounts for all 65: the 59
   `/languages/:code/` pages and 6 of the `/styles/:slug/` ones, generated from `_data/`.
 - **Nothing publishes unless `script/verify-build` passes.** It asserts the route floor,
   one check per custom plugin, the generated assets, every in-site link and image, and
   every redirect in `script/redirects.tsv`. Adding a redirect without adding it there
   means nothing checks it.
 - **The legacy URLs in `script/redirects.tsv` are live and indexed.** `/layers/*` is
-  the schema reference and the most externally cited part of the site. All 57 ship as
+  the schema reference and the most externally cited part of the site. All 41 ship as
   `jekyll-redirect-from` stubs, and the 38 marked `both` additionally need a matching
   rule in `_redirects`. Rename a doc and drop its `redirect_from` and the URL keeps
   answering until the release that removes it, which is why the check exists.

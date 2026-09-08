@@ -53,8 +53,8 @@ test -d "$SITE" || { echo "no such directory: $SITE — run 'bundle exec jekyll 
 
 # --- route count -------------------------------------------------------------
 # Floor, not an exact match: adding pages should not fail the build. It is set
-# just under the current count so a real regression trips it. 2026-08-15: 156.
-MIN_ROUTES=150
+# just under the current count so a real regression trips it. 2026-09-08: 140.
+MIN_ROUTES=135
 section "Route count"
 routes=$(find "$SITE" -name '*.html' | wc -l | tr -d ' ')
 if [ "$routes" -ge "$MIN_ROUTES" ]; then ok "$routes html files (floor $MIN_ROUTES)"

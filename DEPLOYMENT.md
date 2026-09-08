@@ -41,7 +41,7 @@ That distinction matters and must not be "simplified" away: the built-in build
 runs in `--safe` mode, which forbids custom `_plugins/`. This site has four, and
 `_plugins/datapage_generator.rb` generates the 59 `/languages/:code/` and the
 `/styles/:slug/` pages from `_data/`. Under the sandboxed build those 65 pages simply
-would not exist — measured: `--safe` yields 91 HTML files instead of 156, and exits 0.
+would not exist — measured: `--safe` yields 75 HTML files instead of 140, and exits 0.
 
 **Custom domain** — `openmaptiles.org`, via the `CNAME` file at the repo root.
 Jekyll copies it into `_site/` as a static file, and GitHub Pages reads it from
@@ -63,7 +63,7 @@ deploying.
 
 `_redirects` is a Cloudflare/Netlify format and GitHub Pages ignores it, so it fires
 on no current host. Every rule in it is therefore *also* shipped as a real HTML stub
-via `jekyll-redirect-from`, which works anywhere — 57 legacy URLs in total, listed in
+via `jekyll-redirect-from`, which works anywhere — 41 legacy URLs in total, listed in
 `script/redirects.tsv` and asserted on every build. `_redirects` is kept in sync so a
 later move to Cloudflare Pages behaves identically; `verify-build` cross-checks the two
 so they cannot drift.
@@ -121,9 +121,9 @@ Two traps worth knowing:
 | `/languages/:code/`, `/styles/:slug/` | `_plugins/datapage_generator.rb` from `_data/` |
 
 | `redirects.json` | `jekyll-redirect-from` — its own manifest of emitted stubs |
-| 57 legacy redirect stubs | `redirect_from:` / `redirect_to:` front matter, listed in `script/redirects.tsv` |
+| 41 legacy redirect stubs | `redirect_from:` / `redirect_to:` front matter, listed in `script/redirects.tsv` |
 
-156 HTML routes total: 99 pages and 57 redirect stubs, one per row of `script/redirects.tsv`.
+140 HTML routes total: 99 pages and 41 redirect stubs, one per row of `script/redirects.tsv`.
 
 ---
 
