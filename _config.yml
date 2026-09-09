@@ -23,9 +23,7 @@ collections:
   # are only meant to be read inline there — see docs/schema.html's loop, which
   # reads `layer.content` regardless of this setting. output:true would also
   # emit each one as its own /docs/schema/<layer>/ page, duplicating the same
-  # content that already renders inline, and colliding with the manual
-  # redirect stubs at docs/schema/*.html that own that URL (see _redirects and
-  # script/redirects.tsv). Product decision: content lives only on
+  # content that already renders inline. Product decision: content lives only on
   # /docs/schema/, with per-layer anchors — not on separate pages, even though
   # /layers/<name> were real distinct pages on the legacy production site.
   #
